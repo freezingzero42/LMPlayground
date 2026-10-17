@@ -199,6 +199,13 @@ void LlamaGenerationSession::init(llama_model *model, const struct common_chat_t
 
     sampler_params = params;
 
+    // Recurrent and hybrid memories refuse a partial llama_memory_seq_rm, and
+    // a sliding-window cache has already evicted the cells an older position
+    // needs, so for these a rewind must also restore the saved state.
+    memory_needs_state_snapshots = llama_model_is_recurrent(model) ||
+                                   llama_model_is_hybrid(model) ||
+                                   llama_model_n_swa(model) > 0;
+
     if (!params.system_prompt.empty()) {
         common_chat_msg system_msg;
         system_msg.role = "system";
@@ -258,6 +265,190 @@ void LlamaGenerationSession::clearKvCacheForFreshPrompt() {
     prev_len = 0;
     last_full_prompt.clear();
     last_prompt_end_pos = 0;
+    // Every snapshot described a KV prefix that is now gone.
+    clearTurnSnapshots();
+}
+
+void LlamaGenerationSession::clearTurnSnapshots() {
+    turn_snapshots.clear();
+}
+
+int LlamaGenerationSession::userTurnsInMessages(size_t end) const {
+    int n = 0;
+    for (size_t i = 0; i < end && i < messages.size(); i++) {
+        if (messages[i].role == "user") n++;
+    }
+    return n;
+}
+
+int LlamaGenerationSession::messageIndexOfTurn(int turn) const {
+    int local = turn - dropped_user_turns;
+    if (local < 0) return -1;
+    int seen = 0;
+    for (size_t i = 0; i < messages.size(); i++) {
+        if (messages[i].role != "user") continue;
+        if (seen == local) return (int)i;
+        seen++;
+    }
+    return -1;
+}
+
+int LlamaGenerationSession::getTurnCount() const {
+    return dropped_user_turns + userTurnsInMessages(messages.size());
+}
+
+void LlamaGenerationSession::captureTurnSnapshot(int kv_pos) {
+    if (messages.empty() || messages.back().role != "user") return;
+
+    TurnSnapshot snap;
+    snap.messages_size = messages.size() - 1;
+    snap.turn = dropped_user_turns + userTurnsInMessages(snap.messages_size);
+    snap.kv_pos = std::max(0, kv_pos);
+
+    // A snapshot for this turn or a later one belongs to a branch that
+    // this turn replaces.
+    turn_snapshots.erase(
+        std::remove_if(turn_snapshots.begin(), turn_snapshots.end(),
+                       [&](const TurnSnapshot &s) { return s.turn >= snap.turn; }),
+        turn_snapshots.end());
+
+    if (snap.kv_pos > 0) {
+        if (prev_len <= 0) return; // KV content we can't describe: don't record
+        snap.prev_rendered_prompt = prev_rendered_prompt;
+        snap.prev_len = prev_len;
+        snap.prev_had_thinking = prev_had_thinking;
+        snap.prev_enable_thinking = prev_enable_thinking;
+
+        if (memory_needs_state_snapshots) {
+            const size_t size = llama_state_seq_get_size_ext(ctx, 0, LLAMA_STATE_SEQ_FLAGS_PARTIAL_ONLY);
+            if (size == 0 || size > kMaxTurnSnapshotStateBytes) {
+                LOGi("Turn snapshot %d: state of %zu bytes not kept", snap.turn, size);
+                return;
+            }
+            snap.state.resize(size);
+            const size_t written = llama_state_seq_get_data_ext(
+                    ctx, snap.state.data(), snap.state.size(), 0, LLAMA_STATE_SEQ_FLAGS_PARTIAL_ONLY);
+            if (written == 0) {
+                LOGi("Turn snapshot %d: state copy failed", snap.turn);
+                return;
+            }
+            snap.state.resize(written);
+        }
+    }
+
+    turn_snapshots.push_back(std::move(snap));
+
+    // Bound memory: drop the oldest snapshots first. Edits and regenerates
+    // overwhelmingly target recent turns, and an older turn still rewinds
+    // correctly without one (from an earlier snapshot, or from scratch).
+    while (turn_snapshots.size() > kMaxTurnSnapshots) {
+        turn_snapshots.erase(turn_snapshots.begin());
+    }
+    auto stateful_count = [&]() {
+        size_t n = 0, bytes = 0;
+        for (const auto &s : turn_snapshots) {
+            if (!s.state.empty()) { n++; bytes += s.state.size(); }
+        }
+        return std::make_pair(n, bytes);
+    };
+    for (auto usage = stateful_count();
+         usage.first > kMaxStatefulTurnSnapshots || usage.second > kMaxTurnSnapshotStateBytes;
+         usage = stateful_count()) {
+        auto it = std::find_if(turn_snapshots.begin(), turn_snapshots.end(),
+                               [](const TurnSnapshot &s) { return !s.state.empty(); });
+        if (it == turn_snapshots.end()) break;
+        turn_snapshots.erase(it);
+    }
+}
+
+int LlamaGenerationSession::rewindToTurn(int turnIndex, const char *expectedText) {
+    if (chat_tmpls == nullptr || ctx == nullptr) return -1;
+
+    const int idx = messageIndexOfTurn(turnIndex);
+    if (idx < 0) {
+        LOGi("rewindToTurn(%d): turn not in the session (%d turns, %d dropped)",
+             turnIndex, getTurnCount(), dropped_user_turns);
+        return -1;
+    }
+    if (expectedText != nullptr && expectedText[0] != '\0' &&
+        messages[idx].content.find(expectedText) == std::string::npos) {
+        LOGi("rewindToTurn(%d): turn text doesn't match the caller's", turnIndex);
+        return -1;
+    }
+
+    // Newest snapshot at or before the target. One for the target itself is
+    // exact; an earlier one keeps a shorter prefix and lets the prefix match
+    // in addMessage feed the turns in between again.
+    const TurnSnapshot *best = nullptr;
+    for (const auto &s : turn_snapshots) {
+        if (s.turn <= turnIndex && s.messages_size <= (size_t)idx &&
+            (best == nullptr || s.turn > best->turn)) {
+            best = &s;
+        }
+    }
+
+    llama_memory_t mem = llama_get_memory(ctx);
+    int kept = 0;
+    bool restored = false;
+    if (best != nullptr && best->kv_pos == 0) {
+        llama_memory_clear(mem, true);
+        restored = true;
+    } else if (best != nullptr) {
+        bool ok = true;
+        if (!best->state.empty()) {
+            ok = llama_state_seq_set_data_ext(ctx, best->state.data(), best->state.size(), 0,
+                                              LLAMA_STATE_SEQ_FLAGS_PARTIAL_ONLY) != 0;
+        } else if (memory_needs_state_snapshots) {
+            ok = false;
+        }
+        ok = ok && llama_memory_seq_rm(mem, 0, best->kv_pos, -1);
+        ok = ok && llama_memory_seq_pos_max(mem, 0) + 1 == best->kv_pos;
+        if (ok) {
+            restored = true;
+            kept = best->kv_pos;
+        } else {
+            LOGi("rewindToTurn(%d): snapshot of turn %d didn't restore, starting over",
+                 turnIndex, best->turn);
+        }
+    }
+
+    if (restored && kept > 0) {
+        prev_rendered_prompt = best->prev_rendered_prompt;
+        prev_len = best->prev_len;
+        prev_had_thinking = best->prev_had_thinking;
+        prev_enable_thinking = best->prev_enable_thinking;
+    } else {
+        llama_memory_clear(mem, true);
+        prev_rendered_prompt.clear();
+        prev_len = 0;
+        // From an empty cache the persistent preamble is the best reuse left.
+        preamble_attempted = false;
+        restored = false;
+    }
+
+    const int best_turn = best != nullptr ? best->turn : -1;
+    if (restored) {
+        turn_snapshots.erase(
+            std::remove_if(turn_snapshots.begin(), turn_snapshots.end(),
+                           [&](const TurnSnapshot &s) { return s.turn >= turnIndex; }),
+            turn_snapshots.end());
+    } else {
+        clearTurnSnapshots();
+    }
+
+    messages.resize(idx);
+    batch = {};
+    prompt_tokens.clear();
+    response.clear();
+    pending_tool_calls.clear();
+    skip_first_decode = false;
+    last_full_prompt.clear();
+    last_prompt_end_pos = 0;
+    abort_requested.store(false);
+
+    LOGi("rewindToTurn(%d): kept %d KV tokens (snapshot turn %d), %zu messages remain",
+         turnIndex, kept, best_turn, messages.size());
+    return kept;
 }
 
 void LlamaGenerationSession::requestAbort() {
@@ -368,7 +559,14 @@ int LlamaGenerationSession::addMessage(const char *string, bool enableThinking) 
         bool prefix_match = (int)full_prompt.size() >= prev_len &&
                             full_prompt.compare(0, prev_len, prev_rendered_prompt) == 0;
         if (!prefix_match) {
-            LOGi("Prompt prefix mismatch, clearing KV cache");
+            size_t at = 0;
+            while (at < full_prompt.size() && at < prev_rendered_prompt.size() &&
+                   full_prompt[at] == prev_rendered_prompt[at]) at++;
+            size_t from = at > 40 ? at - 40 : 0;
+            LOGi("Prompt prefix mismatch at byte %zu of %d, clearing KV cache\n  was: %s\n  now: %s",
+                 at, prev_len,
+                 prev_rendered_prompt.substr(from, 100).c_str(),
+                 full_prompt.substr(from, 100).c_str());
             clearKvCacheForFreshPrompt();
         }
     }
@@ -408,6 +606,10 @@ int LlamaGenerationSession::addMessage(const char *string, bool enableThinking) 
         LOGe("failed to tokenize the prompt");
         return 1;
     }
+
+    // Nothing of this turn is in the cache yet: remember how to get back
+    // here, for edit / regenerate (rewindToTurn).
+    captureTurnSnapshot(is_first ? 0 : (int)llama_memory_seq_pos_max(llama_get_memory(ctx), 0) + 1);
 
     batch = llama_batch_get_one(prompt_tokens.data(), prompt_tokens.size());
 
@@ -540,6 +742,7 @@ int LlamaGenerationSession::compactContextIfNeeded(
         auto it = messages.begin();
         if (it->role == "system") ++it;
         if (it == messages.end()) break;
+        if (it->role == "user") dropped_user_turns++;
         messages.erase(it);
 
         it = messages.begin();
@@ -609,6 +812,7 @@ int LlamaGenerationSession::processImageTurn(std::vector<unsigned char> &image_d
     // Always clear KV cache for vision — we re-eval the full prompt
     llama_memory_clear(llama_get_memory(ctx), true);
     prev_len = 0;
+    clearTurnSnapshots();
 
     // Create bitmap from image data.
     // The helper returns a mtmd_helper_bitmap_wrapper and takes a
@@ -699,6 +903,9 @@ int LlamaGenerationSession::processImageTurn(std::vector<unsigned char> &image_d
     }
 
     LOGi("Vision eval complete, n_past = %d", (int)new_n_past);
+
+    // The turn started from an empty cache, so rewinding to it is a clear.
+    captureTurnSnapshot(0);
 
     // After mtmd eval, logits are ready — skip first decode in generate()
     skip_first_decode = true;
@@ -979,6 +1186,8 @@ void LlamaGenerationSession::replayHistory(const std::vector<std::pair<std::stri
     response.clear();
     last_full_prompt.clear();
     last_prompt_end_pos = 0;
+    dropped_user_turns = 0;
+    clearTurnSnapshots();
     if (ctx != nullptr) {
         llama_memory_clear(llama_get_memory(ctx), true);
     }

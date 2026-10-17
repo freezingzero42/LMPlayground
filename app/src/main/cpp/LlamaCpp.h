@@ -24,6 +24,13 @@ constexpr int kMaxVisionThreads = 8;
 // renderPreambleString fallback: how far back from the probe position to
 // search for the opening '<' of a template's user-turn marker.
 constexpr size_t kUserMarkerSearchWindow = 80;
+// Turn snapshots kept for rewindToTurn. Plain attention models only store a
+// KV position and a string, so the cap is generous; models whose memory
+// can't be truncated (recurrent / hybrid / SWA) also copy that state, so
+// those are bounded by count and bytes, newest kept.
+constexpr size_t kMaxTurnSnapshots = 64;
+constexpr size_t kMaxStatefulTurnSnapshots = 8;
+constexpr size_t kMaxTurnSnapshotStateBytes = 96u * 1024u * 1024u;
 
 // Vulkan CLIP crash sentinel (implemented in native-lib.cpp). A marker file is
 // written right before each crash-prone Vulkan vision step and removed right
@@ -92,6 +99,28 @@ public:
     std::string getReport();
 
     void replayHistory(const std::vector<std::pair<std::string, std::string>>& history);
+
+    // Drop user turn [turnIndex] (0-based, counting every user turn of the
+    // conversation, replayed ones included) and everything after it, so the
+    // next addMessage continues from the end of turn [turnIndex - 1]. Used
+    // by edit (re-send a changed message) and regenerate (re-send the same
+    // one).
+    //
+    // The KV cache is rolled back to the newest snapshot taken at or before
+    // that turn, so only what follows the snapshot is evaluated again.
+    // [expectedText], when non-empty, must occur in the native copy of that
+    // user turn; it guards against the caller's numbering having drifted
+    // from ours (a turn the template rejected, a turn compaction dropped).
+    //
+    // Returns the number of tokens kept in the KV cache (0 = the next turn
+    // re-evaluates the whole prompt), or -1 when the turn can't be found or
+    // doesn't match — the session is then untouched and the caller should
+    // rebuild it with replayHistory.
+    int rewindToTurn(int turnIndex, const char *expectedText);
+
+    // Number of user turns in the conversation, including ones dropped by
+    // context compaction. The next addMessage becomes turn getTurnCount().
+    int getTurnCount() const;
 
     // Tool calling
     void setTools(const char *toolsJson);
@@ -162,6 +191,42 @@ private:
     // Reset the incremental-prefix state and clear the KV cache — the next
     // prompt is fed from scratch.
     void clearKvCacheForFreshPrompt();
+
+    // State of the session right before a user turn was fed: the KV cache
+    // holds exactly [kv_pos] positions, and they correspond to
+    // [prev_rendered_prompt] (the incremental-prefix state addMessage
+    // matches against). Restoring one and re-sending a message therefore
+    // feeds the same tokens at the same positions as the original turn.
+    struct TurnSnapshot {
+        int turn = 0;
+        size_t messages_size = 0;   // messages.size() before the user turn
+        int kv_pos = 0;
+        std::string prev_rendered_prompt;
+        int prev_len = 0;
+        bool prev_had_thinking = false;
+        bool prev_enable_thinking = false;
+        // Recurrent / SWA state at kv_pos (LLAMA_STATE_SEQ_FLAGS_PARTIAL_ONLY),
+        // which llama_memory_seq_rm can't roll back. Empty for plain attention
+        // models and for kv_pos == 0.
+        std::vector<uint8_t> state;
+    };
+
+    // Record a snapshot for the user turn just pushed onto [messages],
+    // before its tokens are decoded. [kv_pos] is the cache occupancy now.
+    void captureTurnSnapshot(int kv_pos);
+    void clearTurnSnapshots();
+    // Index in [messages] of user turn [turn], or -1 when it isn't there
+    // (dropped by compaction, or past the end).
+    int messageIndexOfTurn(int turn) const;
+    int userTurnsInMessages(size_t end) const;
+
+    std::vector<TurnSnapshot> turn_snapshots;
+    // User turns compaction has dropped from the front of [messages]; turn
+    // numbers stay stable across compaction by adding this back.
+    int dropped_user_turns = 0;
+    // The memory has parts llama_memory_seq_rm can't truncate (recurrent,
+    // hybrid, sliding-window attention), so snapshots must copy that state.
+    bool memory_needs_state_snapshots = false;
 
     const struct llama_vocab * vocab = nullptr;
     llama_context * ctx = nullptr;

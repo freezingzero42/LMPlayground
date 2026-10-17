@@ -132,6 +132,11 @@ file that the AAB already carries.
   (in-memory DB), WorkManager enqueue policy (`WorkManagerTestInitHelper`).
   CI runs them with `-PskipScreenshots` — Paparazzi goldens are not
   git-tracked.
+- **Engine tests** (`model-harness/src/test`, `./gradlew :model-harness:test`):
+  the real native engine on macOS against GGUFs on disk (skipped without
+  any). `ChatRewindTest` checks that rewinding a session (edit /
+  regenerate / branch) produces exactly what a fresh session would, and
+  evaluates no more prompt than the original turn did.
 - **Paparazzi screenshots** (`app/src/test/.../screenshots`): Play Store
   screenshots, 28 locales; `recordPaparazziDebug` auto-organizes them
   into `fastlane/`.
