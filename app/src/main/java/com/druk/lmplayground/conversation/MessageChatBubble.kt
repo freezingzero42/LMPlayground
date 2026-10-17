@@ -239,17 +239,7 @@ fun ChatItemBubble(
                         tint = MaterialTheme.colorScheme.secondary
                     )
                 }
-                if (onRegenerate != null) {
-                    IconButton(onClick = onRegenerate, modifier = Modifier.size(38.dp)) {
-                        Icon(
-                            imageVector = Icons.Outlined.Refresh,
-                            contentDescription = stringResource(id = R.string.regenerate),
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                }
-                if (onBranch != null) {
+                if (onRegenerate != null || onBranch != null) {
                     var menuOpen by remember { mutableStateOf(false) }
                     Box {
                         IconButton(onClick = { menuOpen = true }, modifier = Modifier.size(38.dp)) {
@@ -261,16 +251,28 @@ fun ChatItemBubble(
                             )
                         }
                         DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.branch_from_here)) },
-                                leadingIcon = {
-                                    Icon(Icons.AutoMirrored.Outlined.CallSplit, contentDescription = null)
-                                },
-                                onClick = {
-                                    menuOpen = false
-                                    onBranch()
-                                }
-                            )
+                            if (onRegenerate != null) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(id = R.string.regenerate)) },
+                                    leadingIcon = { Icon(Icons.Outlined.Refresh, contentDescription = null) },
+                                    onClick = {
+                                        menuOpen = false
+                                        onRegenerate()
+                                    }
+                                )
+                            }
+                            if (onBranch != null) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(id = R.string.branch_from_here)) },
+                                    leadingIcon = {
+                                        Icon(Icons.AutoMirrored.Outlined.CallSplit, contentDescription = null)
+                                    },
+                                    onClick = {
+                                        menuOpen = false
+                                        onBranch()
+                                    }
+                                )
+                            }
                         }
                     }
                 }
