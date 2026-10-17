@@ -72,6 +72,9 @@ tasks.test {
     systemProperty("java.library.path", bin)
     systemProperty("lmp.nativeLibDir", bin)
     environment("DYLD_LIBRARY_PATH", bin)
+    // A native rebuild must re-run the suites; the GGUFs are read live.
+    inputs.dir(hostNativeBin)
+    outputs.upToDateWhen { false }
     (project.findProperty("lmp.testModels") as String?)?.let { systemProperty("lmp.testModels", it) }
     maxHeapSize = "2g"
     testLogging {

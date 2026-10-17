@@ -24,13 +24,15 @@ constexpr int kMaxVisionThreads = 8;
 // renderPreambleString fallback: how far back from the probe position to
 // search for the opening '<' of a template's user-turn marker.
 constexpr size_t kUserMarkerSearchWindow = 80;
-// Turn snapshots kept for rewindToTurn. Plain attention models only store a
-// KV position and a string, so the cap is generous; models whose memory
-// can't be truncated (recurrent / hybrid / SWA) also copy that state, so
-// those are bounded by count and bytes, newest kept.
+// Turn snapshots kept for rewindToTurn: a KV position and a string each,
+// so the cap is generous.
 constexpr size_t kMaxTurnSnapshots = 64;
-constexpr size_t kMaxStatefulTurnSnapshots = 8;
-constexpr size_t kMaxTurnSnapshotStateBytes = 96u * 1024u * 1024u;
+// KV checkpoints: copies of the state llama_memory_seq_rm can't truncate
+// (recurrent / hybrid / SWA memories), taken at turn starts and right before
+// each generation prompt. Bounded by count and bytes, lowest position evicted
+// first — edits, regenerates and prefix reuse all target recent positions.
+constexpr size_t kMaxKvCheckpoints = 12;
+constexpr size_t kMaxKvCheckpointBytes = 96u * 1024u * 1024u;
 
 // Vulkan CLIP crash sentinel (implemented in native-lib.cpp). A marker file is
 // written right before each crash-prone Vulkan vision step and removed right
@@ -193,10 +195,11 @@ private:
     void clearKvCacheForFreshPrompt();
 
     // State of the session right before a user turn was fed: the KV cache
-    // holds exactly [kv_pos] positions, and they correspond to
-    // [prev_rendered_prompt] (the incremental-prefix state addMessage
-    // matches against). Restoring one and re-sending a message therefore
-    // feeds the same tokens at the same positions as the original turn.
+    // holds exactly [kv_pos] positions, and when [prev_len] > 0 they
+    // correspond to [prev_rendered_prompt] (the incremental-prefix state
+    // addMessage matches against; 0 means "match by tokens"). Restoring one
+    // and re-sending a message feeds the same tokens at the same positions
+    // as the original turn.
     struct TurnSnapshot {
         int turn = 0;
         size_t messages_size = 0;   // messages.size() before the user turn
@@ -205,9 +208,12 @@ private:
         int prev_len = 0;
         bool prev_had_thinking = false;
         bool prev_enable_thinking = false;
-        // Recurrent / SWA state at kv_pos (LLAMA_STATE_SEQ_FLAGS_PARTIAL_ONLY),
-        // which llama_memory_seq_rm can't roll back. Empty for plain attention
-        // models and for kv_pos == 0.
+    };
+
+    // State a stateful memory needs to resume from [kv_pos], read with
+    // LLAMA_STATE_SEQ_FLAGS_PARTIAL_ONLY.
+    struct KvCheckpoint {
+        int kv_pos = 0;
         std::vector<uint8_t> state;
     };
 
@@ -220,12 +226,43 @@ private:
     int messageIndexOfTurn(int turn) const;
     int userTurnsInMessages(size_t end) const;
 
+    // Checkpoint the current cache state (a no-op for memories that
+    // llama_memory_seq_rm can truncate). False when it couldn't be kept.
+    bool captureKvCheckpoint();
+    // Cut the cache back to exactly [kv_pos] positions. False (cache
+    // untouched) when that isn't possible.
+    bool truncateKvTo(int kv_pos);
+    // Cut the cache back to at most [kv_pos] positions — the longest
+    // restorable prefix. Returns the positions kept, or -1 when nothing
+    // could be kept (the cache is then untouched).
+    int truncateKvAtMost(int kv_pos);
+    // Drop snapshots and checkpoints past [kv_pos]: their cache is gone.
+    void forgetKvPast(int kv_pos);
+    // Text path of addMessage / submitToolResults when the string prefix
+    // doesn't match: reuse the longest token prefix of [full_prompt] the
+    // cache already holds. On success [tail] holds the tokens still to feed.
+    bool reuseKvPrefix(const std::string &full_prompt, std::vector<llama_token> &tail);
+    // Tokens of [prompt_tokens] to decode before checkpointing (the start of
+    // the generation prompt), or -1.
+    int generationPromptSplit(const common_chat_params &result, const std::string &full_prompt);
+    // Append decoded tokens to [kv_tokens].
+    void trackDecoded(const llama_token *tokens, int n);
+    void resetKvTokens();
+
     std::vector<TurnSnapshot> turn_snapshots;
+    std::vector<KvCheckpoint> kv_checkpoints;
+    // Exactly the tokens in KV sequence 0, in position order, so a prompt
+    // can be matched against the cache token by token. Invalid after a
+    // vision turn (image embeddings have no token ids) until the next clear.
+    std::vector<llama_token> kv_tokens;
+    bool kv_tokens_valid = true;
+    // Checkpoint after this many tokens of the pending prompt batch (-1 none).
+    int checkpoint_after = -1;
     // User turns compaction has dropped from the front of [messages]; turn
     // numbers stay stable across compaction by adding this back.
     int dropped_user_turns = 0;
     // The memory has parts llama_memory_seq_rm can't truncate (recurrent,
-    // hybrid, sliding-window attention), so snapshots must copy that state.
+    // hybrid, sliding-window attention), so rollback needs checkpoints.
     bool memory_needs_state_snapshots = false;
 
     const struct llama_vocab * vocab = nullptr;
