@@ -74,6 +74,30 @@ turn — see `ConversationViewModel.buildWireContent`).
   call, then unloads (`EmbeddingModelManager`) so ~300 MB doesn't sit
   next to a multi-GB chat model.
 
+## KV-cache reuse and rewind
+
+A generation session keeps its KV cache between turns and feeds only
+what is new (`LlamaGenerationSession.cpp`):
+
+- **String prefix** — the fast path: the new prompt extends the text
+  rendered for the cache, so only the new suffix is tokenized.
+- **Token prefix** — when a template re-renders earlier turns (Qwen3/3.5
+  drop the latest reply's empty think block once another user turn
+  follows), the session keeps the longest token prefix it still shares
+  with the prompt. `kv_tokens` mirrors KV sequence 0 for this; a vision
+  turn invalidates it until the next clear.
+- **Checkpoints** — recurrent, hybrid and sliding-window memories can't
+  drop a suffix with `llama_memory_seq_rm`, so their state is copied
+  (`LLAMA_STATE_SEQ_FLAGS_PARTIAL_ONLY`) at each turn start and right
+  before each generation prompt, and restored to roll back. Bounded to 12
+  copies / 96 MB.
+
+Edit, regenerate and branch use `rewindToTurn`: it restores the snapshot
+taken before a user turn (falling back to an earlier one, or to an
+empty cache) and drops that turn and everything after. The caller passes
+the turn's original text; a mismatch is refused and the app rebuilds the
+session by replay instead (`ModelRuntime.rewindSession`).
+
 ## Threading contracts
 
 - **`InferenceClient.requireConnected()` must not run on the main
