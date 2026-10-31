@@ -53,7 +53,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
-import com.druk.lmplayground.tools.HtmlPreviewTool
 
 @Composable
 fun ChatItemBubble(
@@ -103,30 +102,21 @@ fun ChatItemBubble(
                             Spacer(modifier = Modifier.height(6.dp))
                         }
                     }
-                    // render_html: show the page as a live preview instead of
-                    // the raw input/output JSON. A failed call (bad args,
-                    // oversized page) falls through to the normal section so
-                    // its error stays visible.
-                    val htmlPreview = remember(toolCall) { htmlPreviewFor(toolCall) }
-                    if (htmlPreview != null) {
-                        HtmlPreviewCard(preview = htmlPreview)
-                    } else {
-                        val durationSec = (toolCall.durationMs / 1000).toInt().coerceAtLeast(
-                            if (toolCall.durationMs > 0) 1 else 0
-                        )
-                        CollapsibleSection(
-                            label = "${toolDisplayName(toolCall.name)} \u00B7 ${formatDuration(durationSec)}",
-                            content = buildString {
-                                if (toolCall.arguments.isNotBlank()) {
-                                    append(inputLabel).append('\n')
-                                    append(prettyJson(toolCall.arguments))
-                                    append("\n\n")
-                                }
-                                append(outputLabel).append('\n')
-                                append(prettyJson(toolCall.result))
+                    val durationSec = (toolCall.durationMs / 1000).toInt().coerceAtLeast(
+                        if (toolCall.durationMs > 0) 1 else 0
+                    )
+                    CollapsibleSection(
+                        label = "${toolDisplayName(toolCall.name)} \u00B7 ${formatDuration(durationSec)}",
+                        content = buildString {
+                            if (toolCall.arguments.isNotBlank()) {
+                                append(inputLabel).append('\n')
+                                append(prettyJson(toolCall.arguments))
+                                append("\n\n")
                             }
-                        )
-                    }
+                            append(outputLabel).append('\n')
+                            append(prettyJson(toolCall.result))
+                        }
+                    )
                     Spacer(modifier = Modifier.height(6.dp))
                 }
             }
@@ -157,21 +147,13 @@ fun ChatItemBubble(
             }
 
             if (split.responseContent.isNotEmpty()) {
-                val styledMessage = messageFormatter(
+                // Markdown text, with ```html code blocks shown as artifact
+                // cards that have a Live preview button.
+                AssistantReplyContent(
                     text = split.responseContent,
-                    primary = false
+                    isGenerating = isGenerating,
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = LocalContentColor.current),
                 )
-                SelectionContainer {
-                    Text(
-                        text = styledMessage,
-                        style = MaterialTheme.typography.bodyLarge.copy(color = LocalContentColor.current)
-                    )
-                }
-                // The model wrote the page as ```html code instead of calling
-                // render_html: offer a preview once the reply is complete.
-                if (!isGenerating) {
-                    HtmlCodeBlockPreviews(responseText = split.responseContent)
-                }
             }
         }
 
@@ -390,7 +372,6 @@ private fun toolDisplayName(name: String): String = when (name) {
     "run_javascript" -> stringResource(R.string.tool_run_javascript_title)
     "web_search" -> stringResource(R.string.tool_web_search_title)
     "web_fetch" -> stringResource(R.string.tool_web_fetch_title)
-    HtmlPreviewTool.NAME -> stringResource(R.string.tool_render_html_title)
     else -> name
 }
 

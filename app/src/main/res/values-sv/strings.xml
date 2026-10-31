@@ -328,14 +328,12 @@
     <string name="tool_web_fetch_title">Hämta webbsida</string>
     <string name="tool_web_fetch_desc">Öppnar en länk och läser dess huvudinnehåll som text så att modellen kan sammanfatta eller citera en sida.</string>
     <string name="tool_web_fetch_example">“Sammanfatta artikeln på den här länken.”</string>
-    <string name="tool_render_html_title">HTML-förhandsvisning</string>
-    <string name="tool_render_html_desc">Låter modellen bygga webbsidor, widgetar och små spel och visar dem som en levande, interaktiv förhandsvisning i chatten. Förhandsvisningar kan läsa in bibliotek, typsnitt och bilder från internet.</string>
-    <string name="tool_render_html_example">\"Gör en dricksräknare som jag kan testa direkt här.\"</string>
-    <string name="html_preview_show_code">Visa kod</string>
-    <string name="html_preview_show_preview">Visa förhandsvisning</string>
     <string name="html_preview_reload">Läs in igen</string>
     <string name="html_preview_full_screen">Helskärm</string>
-    <string name="html_preview_open">Förhandsgranska HTML</string>
+    <string name="html_artifact_live_preview">Liveförhandsvisning</string>
+    <string name="html_artifact_code">Kod</string>
+    <string name="html_artifact_writing">Skriver…</string>
+    <string name="html_artifact_default_title">Webbsida</string>
     <string name="cd_supports_tools">Stöder verktyg</string>
     <string name="cd_supports_thinking">Stöder tänkande</string>
 

@@ -17,17 +17,19 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -39,17 +41,19 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Fullscreen
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.Web
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -57,26 +61,30 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.druk.lmplayground.R
-import com.druk.lmplayground.tools.HtmlPreviewTool
-import org.json.JSONObject
 
-private const val TAG = "HtmlPreview"
+private const val TAG = "HtmlArtifact"
 
-/** Height of the inline preview inside a chat message. */
-private val INLINE_PREVIEW_HEIGHT = 320.dp
+/** Max height of the code view before it scrolls inside the card. */
+private val CODE_MAX_HEIGHT = 320.dp
+
+/** Height of the inline live preview. */
+private val PREVIEW_HEIGHT = 420.dp
 
 /**
  * Base URL for previewed pages. It gives the page a real (https) origin so
@@ -87,128 +95,185 @@ private const val PREVIEW_HOST = "preview.lmplayground.invalid"
 private const val PREVIEW_BASE_URL = "https://$PREVIEW_HOST/"
 
 /**
- * The page to render for a `render_html` tool call, or null when the call
- * failed (bad arguments, oversized page) — in which case the chat falls back
- * to the normal collapsible tool-call section so the error stays visible.
- */
-fun htmlPreviewFor(toolCall: ToolCallInfo): HtmlPreviewTool.Preview? {
-    if (toolCall.name != HtmlPreviewTool.NAME) return null
-    val failed = try {
-        JSONObject(toolCall.result).has("error")
-    } catch (_: Exception) {
-        true
-    }
-    if (failed) return null
-    return (HtmlPreviewTool.parse(toolCall.arguments) as? HtmlPreviewTool.ParseResult.Ok)?.preview
-}
-
-/**
- * Inline, interactive preview card for a page the model rendered with the
- * `render_html` tool. Shows a live WebView, with toggles for the source,
- * reload and a full-screen view.
+ * An assistant reply: Markdown text, with every ```html code block shown as
+ * an [HtmlArtifactCard] instead of plain code. Replies without HTML blocks
+ * render exactly as before (one selectable Markdown text).
  */
 @Composable
-fun HtmlPreviewCard(
-    preview: HtmlPreviewTool.Preview,
-    modifier: Modifier = Modifier,
+fun AssistantReplyContent(
+    text: String,
+    isGenerating: Boolean,
+    textStyle: TextStyle,
 ) {
-    var showCode by rememberSaveable(preview.html) { mutableStateOf(false) }
-    var fullScreen by rememberSaveable(preview.html) { mutableStateOf(false) }
-    var reloadCount by remember(preview.html) { mutableIntStateOf(0) }
-    val clipboardManager = LocalClipboardManager.current
-    val title = preview.title.ifBlank { stringResource(R.string.tool_render_html_title) }
-
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        color = MaterialTheme.colorScheme.surface,
-    ) {
-        Column {
-            Row(
-                modifier = Modifier.padding(start = 12.dp, end = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Web,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.outline,
-                )
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.labelLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 8.dp),
-                )
-                if (showCode) {
-                    PreviewActionButton(
-                        icon = Icons.Outlined.ContentCopy,
-                        description = stringResource(R.string.copy),
-                        onClick = { clipboardManager.setText(AnnotatedString(preview.html)) },
-                    )
-                    PreviewActionButton(
-                        icon = Icons.Outlined.Visibility,
-                        description = stringResource(R.string.html_preview_show_preview),
-                        onClick = { showCode = false },
-                    )
-                } else {
-                    PreviewActionButton(
-                        icon = Icons.Outlined.Refresh,
-                        description = stringResource(R.string.html_preview_reload),
-                        onClick = { reloadCount++ },
-                    )
-                    PreviewActionButton(
-                        icon = Icons.Outlined.Code,
-                        description = stringResource(R.string.html_preview_show_code),
-                        onClick = { showCode = true },
-                    )
+    val segments = remember(text) { HtmlArtifacts.split(text) }
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        for (segment in segments) {
+            when (segment) {
+                is HtmlArtifacts.Segment.Text -> {
+                    val styled = messageFormatter(text = segment.text, primary = false)
+                    SelectionContainer {
+                        Text(text = styled, style = textStyle)
+                    }
                 }
-                PreviewActionButton(
-                    icon = Icons.Outlined.Fullscreen,
-                    description = stringResource(R.string.html_preview_full_screen),
-                    onClick = { fullScreen = true },
-                )
-            }
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(INLINE_PREVIEW_HEIGHT),
-            ) {
-                if (showCode) {
-                    HtmlSource(html = preview.html, modifier = Modifier.fillMaxSize())
-                } else {
-                    // A new key recreates the WebView, which is the most
-                    // reliable "reload" for a page loaded from a string.
-                    key(reloadCount) {
-                        HtmlWebView(
-                            html = preview.html,
-                            // Inside the scrolling chat, the page gets the
-                            // gesture so drags (sliders, canvas games) work.
-                            captureTouches = true,
-                            modifier = Modifier.fillMaxSize(),
+                is HtmlArtifacts.Segment.Artifact -> {
+                    // key() by ordinal: the card keeps its own state (code vs
+                    // preview) while the reply around it keeps streaming.
+                    key(segment.ordinal) {
+                        HtmlArtifactCard(
+                            code = segment.code,
+                            // An unclosed fence is still being written —
+                            // unless generation stopped, then preview what
+                            // there is.
+                            writing = !segment.complete && isGenerating,
+                            // The page may pull in sibling ```css / ```js
+                            // blocks, so it is keyed on the whole reply.
+                            documentKey = text,
+                            buildDocument = { HtmlArtifacts.previewDocument(text, segment) },
                         )
                     }
                 }
             }
         }
     }
+}
 
-    if (fullScreen) {
+/**
+ * A web page the model wrote, shown as an artifact: the code first (streaming
+ * in while the model writes), then a Live preview button that runs it in a
+ * sandboxed WebView. Copy and full screen are always one tap away.
+ */
+@Composable
+fun HtmlArtifactCard(
+    code: String,
+    writing: Boolean,
+    documentKey: Any,
+    buildDocument: () -> String,
+    modifier: Modifier = Modifier,
+) {
+    var showPreview by rememberSaveable { mutableStateOf(false) }
+    var fullScreen by rememberSaveable { mutableStateOf(false) }
+    var reloadCount by remember { mutableIntStateOf(0) }
+    val clipboardManager = LocalClipboardManager.current
+    val title = remember(code) { HtmlArtifacts.title(code) }
+        .ifBlank { stringResource(R.string.html_artifact_default_title) }
+    // Only build the document when it's going to be shown.
+    val document = if ((showPreview || fullScreen) && !writing) {
+        remember(documentKey) { buildDocument() }
+    } else {
+        null
+    }
+
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Column {
+            // Header: title + status, copy, full screen.
+            Row(
+                modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Web,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 10.dp),
+                ) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        text = if (writing) stringResource(R.string.html_artifact_writing) else "HTML",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.outline,
+                    )
+                }
+                CardIconButton(
+                    icon = Icons.Outlined.ContentCopy,
+                    description = stringResource(R.string.copy),
+                    onClick = { clipboardManager.setText(AnnotatedString(code)) },
+                )
+                if (!writing) {
+                    CardIconButton(
+                        icon = Icons.Outlined.Fullscreen,
+                        description = stringResource(R.string.html_preview_full_screen),
+                        onClick = { fullScreen = true },
+                    )
+                }
+            }
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+            if (showPreview && document != null) {
+                key(reloadCount) {
+                    HtmlWebView(
+                        html = document,
+                        // Inside the scrolling chat the page gets the gesture,
+                        // so drags (sliders, canvas games) work.
+                        captureTouches = true,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(PREVIEW_HEIGHT),
+                    )
+                }
+            } else {
+                CodeView(code = code, followTail = writing)
+            }
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            // Footer: the main action. Code <-> Live preview, plus reload.
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (showPreview && !writing) {
+                    FilledTonalButton(onClick = { showPreview = false }) {
+                        Icon(Icons.Outlined.Code, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.html_artifact_code))
+                    }
+                    Spacer(Modifier.weight(1f))
+                    CardIconButton(
+                        icon = Icons.Outlined.Refresh,
+                        description = stringResource(R.string.html_preview_reload),
+                        onClick = { reloadCount++ },
+                    )
+                } else {
+                    FilledTonalButton(
+                        onClick = { showPreview = true },
+                        enabled = !writing,
+                    ) {
+                        Icon(Icons.Outlined.PlayArrow, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.html_artifact_live_preview))
+                    }
+                }
+            }
+        }
+    }
+
+    if (fullScreen && document != null) {
         HtmlPreviewDialog(
             title = title,
-            html = preview.html,
+            html = document,
             onDismiss = { fullScreen = false },
         )
     }
 }
 
 @Composable
-private fun PreviewActionButton(
+private fun CardIconButton(
     icon: ImageVector,
     description: String,
     onClick: () -> Unit,
@@ -223,19 +288,34 @@ private fun PreviewActionButton(
     }
 }
 
+/**
+ * The artifact's source. Scrolls inside the card past [CODE_MAX_HEIGHT];
+ * while the model is writing it follows the newest line, like a terminal.
+ */
 @Composable
-private fun HtmlSource(html: String, modifier: Modifier = Modifier) {
+private fun CodeView(code: String, followTail: Boolean) {
+    val vertical = rememberScrollState()
+    if (followTail) {
+        LaunchedEffect(Unit) {
+            snapshotFlow { vertical.maxValue }.collect { vertical.scrollTo(it) }
+        }
+    }
     Box(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(max = CODE_MAX_HEIGHT)
+            .verticalScroll(vertical)
             .horizontalScroll(rememberScrollState())
             .padding(12.dp),
     ) {
         SelectionContainer {
             Text(
-                text = html,
-                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
-                color = MaterialTheme.colorScheme.onSurface,
+                text = code,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 12.sp,
+                    color = LocalContentColor.current,
+                ),
                 softWrap = false,
             )
         }
@@ -329,18 +409,15 @@ private fun HtmlWebView(
  * A sandboxed WebView for model-written pages:
  * - JavaScript on (the point of a live preview), but no JS bridge to the app.
  * - Internet on, so pages can use CDN libraries (Tailwind, Chart.js...), web
- *   fonts, remote images and public APIs. Files are cached normally so a
- *   library downloads once.
+ *   fonts, remote images and public APIs. Normal HTTP caching, so a library
+ *   downloads once.
  * - No file/content access, no geolocation, no popups.
  * - The preview never navigates away from its page. A link the user taps
- *   opens in their browser instead; script- or redirect-driven navigation is
- *   refused, so a page can't silently replace itself with another site.
+ *   opens in their browser; script- or redirect-driven navigation is refused,
+ *   so a page can't silently replace itself with another site.
  */
 @SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")
-private fun createPreviewWebView(
-    context: Context,
-    captureTouches: Boolean,
-): WebView =
+private fun createPreviewWebView(context: Context, captureTouches: Boolean): WebView =
     WebView(context).apply {
         layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -354,8 +431,8 @@ private fun createPreviewWebView(
             allowContentAccess = false
             blockNetworkLoads = false
             cacheMode = WebSettings.LOAD_DEFAULT
-            // The page's origin is https; let it still show http:// images
-            // and media that models often link to.
+            // The page's origin is https; still show http:// images and
+            // media that models often link to.
             mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
             javaScriptCanOpenWindowsAutomatically = false
             setSupportMultipleWindows(false)
@@ -368,21 +445,24 @@ private fun createPreviewWebView(
                 request: WebResourceRequest,
             ): Boolean {
                 val url = request.url
-                val scheme = url.scheme?.lowercase()
                 // In-page anchors (#section) just scroll; let them through.
                 if (url.host == PREVIEW_HOST && url.fragment != null) return false
+                val scheme = url.scheme?.lowercase()
                 if (request.hasGesture() && (scheme == "http" || scheme == "https")) {
                     openInBrowser(view.context, url)
                 }
                 return true
             }
         }
-        // A WebChromeClient lets the page use alert()/confirm(), which
+        // A WebChromeClient enables alert()/confirm()/prompt() dialogs, which
         // generated games and demos commonly rely on.
         webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
-                Log.d(TAG, "${consoleMessage.messageLevel()}: ${consoleMessage.message()} " +
-                    "(line ${consoleMessage.lineNumber()})")
+                Log.d(
+                    TAG,
+                    "${consoleMessage.messageLevel()}: ${consoleMessage.message()} " +
+                        "(line ${consoleMessage.lineNumber()})",
+                )
                 return true
             }
         }
@@ -395,44 +475,6 @@ private fun createPreviewWebView(
             }
         }
     }
-
-/**
- * Fallback for replies that contain the page as Markdown code blocks instead
- * of a `render_html` call (common with models that can't call tools). Shows a
- * "Preview" button per page; the live preview opens only on tap, so an
- * ordinary coding answer doesn't start running scripts by itself.
- */
-@Composable
-fun HtmlCodeBlockPreviews(
-    responseText: String,
-    modifier: Modifier = Modifier,
-) {
-    val previews = remember(responseText) { HtmlPreviewTool.previewsFromMarkdown(responseText) }
-    if (previews.isEmpty()) return
-    Column(modifier = modifier) {
-        previews.forEachIndexed { index, preview ->
-            // key() gives each page its own saved state; without it every
-            // iteration shares one rememberSaveable slot.
-            key(index) {
-                var open by rememberSaveable(responseText) { mutableStateOf(false) }
-                if (open) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    HtmlPreviewCard(preview = preview)
-                } else {
-                    TextButton(onClick = { open = true }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Web,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(R.string.html_preview_open))
-                    }
-                }
-            }
-        }
-    }
-}
 
 /** Open a link the user tapped inside a preview in their default browser. */
 private fun openInBrowser(context: Context, uri: Uri) {

@@ -289,14 +289,12 @@
     <string name="tool_web_fetch_title">Webseite abrufen</string>
     <string name="tool_web_fetch_desc">Öffnet einen Link und liest dessen Hauptinhalt als Text, damit das Modell eine Seite zusammenfassen oder zitieren kann.</string>
     <string name="tool_web_fetch_example">“Fasse den Artikel unter diesem Link zusammen.”</string>
-    <string name="tool_render_html_title">HTML-Vorschau</string>
-    <string name="tool_render_html_desc">Lässt das Modell Webseiten, Widgets und kleine Spiele erstellen und zeigt sie als interaktive Live-Vorschau direkt im Chat. Vorschauen können Bibliotheken, Schriften und Bilder aus dem Internet laden.</string>
-    <string name="tool_render_html_example">\"Bau mir einen Trinkgeldrechner, den ich hier direkt ausprobieren kann.\"</string>
-    <string name="html_preview_show_code">Code anzeigen</string>
-    <string name="html_preview_show_preview">Vorschau anzeigen</string>
     <string name="html_preview_reload">Neu laden</string>
     <string name="html_preview_full_screen">Vollbild</string>
-    <string name="html_preview_open">HTML-Vorschau öffnen</string>
+    <string name="html_artifact_live_preview">Live-Vorschau</string>
+    <string name="html_artifact_code">Code</string>
+    <string name="html_artifact_writing">Wird geschrieben…</string>
+    <string name="html_artifact_default_title">Webseite</string>
     <string name="cd_supports_tools">Unterstützt Tools</string>
     <string name="cd_supports_thinking">Unterstützt Thinking</string>
 

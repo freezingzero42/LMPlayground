@@ -19,7 +19,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Web
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -38,7 +37,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.druk.lmplayground.R
 import com.druk.llamacpp.tools.Tool
-import com.druk.lmplayground.tools.HtmlPreviewTool
 
 /**
  * User-facing copy for a tool, keyed by [Tool.name]. The runtime
@@ -70,12 +68,6 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_web_fetch_desc,
         R.string.tool_web_fetch_example,
         Icons.Outlined.Public,
-    ),
-    HtmlPreviewTool.NAME to ToolUiInfo(
-        R.string.tool_render_html_title,
-        R.string.tool_render_html_desc,
-        R.string.tool_render_html_example,
-        Icons.Outlined.Web,
     ),
 )
 

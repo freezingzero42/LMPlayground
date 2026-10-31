@@ -298,14 +298,12 @@
     <string name="tool_web_fetch_title">抓取网页</string>
     <string name="tool_web_fetch_desc">打开链接并以文本形式读取其主要内容，让模型能够总结或引用页面。</string>
     <string name="tool_web_fetch_example">\"总结此链接中的文章。\"</string>
-    <string name="tool_render_html_title">HTML 预览</string>
-    <string name="tool_render_html_desc">让模型制作网页、小组件和小游戏，并在聊天中以可交互的实时预览显示。预览可以从互联网加载库、字体和图片。</string>
-    <string name="tool_render_html_example">\"做一个我可以在这里直接试用的小费计算器。\"</string>
-    <string name="html_preview_show_code">显示代码</string>
-    <string name="html_preview_show_preview">显示预览</string>
     <string name="html_preview_reload">重新加载</string>
     <string name="html_preview_full_screen">全屏</string>
-    <string name="html_preview_open">预览 HTML</string>
+    <string name="html_artifact_live_preview">实时预览</string>
+    <string name="html_artifact_code">代码</string>
+    <string name="html_artifact_writing">正在编写…</string>
+    <string name="html_artifact_default_title">网页</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">正在生成回复…</string>
