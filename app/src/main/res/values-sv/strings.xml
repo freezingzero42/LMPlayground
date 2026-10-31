@@ -328,8 +328,8 @@
     <string name="tool_web_fetch_title">Hämta webbsida</string>
     <string name="tool_web_fetch_desc">Öppnar en länk och läser dess huvudinnehåll som text så att modellen kan sammanfatta eller citera en sida.</string>
     <string name="tool_web_fetch_example">“Sammanfatta artikeln på den här länken.”</string>
-    <string name="html_preview_reload">Läs in igen</string>
-    <string name="html_preview_full_screen">Helskärm</string>
+    <string name="html_artifact_reload">Läs in igen</string>
+    <string name="html_artifact_full_screen">Helskärm</string>
     <string name="html_artifact_live_preview">Liveförhandsvisning</string>
     <string name="html_artifact_code">Kod</string>
     <string name="html_artifact_writing">Skriver…</string>

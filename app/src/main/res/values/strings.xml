@@ -352,8 +352,8 @@
     <string name="tool_web_fetch_title">Fetch web page</string>
     <string name="tool_web_fetch_desc">Opens a link and reads its main content as text so the model can summarize or quote a page.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
-    <string name="html_preview_reload">Reload</string>
-    <string name="html_preview_full_screen">Full screen</string>
+    <string name="html_artifact_reload">Reload</string>
+    <string name="html_artifact_full_screen">Full screen</string>
     <string name="html_artifact_live_preview">Live preview</string>
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Writing…</string>

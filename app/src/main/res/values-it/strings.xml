@@ -300,8 +300,8 @@
     <string name="tool_web_fetch_title">Carica pagina web</string>
     <string name="tool_web_fetch_desc">Apre un link e ne legge il contenuto principale come testo affinché il modello possa riassumere o citare una pagina.</string>
     <string name="tool_web_fetch_example">\"Riassumi l\'articolo a questo link.\"</string>
-    <string name="html_preview_reload">Ricarica</string>
-    <string name="html_preview_full_screen">Schermo intero</string>
+    <string name="html_artifact_reload">Ricarica</string>
+    <string name="html_artifact_full_screen">Schermo intero</string>
     <string name="html_artifact_live_preview">Anteprima dal vivo</string>
     <string name="html_artifact_code">Codice</string>
     <string name="html_artifact_writing">Scrittura in corso…</string>

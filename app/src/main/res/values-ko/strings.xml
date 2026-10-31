@@ -298,8 +298,8 @@
     <string name="tool_web_fetch_title">웹 페이지 가져오기</string>
     <string name="tool_web_fetch_desc">링크를 열어 주요 내용을 텍스트로 읽어 모델이 페이지를 요약하거나 인용할 수 있게 합니다.</string>
     <string name="tool_web_fetch_example">\"이 링크의 기사를 요약해줘.\"</string>
-    <string name="html_preview_reload">새로고침</string>
-    <string name="html_preview_full_screen">전체 화면</string>
+    <string name="html_artifact_reload">새로고침</string>
+    <string name="html_artifact_full_screen">전체 화면</string>
     <string name="html_artifact_live_preview">실시간 미리보기</string>
     <string name="html_artifact_code">코드</string>
     <string name="html_artifact_writing">작성 중…</string>

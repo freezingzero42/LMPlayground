@@ -1,6 +1,7 @@
 package com.druk.lmplayground.conversation
 
 import android.annotation.SuppressLint
+import android.content.ClipData
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -68,10 +69,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
@@ -160,7 +161,7 @@ fun HtmlArtifactCard(
 ) {
     var showPreview by rememberSaveable { mutableStateOf(false) }
     var fullScreen by rememberSaveable { mutableStateOf(false) }
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val pageTitle = remember(code) { HtmlArtifacts.title(code) }
@@ -262,12 +263,14 @@ fun HtmlArtifactCard(
                 CardIconButton(
                     icon = Icons.Outlined.ContentCopy,
                     description = stringResource(R.string.copy),
-                    onClick = { clipboardManager.setText(AnnotatedString(code)) },
+                    onClick = {
+                        scope.launch { clipboard.setClipEntry(ClipEntry(ClipData.newPlainText("HTML", code))) }
+                    },
                 )
                 if (!writing) {
                     CardIconButton(
                         icon = Icons.Outlined.Fullscreen,
-                        description = stringResource(R.string.html_preview_full_screen),
+                        description = stringResource(R.string.html_artifact_full_screen),
                         onClick = { fullScreen = true },
                     )
                 }
@@ -293,7 +296,7 @@ fun HtmlArtifactCard(
     }
 
     if (fullScreen && document != null) {
-        HtmlPreviewDialog(
+        HtmlFullScreenDialog(
             title = title,
             html = document,
             onDismiss = { fullScreen = false },
@@ -358,7 +361,7 @@ private fun CodeView(code: String, followTail: Boolean) {
 }
 
 @Composable
-private fun HtmlPreviewDialog(
+private fun HtmlFullScreenDialog(
     title: String,
     html: String,
     onDismiss: () -> Unit,
@@ -397,7 +400,7 @@ private fun HtmlPreviewDialog(
                     IconButton(onClick = { reloadCount++ }) {
                         Icon(
                             imageVector = Icons.Outlined.Refresh,
-                            contentDescription = stringResource(R.string.html_preview_reload),
+                            contentDescription = stringResource(R.string.html_artifact_reload),
                         )
                     }
                 }

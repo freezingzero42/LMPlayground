@@ -289,8 +289,8 @@
     <string name="tool_web_fetch_title">Webseite abrufen</string>
     <string name="tool_web_fetch_desc">Öffnet einen Link und liest dessen Hauptinhalt als Text, damit das Modell eine Seite zusammenfassen oder zitieren kann.</string>
     <string name="tool_web_fetch_example">“Fasse den Artikel unter diesem Link zusammen.”</string>
-    <string name="html_preview_reload">Neu laden</string>
-    <string name="html_preview_full_screen">Vollbild</string>
+    <string name="html_artifact_reload">Neu laden</string>
+    <string name="html_artifact_full_screen">Vollbild</string>
     <string name="html_artifact_live_preview">Live-Vorschau</string>
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Wird geschrieben…</string>

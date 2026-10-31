@@ -336,8 +336,8 @@
     <string name="tool_web_fetch_title">ดึงหน้าเว็บ</string>
     <string name="tool_web_fetch_desc">เปิดลิงก์และอ่านเนื้อหาหลักเป็นข้อความ เพื่อให้โมเดลสรุปหรืออ้างอิงหน้าเว็บได้</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
-    <string name="html_preview_reload">โหลดใหม่</string>
-    <string name="html_preview_full_screen">เต็มหน้าจอ</string>
+    <string name="html_artifact_reload">โหลดใหม่</string>
+    <string name="html_artifact_full_screen">เต็มหน้าจอ</string>
     <string name="html_artifact_live_preview">ตัวอย่างสด</string>
     <string name="html_artifact_code">โค้ด</string>
     <string name="html_artifact_writing">กำลังเขียน…</string>

@@ -329,8 +329,8 @@
     <string name="tool_web_fetch_title">Webpagina ophalen</string>
     <string name="tool_web_fetch_desc">Opent een link en leest de belangrijkste inhoud als tekst, zodat het model een pagina kan samenvatten of citeren.</string>
     <string name="tool_web_fetch_example">“Vat het artikel achter deze link samen.”</string>
-    <string name="html_preview_reload">Opnieuw laden</string>
-    <string name="html_preview_full_screen">Volledig scherm</string>
+    <string name="html_artifact_reload">Opnieuw laden</string>
+    <string name="html_artifact_full_screen">Volledig scherm</string>
     <string name="html_artifact_live_preview">Live voorbeeld</string>
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Bezig met schrijven…</string>

@@ -312,8 +312,8 @@
     <string name="tool_web_fetch_title">جلب صفحة ويب</string>
     <string name="tool_web_fetch_desc">يفتح رابطاً ويقرأ محتواه الرئيسي كنص حتى يتمكن النموذج من تلخيص صفحة أو الاقتباس منها.</string>
     <string name="tool_web_fetch_example">\"لخّص المقالة الموجودة في هذا الرابط.\"</string>
-    <string name="html_preview_reload">إعادة التحميل</string>
-    <string name="html_preview_full_screen">ملء الشاشة</string>
+    <string name="html_artifact_reload">إعادة التحميل</string>
+    <string name="html_artifact_full_screen">ملء الشاشة</string>
     <string name="html_artifact_live_preview">معاينة مباشرة</string>
     <string name="html_artifact_code">الكود</string>
     <string name="html_artifact_writing">جارٍ الكتابة…</string>

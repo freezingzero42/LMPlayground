@@ -335,8 +335,8 @@
     <string name="tool_run_javascript_title">Spustit JavaScript</string>
     <string name="tool_web_fetch_desc">Otevře odkaz a načte jeho hlavní obsah jako text, aby model mohl stránku shrnout nebo citovat.</string>
     <string name="tool_web_fetch_example">\"Shrň článek na tomto odkazu.\"</string>
-    <string name="html_preview_reload">Načíst znovu</string>
-    <string name="html_preview_full_screen">Celá obrazovka</string>
+    <string name="html_artifact_reload">Načíst znovu</string>
+    <string name="html_artifact_full_screen">Celá obrazovka</string>
     <string name="html_artifact_live_preview">Živý náhled</string>
     <string name="html_artifact_code">Kód</string>
     <string name="html_artifact_writing">Píše se…</string>

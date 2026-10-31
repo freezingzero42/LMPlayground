@@ -328,8 +328,8 @@
     <string name="tool_web_fetch_title">Hent webside</string>
     <string name="tool_web_fetch_desc">Åbner et link og læser hovedindholdet som tekst, så modellen kan opsummere eller citere en side.</string>
     <string name="tool_web_fetch_example">“Opsummer artiklen på dette link.”</string>
-    <string name="html_preview_reload">Genindlæs</string>
-    <string name="html_preview_full_screen">Fuld skærm</string>
+    <string name="html_artifact_reload">Genindlæs</string>
+    <string name="html_artifact_full_screen">Fuld skærm</string>
     <string name="html_artifact_live_preview">Live-forhåndsvisning</string>
     <string name="html_artifact_code">Kode</string>
     <string name="html_artifact_writing">Skriver…</string>

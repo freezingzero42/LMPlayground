@@ -332,8 +332,8 @@
     <string name="tool_run_javascript_title">Suorita JavaScript</string>
     <string name="tool_web_fetch_desc">Avaa linkin ja lukee sen pääsisällön tekstinä, jotta malli voi tiivistää tai lainata sivun.</string>
     <string name="tool_web_fetch_example">\"Tiivistä tämän linkin artikkeli.\"</string>
-    <string name="html_preview_reload">Lataa uudelleen</string>
-    <string name="html_preview_full_screen">Koko näyttö</string>
+    <string name="html_artifact_reload">Lataa uudelleen</string>
+    <string name="html_artifact_full_screen">Koko näyttö</string>
     <string name="html_artifact_live_preview">Live-esikatselu</string>
     <string name="html_artifact_code">Koodi</string>
     <string name="html_artifact_writing">Kirjoitetaan…</string>

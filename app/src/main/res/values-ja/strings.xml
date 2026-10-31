@@ -298,8 +298,8 @@
     <string name="tool_web_fetch_title">ウェブページを取得</string>
     <string name="tool_web_fetch_desc">リンクを開いてその主要なコンテンツをテキストとして読み取り、モデルがページを要約したり引用したりできるようにします。</string>
     <string name="tool_web_fetch_example">\"このリンクの記事を要約して。\"</string>
-    <string name="html_preview_reload">再読み込み</string>
-    <string name="html_preview_full_screen">全画面表示</string>
+    <string name="html_artifact_reload">再読み込み</string>
+    <string name="html_artifact_full_screen">全画面表示</string>
     <string name="html_artifact_live_preview">ライブプレビュー</string>
     <string name="html_artifact_code">コード</string>
     <string name="html_artifact_writing">作成中…</string>

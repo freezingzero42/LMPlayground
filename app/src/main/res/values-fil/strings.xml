@@ -337,8 +337,8 @@
     <string name="tool_web_fetch_title">Kunin ang web page</string>
     <string name="tool_web_fetch_desc">Nagbubukas ng link at binabasa ang pangunahing nilalaman nito bilang teksto para mabuod o ma-quote ng model ang isang page.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
-    <string name="html_preview_reload">I-reload</string>
-    <string name="html_preview_full_screen">Full screen</string>
+    <string name="html_artifact_reload">I-reload</string>
+    <string name="html_artifact_full_screen">Full screen</string>
     <string name="html_artifact_live_preview">Live preview</string>
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Sinusulat…</string>
