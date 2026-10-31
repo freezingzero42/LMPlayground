@@ -157,16 +157,4 @@ class HtmlArtifactsTest {
         assertEquals("Snake game", HtmlArtifacts.title("<h1 class=\"x\">Snake <b>game</b></h1>"))
         assertEquals("", HtmlArtifacts.title("<p>no heading</p>"))
     }
-
-    // ── Download file name ──────────────────────────────────────────
-
-    @Test
-    fun `file name is a slug of the title with an html extension`() {
-        assertEquals("interactive-example.html", HtmlArtifacts.fileName("Interactive Example"))
-        assertEquals("tip-split-calculator.html", HtmlArtifacts.fileName("Tip & Split  Calculator!"))
-        assertEquals("ゲーム.html", HtmlArtifacts.fileName("ゲーム"))
-        assertEquals("page.html", HtmlArtifacts.fileName(""))
-        assertEquals("page.html", HtmlArtifacts.fileName("!!!"))
-        assertTrue(HtmlArtifacts.fileName("x".repeat(200)).length <= 55)
-    }
 }

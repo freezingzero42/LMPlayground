@@ -335,9 +335,6 @@
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Bezig met schrijven…</string>
     <string name="html_artifact_default_title">Webpagina</string>
-    <string name="html_artifact_download">Downloaden</string>
-    <string name="html_artifact_saved">HTML-bestand opgeslagen</string>
-    <string name="html_artifact_save_failed">Kan het bestand niet opslaan</string>
     <string name="cd_supports_tools">Ondersteunt tools</string>
     <string name="cd_supports_thinking">Ondersteunt denken</string>
 

@@ -353,9 +353,6 @@
     <string name="html_artifact_code">কোড</string>
     <string name="html_artifact_writing">লেখা হচ্ছে…</string>
     <string name="html_artifact_default_title">ওয়েব পেজ</string>
-    <string name="html_artifact_download">ডাউনলোড</string>
-    <string name="html_artifact_saved">HTML ফাইল সেভ করা হয়েছে</string>
-    <string name="html_artifact_save_failed">ফাইলটি সেভ করা যায়নি</string>
     <string name="tool_run_javascript_title">JavaScript চালান</string>
     <string name="tool_run_javascript_desc">গণিত, তারিখ ও টেক্সট প্রক্রিয়াকরণের জন্য একটি নিরাপদ স্যান্ডবক্সে JavaScript চালায়। ইন্টারনেট বা ফাইল অ্যাক্সেস নেই।</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 কত, এবং ১ জানুয়ারি ২০২৭ সপ্তাহের কোন দিন?\"</string>

@@ -358,9 +358,6 @@
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Writing…</string>
     <string name="html_artifact_default_title">Web page</string>
-    <string name="html_artifact_download">Download</string>
-    <string name="html_artifact_saved">HTML file saved</string>
-    <string name="html_artifact_save_failed">Couldn\'t save the file</string>
 
     <!-- Inference engine service notification (foreground service while a
          model is loaded so the OS does not evict the :llama process). -->
