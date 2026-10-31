@@ -13,6 +13,7 @@ import com.druk.llamacpp.InferenceState
 import com.druk.llamacpp.LlamaCpp
 import com.druk.lmplayground.App
 import com.druk.lmplayground.inference.ModelRuntime
+import com.druk.lmplayground.data.ChatFolderEntity
 import com.druk.lmplayground.data.ChatSessionEntity
 import com.druk.lmplayground.data.ConversationMetadata
 import com.druk.lmplayground.data.SystemPromptEntity
@@ -427,6 +428,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     private val _currentSessionId = MutableLiveData<String?>(null)
     val currentSessionId: LiveData<String?> = _currentSessionId
     val sessions: LiveData<List<ChatSessionEntity>> = sessionStore.allSessions()
+    val folders: LiveData<List<ChatFolderEntity>> = sessionStore.allFolders()
     /**
      * Per-model MRU list. When the loaded model changes, switchMap swaps in
      * the corresponding query so the picker reflects "prompts I've used on
@@ -1191,6 +1193,33 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
             sessionStore.renameSession(sessionId, newTitle)
         }
     }
+
+    /** Create a folder; when [moveSessionId] is given, put that chat in it. */
+    @MainThread
+    fun createFolder(name: String, moveSessionId: String? = null) {
+        viewModelScope.launch {
+            val folderId = sessionStore.createFolder(name)
+            if (moveSessionId != null) sessionStore.moveToFolder(moveSessionId, folderId)
+        }
+    }
+
+    @MainThread
+    fun renameFolder(folderId: String, name: String) {
+        viewModelScope.launch { sessionStore.renameFolder(folderId, name) }
+    }
+
+    @MainThread
+    fun deleteFolder(folderId: String) {
+        viewModelScope.launch { sessionStore.deleteFolder(folderId) }
+    }
+
+    @MainThread
+    fun moveToFolder(sessionId: String, folderId: String?) {
+        viewModelScope.launch { sessionStore.moveToFolder(sessionId, folderId) }
+    }
+
+    /** Ids of the chats whose title or messages contain [query]. */
+    suspend fun searchSessions(query: String): Set<String> = sessionStore.searchSessions(query)
 
     @MainThread
     fun pinSession(sessionId: String, pinned: Boolean) {
