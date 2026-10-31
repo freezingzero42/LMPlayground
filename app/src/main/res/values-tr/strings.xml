@@ -309,6 +309,8 @@
     <string name="html_artifact_download">İndir</string>
     <string name="html_artifact_saved">HTML dosyası kaydedildi</string>
     <string name="html_artifact_save_failed">Dosya kaydedilemedi</string>
+    <string name="html_artifact_open_in_browser">Tarayıcıda aç</string>
+    <string name="html_artifact_no_browser">Bu sayfayı açacak uygulama bulunamadı</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">Yan\u0131t \u00FCretiliyor…</string>

@@ -304,6 +304,8 @@
     <string name="html_artifact_download">Pobierz</string>
     <string name="html_artifact_saved">Zapisano plik HTML</string>
     <string name="html_artifact_save_failed">Nie udało się zapisać pliku</string>
+    <string name="html_artifact_open_in_browser">Otwórz w przeglądarce</string>
+    <string name="html_artifact_no_browser">Nie znaleziono aplikacji, która otworzy tę stronę</string>
     <string name="tool_web_fetch_title">Pobierz stronę internetową</string>
     <string name="tool_web_search_desc">Przeszukuje sieć i zwraca tytuły wyników, linki oraz fragmenty, aby model mógł znaleźć aktualne informacje.</string>
     <string name="tool_web_search_example">\"Znajdź najnowsze recenzje najnowszego telefonu Pixel.\"</string>

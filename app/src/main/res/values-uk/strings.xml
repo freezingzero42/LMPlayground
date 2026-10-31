@@ -304,6 +304,8 @@
     <string name="html_artifact_download">Завантажити</string>
     <string name="html_artifact_saved">HTML-файл збережено</string>
     <string name="html_artifact_save_failed">Не вдалося зберегти файл</string>
+    <string name="html_artifact_open_in_browser">Відкрити в браузері</string>
+    <string name="html_artifact_no_browser">Не знайдено застосунку, щоб відкрити цю сторінку</string>
     <string name="tool_web_fetch_title">Завантажити вебсторінку</string>
     <string name="tool_web_search_desc">Шукає в інтернеті й повертає заголовки результатів, посилання та фрагменти, щоб модель могла знайти актуальну інформацію.</string>
     <string name="tool_web_search_example">\"Знайди свіжі огляди найновішого телефона Pixel.\"</string>

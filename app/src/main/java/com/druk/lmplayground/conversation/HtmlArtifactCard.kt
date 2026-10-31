@@ -39,6 +39,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.ContentCopy
@@ -81,10 +82,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.content.FileProvider
 import com.druk.lmplayground.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 private const val TAG = "HtmlArtifact"
 
@@ -149,7 +152,8 @@ fun AssistantReplyContent(
  * A web page the model wrote, shown as an artifact: the code first (streaming
  * in while the model writes), then a Live preview icon — in the header row
  * next to Download, Copy and Full screen — that runs it in a sandboxed
- * WebView. Download saves the page as an .html file where the user chooses.
+ * WebView. Download saves the page as an .html file where the user chooses;
+ * Full screen adds Reload and Open in browser.
  */
 @Composable
 fun HtmlArtifactCard(
@@ -200,6 +204,21 @@ fun HtmlArtifactCard(
                 if (saved) savedMessage else saveFailedMessage,
                 Toast.LENGTH_SHORT,
             ).show()
+        }
+    }
+
+    // Actions shared by the card's header and the full-screen top bar.
+    val noBrowserMessage = stringResource(R.string.html_artifact_no_browser)
+    val copyCode: () -> Unit = {
+        scope.launch { clipboard.setClipEntry(ClipEntry(ClipData.newPlainText("HTML", code))) }
+    }
+    val download: () -> Unit = { saveLauncher.launch(HtmlArtifacts.fileName(pageTitle)) }
+    val openInBrowser: () -> Unit = {
+        val page = currentBuildDocument()
+        scope.launch {
+            if (!openPageInBrowser(context, page, HtmlArtifacts.fileName(pageTitle))) {
+                Toast.makeText(context, noBrowserMessage, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -257,15 +276,13 @@ fun HtmlArtifactCard(
                     CardIconButton(
                         icon = Icons.Outlined.Download,
                         description = stringResource(R.string.html_artifact_download),
-                        onClick = { saveLauncher.launch(HtmlArtifacts.fileName(pageTitle)) },
+                        onClick = download,
                     )
                 }
                 CardIconButton(
                     icon = Icons.Outlined.ContentCopy,
                     description = stringResource(R.string.copy),
-                    onClick = {
-                        scope.launch { clipboard.setClipEntry(ClipEntry(ClipData.newPlainText("HTML", code))) }
-                    },
+                    onClick = copyCode,
                 )
                 if (!writing) {
                     CardIconButton(
@@ -290,7 +307,11 @@ fun HtmlArtifactCard(
                         .height(PREVIEW_HEIGHT),
                 )
             } else {
-                CodeView(code = code, followTail = writing)
+                CodeView(
+                    code = code,
+                    followTail = writing,
+                    modifier = Modifier.heightIn(max = CODE_MAX_HEIGHT),
+                )
             }
         }
     }
@@ -298,7 +319,11 @@ fun HtmlArtifactCard(
     if (fullScreen && document != null) {
         HtmlFullScreenDialog(
             title = title,
+            code = code,
             html = document,
+            onCopy = copyCode,
+            onDownload = download,
+            onOpenInBrowser = openInBrowser,
             onDismiss = { fullScreen = false },
         )
     }
@@ -327,11 +352,12 @@ private fun CardIconButton(
 }
 
 /**
- * The artifact's source. Scrolls inside the card past [CODE_MAX_HEIGHT];
- * while the model is writing it follows the newest line, like a terminal.
+ * The artifact's source, scrolling within the height [modifier] gives it
+ * (capped at [CODE_MAX_HEIGHT] in the card, the whole screen in full
+ * screen). While the model is writing it follows the newest line.
  */
 @Composable
-private fun CodeView(code: String, followTail: Boolean) {
+private fun CodeView(code: String, followTail: Boolean, modifier: Modifier = Modifier) {
     val vertical = rememberScrollState()
     if (followTail) {
         LaunchedEffect(Unit) {
@@ -339,9 +365,8 @@ private fun CodeView(code: String, followTail: Boolean) {
         }
     }
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .heightIn(max = CODE_MAX_HEIGHT)
             .verticalScroll(vertical)
             .horizontalScroll(rememberScrollState())
             .padding(12.dp),
@@ -360,12 +385,22 @@ private fun CodeView(code: String, followTail: Boolean) {
     }
 }
 
+/**
+ * Full-screen view of an artifact. Its top bar carries every action from the
+ * card — Live preview <-> Code, Download and Copy — plus Reload (while
+ * previewing) and Open in browser. Opens on the live preview.
+ */
 @Composable
 private fun HtmlFullScreenDialog(
     title: String,
+    code: String,
     html: String,
+    onCopy: () -> Unit,
+    onDownload: () -> Unit,
+    onOpenInBrowser: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    var showPreview by rememberSaveable { mutableStateOf(true) }
     var reloadCount by remember { mutableIntStateOf(0) }
     Dialog(
         onDismissRequest = onDismiss,
@@ -381,7 +416,7 @@ private fun HtmlFullScreenDialog(
                     .windowInsetsPadding(WindowInsets.safeDrawing),
             ) {
                 Row(
-                    modifier = Modifier.padding(horizontal = 4.dp),
+                    modifier = Modifier.padding(start = 4.dp, end = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     IconButton(onClick = onDismiss) {
@@ -390,28 +425,63 @@ private fun HtmlFullScreenDialog(
                             contentDescription = stringResource(R.string.close),
                         )
                     }
+                    // The title ellipsizes so the icons always fit.
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 4.dp),
                     )
-                    IconButton(onClick = { reloadCount++ }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Refresh,
-                            contentDescription = stringResource(R.string.html_artifact_reload),
+                    CardIconButton(
+                        icon = if (showPreview) Icons.Outlined.Code else Icons.Outlined.PlayArrow,
+                        description = stringResource(
+                            if (showPreview) R.string.html_artifact_code else R.string.html_artifact_live_preview,
+                        ),
+                        onClick = { showPreview = !showPreview },
+                        emphasized = true,
+                    )
+                    if (showPreview) {
+                        CardIconButton(
+                            icon = Icons.Outlined.Refresh,
+                            description = stringResource(R.string.html_artifact_reload),
+                            onClick = { reloadCount++ },
                         )
                     }
+                    CardIconButton(
+                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        description = stringResource(R.string.html_artifact_open_in_browser),
+                        onClick = onOpenInBrowser,
+                    )
+                    CardIconButton(
+                        icon = Icons.Outlined.Download,
+                        description = stringResource(R.string.html_artifact_download),
+                        onClick = onDownload,
+                    )
+                    CardIconButton(
+                        icon = Icons.Outlined.ContentCopy,
+                        description = stringResource(R.string.copy),
+                        onClick = onCopy,
+                    )
                 }
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                key(reloadCount) {
-                    HtmlWebView(
-                        html = html,
-                        captureTouches = false,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
+                if (showPreview) {
+                    key(reloadCount) {
+                        HtmlWebView(
+                            html = html,
+                            captureTouches = false,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                        )
+                    }
+                } else {
+                    CodeView(
+                        code = code,
+                        followTail = false,
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
@@ -513,6 +583,40 @@ private fun createPreviewWebView(context: Context, captureTouches: Boolean): Web
             }
         }
     }
+
+/**
+ * Open [html] in the user's browser. Browsers can't load a page straight from
+ * the app's memory, so it is written to the app's cache (one page at a time;
+ * the previous one is removed) and handed over through the app's
+ * FileProvider with a read grant — no server needed. CDN libraries and
+ * images load as usual; the page runs as a local file, so APIs that check
+ * the page's origin may refuse it. Returns false when no app can open it.
+ */
+private suspend fun openPageInBrowser(context: Context, html: String, fileName: String): Boolean {
+    val uri = try {
+        withContext(Dispatchers.IO) {
+            val dir = File(context.cacheDir, "html_previews")
+            dir.deleteRecursively()
+            dir.mkdirs()
+            val file = File(dir, fileName)
+            file.writeText(html, Charsets.UTF_8)
+            FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+        }
+    } catch (e: Exception) {
+        Log.w(TAG, "Couldn't write the page for the browser", e)
+        return false
+    }
+    val intent = Intent(Intent.ACTION_VIEW)
+        .setDataAndType(uri, "text/html")
+        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    return try {
+        context.startActivity(intent)
+        true
+    } catch (e: ActivityNotFoundException) {
+        Log.w(TAG, "No app to open $uri", e)
+        false
+    }
+}
 
 /** Open a link the user tapped inside a preview in their default browser. */
 private fun openInBrowser(context: Context, uri: Uri) {

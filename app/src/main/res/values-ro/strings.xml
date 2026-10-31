@@ -310,6 +310,8 @@
     <string name="html_artifact_download">Descarcă</string>
     <string name="html_artifact_saved">Fișierul HTML a fost salvat</string>
     <string name="html_artifact_save_failed">Fișierul nu a putut fi salvat</string>
+    <string name="html_artifact_open_in_browser">Deschide în browser</string>
+    <string name="html_artifact_no_browser">Nu s-a găsit nicio aplicație care să deschidă pagina</string>
     <string name="tool_run_javascript_title">Rulează JavaScript</string>
     <string name="tool_run_javascript_desc">Rulează JavaScript într-un mediu izolat securizat pentru calcule, date și procesarea textului. Fără acces la internet sau la fișiere.</string>
     <string name="tool_run_javascript_example">\"Cât este (2 + 3) × 4 și în ce zi a săptămânii cade 1 ianuarie 2027?\"</string>

@@ -307,6 +307,8 @@
     <string name="html_artifact_download">下载</string>
     <string name="html_artifact_saved">HTML 文件已保存</string>
     <string name="html_artifact_save_failed">无法保存文件</string>
+    <string name="html_artifact_open_in_browser">在浏览器中打开</string>
+    <string name="html_artifact_no_browser">找不到可打开此页面的应用</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">正在生成回复…</string>
