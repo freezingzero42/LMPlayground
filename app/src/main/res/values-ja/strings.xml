@@ -307,6 +307,8 @@
     <string name="html_artifact_download">ダウンロード</string>
     <string name="html_artifact_saved">HTMLファイルを保存しました</string>
     <string name="html_artifact_save_failed">ファイルを保存できませんでした</string>
+    <string name="html_artifact_open_in_browser">ブラウザで開く</string>
+    <string name="html_artifact_no_browser">このページを開けるアプリが見つかりません</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">応答を生成中…</string>

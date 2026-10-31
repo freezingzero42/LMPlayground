@@ -307,6 +307,8 @@
     <string name="html_artifact_download">Tải xuống</string>
     <string name="html_artifact_saved">Đã lưu tệp HTML</string>
     <string name="html_artifact_save_failed">Không thể lưu tệp</string>
+    <string name="html_artifact_open_in_browser">Mở trong trình duyệt</string>
+    <string name="html_artifact_no_browser">Không tìm thấy ứng dụng để mở trang này</string>
     <string name="tool_run_javascript_title">Ch\u1EA1y JavaScript</string>
     <string name="tool_run_javascript_desc">Ch\u1EA1y JavaScript trong m\u00F4i tr\u01B0\u1EDDng th\u1EED nghi\u1EC7m an to\u00E0n \u0111\u1EC3 t\u00EDnh to\u00E1n, x\u1EED l\u00FD ng\u00E0y th\u00E1ng v\u00E0 v\u0103n b\u1EA3n. Kh\u00F4ng truy c\u1EADp internet ho\u1EB7c t\u1EC7p.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) \u00D7 4, and what weekday is Jan 1 2027?\"</string>

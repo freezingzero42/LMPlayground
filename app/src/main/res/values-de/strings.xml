@@ -298,6 +298,8 @@
     <string name="html_artifact_download">Herunterladen</string>
     <string name="html_artifact_saved">HTML-Datei gespeichert</string>
     <string name="html_artifact_save_failed">Datei konnte nicht gespeichert werden</string>
+    <string name="html_artifact_open_in_browser">Im Browser öffnen</string>
+    <string name="html_artifact_no_browser">Keine App gefunden, die diese Seite öffnen kann</string>
     <string name="cd_supports_tools">Unterstützt Tools</string>
     <string name="cd_supports_thinking">Unterstützt Thinking</string>
 

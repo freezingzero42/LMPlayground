@@ -337,6 +337,8 @@
     <string name="html_artifact_download">Last ned</string>
     <string name="html_artifact_saved">HTML-filen er lagret</string>
     <string name="html_artifact_save_failed">Kunne ikke lagre filen</string>
+    <string name="html_artifact_open_in_browser">Åpne i nettleser</string>
+    <string name="html_artifact_no_browser">Fant ingen app som kan åpne siden</string>
     <string name="cd_supports_tools">Støtter verktøy</string>
     <string name="cd_supports_thinking">Støtter tenkning</string>
 

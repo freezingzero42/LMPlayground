@@ -337,6 +337,8 @@
     <string name="html_artifact_download">Ladda ned</string>
     <string name="html_artifact_saved">HTML-filen har sparats</string>
     <string name="html_artifact_save_failed">Det gick inte att spara filen</string>
+    <string name="html_artifact_open_in_browser">Öppna i webbläsaren</string>
+    <string name="html_artifact_no_browser">Ingen app hittades som kan öppna sidan</string>
     <string name="cd_supports_tools">Stöder verktyg</string>
     <string name="cd_supports_thinking">Stöder tänkande</string>
 

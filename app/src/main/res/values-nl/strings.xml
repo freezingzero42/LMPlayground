@@ -338,6 +338,8 @@
     <string name="html_artifact_download">Downloaden</string>
     <string name="html_artifact_saved">HTML-bestand opgeslagen</string>
     <string name="html_artifact_save_failed">Kan het bestand niet opslaan</string>
+    <string name="html_artifact_open_in_browser">Openen in browser</string>
+    <string name="html_artifact_no_browser">Geen app gevonden om deze pagina te openen</string>
     <string name="cd_supports_tools">Ondersteunt tools</string>
     <string name="cd_supports_thinking">Ondersteunt denken</string>
 

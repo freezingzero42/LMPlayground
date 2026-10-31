@@ -94,7 +94,10 @@ renders an assistant reply (`MessageChatBubble` → `AssistantReplyContent`).
   libraries, fonts, APIs), no JS bridge, no file/content access, no popups;
   it never navigates away from its page and tapped links open in the
   browser. Download writes the previewed document through the SAF
-  "save as" picker (`CreateDocument("text/html")`).
+  "save as" picker (`CreateDocument("text/html")`). Full screen repeats
+  every card action and adds Reload and Open in browser, which writes the
+  page to `cache/html_previews/` and hands it to the browser through the
+  app's FileProvider with a read grant (no server).
 - Nothing is persisted beyond the message text itself, so cards and
   previews come back when a chat is reopened.
 

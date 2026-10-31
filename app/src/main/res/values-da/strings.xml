@@ -337,6 +337,8 @@
     <string name="html_artifact_download">Download</string>
     <string name="html_artifact_saved">HTML-filen er gemt</string>
     <string name="html_artifact_save_failed">Filen kunne ikke gemmes</string>
+    <string name="html_artifact_open_in_browser">Åbn i browser</string>
+    <string name="html_artifact_no_browser">Der blev ikke fundet en app, der kan åbne siden</string>
     <string name="cd_supports_tools">Understøtter værktøjer</string>
     <string name="cd_supports_thinking">Understøtter tænkning</string>
 

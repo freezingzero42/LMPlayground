@@ -361,6 +361,8 @@
     <string name="html_artifact_download">Download</string>
     <string name="html_artifact_saved">HTML file saved</string>
     <string name="html_artifact_save_failed">Couldn\'t save the file</string>
+    <string name="html_artifact_open_in_browser">Open in browser</string>
+    <string name="html_artifact_no_browser">No app found to open this page</string>
 
     <!-- Inference engine service notification (foreground service while a
          model is loaded so the OS does not evict the :llama process). -->
