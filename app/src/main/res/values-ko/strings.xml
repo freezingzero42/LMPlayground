@@ -304,9 +304,6 @@
     <string name="html_artifact_code">코드</string>
     <string name="html_artifact_writing">작성 중…</string>
     <string name="html_artifact_default_title">웹 페이지</string>
-    <string name="html_artifact_download">다운로드</string>
-    <string name="html_artifact_saved">HTML 파일을 저장했습니다</string>
-    <string name="html_artifact_save_failed">파일을 저장하지 못했습니다</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">응답 생성 중…</string>

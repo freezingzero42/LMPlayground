@@ -209,20 +209,6 @@ object HtmlArtifacts {
         return content + doc
     }
 
-    /**
-     * Suggested file name for downloading a page, from its [title]:
-     * "Tip & Split Calculator" -> "tip-split-calculator.html". Letters in any
-     * script are kept; a blank or symbol-only title falls back to "page.html".
-     */
-    fun fileName(title: String): String {
-        val slug = title.lowercase()
-            .replace(Regex("[^\\p{L}\\p{N}]+"), "-")
-            .trim('-')
-            .take(50)
-            .trimEnd('-')
-        return (slug.ifEmpty { "page" }) + ".html"
-    }
-
     private val TITLE = Regex("<title[^>]*>(.*?)</title>", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
     private val H1 = Regex("<h1[^>]*>(.*?)</h1>", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
     private val TAG = Regex("<[^>]+>")

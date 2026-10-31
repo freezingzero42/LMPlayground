@@ -343,9 +343,6 @@
     <string name="html_artifact_code">Kod</string>
     <string name="html_artifact_writing">Sedang menulis…</string>
     <string name="html_artifact_default_title">Halaman web</string>
-    <string name="html_artifact_download">Muat turun</string>
-    <string name="html_artifact_saved">Fail HTML disimpan</string>
-    <string name="html_artifact_save_failed">Tidak dapat menyimpan fail</string>
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam kotak pasir selamat untuk matematik, tarikh dan pemprosesan teks. Tiada akses internet atau fail.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

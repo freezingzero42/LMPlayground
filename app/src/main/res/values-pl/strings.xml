@@ -301,9 +301,6 @@
     <string name="html_artifact_code">Kod</string>
     <string name="html_artifact_writing">Pisanie…</string>
     <string name="html_artifact_default_title">Strona internetowa</string>
-    <string name="html_artifact_download">Pobierz</string>
-    <string name="html_artifact_saved">Zapisano plik HTML</string>
-    <string name="html_artifact_save_failed">Nie udało się zapisać pliku</string>
     <string name="tool_web_fetch_title">Pobierz stronę internetową</string>
     <string name="tool_web_search_desc">Przeszukuje sieć i zwraca tytuły wyników, linki oraz fragmenty, aby model mógł znaleźć aktualne informacje.</string>
     <string name="tool_web_search_example">\"Znajdź najnowsze recenzje najnowszego telefonu Pixel.\"</string>

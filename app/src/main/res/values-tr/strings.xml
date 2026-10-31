@@ -306,9 +306,6 @@
     <string name="html_artifact_code">Kod</string>
     <string name="html_artifact_writing">Yazılıyor…</string>
     <string name="html_artifact_default_title">Web sayfası</string>
-    <string name="html_artifact_download">İndir</string>
-    <string name="html_artifact_saved">HTML dosyası kaydedildi</string>
-    <string name="html_artifact_save_failed">Dosya kaydedilemedi</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">Yan\u0131t \u00FCretiliyor…</string>

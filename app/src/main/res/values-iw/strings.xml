@@ -356,9 +356,6 @@
     <string name="html_artifact_code">קוד</string>
     <string name="html_artifact_writing">בכתיבה…</string>
     <string name="html_artifact_default_title">דף אינטרנט</string>
-    <string name="html_artifact_download">הורדה</string>
-    <string name="html_artifact_saved">קובץ ה-HTML נשמר</string>
-    <string name="html_artifact_save_failed">לא ניתן היה לשמור את הקובץ</string>
     <string name="tool_run_javascript_title">הרץ JavaScript</string>
     <string name="tool_run_javascript_desc">מריץ JavaScript בארגז חול מאובטח לחישובים, תאריכים ועיבוד טקסט. ללא גישה לאינטרנט או לקבצים.</string>
     <string name="tool_run_javascript_example">\"כמה זה (2 + 3) × 4, ובאיזה יום בשבוע חל 1 בינואר 2027?\"</string>

@@ -318,9 +318,6 @@
     <string name="html_artifact_code">الكود</string>
     <string name="html_artifact_writing">جارٍ الكتابة…</string>
     <string name="html_artifact_default_title">صفحة ويب</string>
-    <string name="html_artifact_download">تنزيل</string>
-    <string name="html_artifact_saved">تم حفظ ملف HTML</string>
-    <string name="html_artifact_save_failed">تعذّر حفظ الملف</string>
     <string name="tool_run_javascript_title">تشغيل JavaScript</string>
     <string name="tool_run_javascript_desc">يشغّل JavaScript في بيئة معزولة آمنة للحسابات والتواريخ ومعالجة النصوص. لا وصول للإنترنت أو الملفات.</string>
     <string name="tool_run_javascript_example">\"كم يساوي (2 + 3) × 4، وما يوم الأسبوع الموافق 1 يناير 2027؟\"</string>

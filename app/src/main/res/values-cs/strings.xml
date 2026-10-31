@@ -341,9 +341,6 @@
     <string name="html_artifact_code">Kód</string>
     <string name="html_artifact_writing">Píše se…</string>
     <string name="html_artifact_default_title">Webová stránka</string>
-    <string name="html_artifact_download">Stáhnout</string>
-    <string name="html_artifact_saved">Soubor HTML byl uložen</string>
-    <string name="html_artifact_save_failed">Soubor se nepodařilo uložit</string>
     <string name="tool_web_fetch_title">Načíst webovou stránku</string>
     <string name="tool_web_search_desc">Prohledá web a vrátí názvy výsledků, odkazy a úryvky, aby model mohl najít aktuální informace.</string>
     <string name="tool_web_search_example">\"Najdi nedávné recenze nejnovějšího telefonu Pixel.\"</string>
