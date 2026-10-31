@@ -116,7 +116,7 @@
     <string name="faq_q11">Apa itu prompt sistem?</string>
     <string name="faq_a11">Prompt sistem adalah instruksi yang dapat digunakan ulang yang membentuk cara model merespons \u2014 misalnya, \u201CKamu adalah tutor sains yang ringkas. Jelaskan ide dengan jernih lewat contoh sehari-hari\u201D atau \u201CKamu adalah peninjau kode senior. Tunjukkan bug, kasus tepi, dan masalah keamanan\u201D. Buat dan kelola di Pengaturan \u2192 Prompt Sistem, lalu terapkan salah satu ke obrolan Anda. Prompt disimpan di perangkat Anda dan hanya dikirim ke model lokal.</string>
     <string name="faq_q12">Apa itu alat dan mana saja yang tersedia?</string>
-    <string name="faq_a12">Alat memungkinkan model yang mampu mengambil tindakan selama membalas. Ada tiga yang tersedia: Jalankan JavaScript (matematika, tanggal, dan pemrosesan teks dalam sandbox di perangkat), Pencarian web (menemukan informasi terkini di web), dan Ambil halaman web (membaca halaman agar model dapat meringkas atau mengutipnya). Aktifkan di Pengaturan \u2192 Alat. Masing-masing nonaktif secara default dan hanya berfungsi dengan model yang mendukung pemanggilan alat \u2014 cari lencana palu di pemilih model.</string>
+    <string name="faq_a12">Alat memungkinkan model yang mampu mengambil tindakan selama membalas. Ada empat yang tersedia: Lihat tanggal dan waktu (tanggal dan waktu saat ini di ponsel), Jalankan JavaScript (matematika, tanggal, dan pemrosesan teks dalam sandbox di perangkat), Pencarian web (menemukan informasi terkini di web), dan Ambil halaman web (membaca halaman agar model dapat meringkas atau mengutipnya). Aktifkan di Pengaturan → Alat. Masing-masing nonaktif secara default dan hanya berfungsi dengan model yang mendukung pemanggilan alat — cari lencana palu di pemilih model.</string>
     <string name="faq_q13">Apakah alat web mengirim data saya ke internet?</string>
     <string name="faq_a13">Hanya saat Anda mengaktifkannya. Pencarian web mengirim kueri model ke DuckDuckGo, dan Ambil halaman web mengunduh halaman yang dipilih model untuk dibuka \u2014 permintaan tersebut menuju ke situs web itu sendiri, bukan ke pengembang. Jalankan JavaScript tetap sepenuhnya di perangkat Anda tanpa akses internet. Dengan setiap alat nonaktif (default), tidak ada yang meninggalkan perangkat Anda. Lihat Kebijakan Privasi untuk detailnya.</string>
     <string name="faq_q14">Apakah aplikasi akan memberi tahu saya saat respons siap?</string>
@@ -335,6 +335,9 @@
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam sandbox aman untuk matematika, tanggal, dan pemrosesan teks. Tanpa akses internet atau file.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>
+    <string name="tool_get_date_time_title">Lihat tanggal dan waktu</string>
+    <string name="tool_get_date_time_desc">Memberi tahu model tanggal hari ini, hari dalam seminggu, dan waktu saat ini dari ponsel Anda. Berfungsi offline.</string>
+    <string name="tool_get_date_time_example">\"Hari ini hari apa?\"</string>
     <string name="whats_new_tools">Pencarian web, ambil halaman, dan jalankan JavaScript</string>
     <string name="whats_new_cache">Balasan lebih cepat dengan prompt &amp; alat yang di-cache</string>
     <plurals name="inference_notification_tokens">

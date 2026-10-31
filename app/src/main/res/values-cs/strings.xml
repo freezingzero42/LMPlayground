@@ -132,7 +132,7 @@
     <string name="faq_q11">Co jsou systémové pokyny?</string>
     <string name="faq_a11">Systémový pokyn je opakovaně použitelná instrukce, která utváří způsob, jakým model odpovídá — například „Jste stručný učitel přírodních věd. Vysvětlujte myšlenky jasně pomocí každodenních příkladů\u201C nebo „Jste zkušený recenzent kódu. Upozorňujte na chyby, hraniční případy a bezpečnostní problémy\u201C. Vytvářejte je a spravujte v Nastavení \u2192 Systémové pokyny a poté jeden použijte ve svém chatu. Ukládají se ve vašem zařízení a odesílají se pouze místnímu modelu.</string>
     <string name="faq_q12">Co jsou nástroje a které jsou k dispozici?</string>
-    <string name="faq_a12">Nástroje umožňují schopným modelům provádět během odpovědi akce. K dispozici jsou tři: Spustit JavaScript (matematika, data a zpracování textu v sandboxu v zařízení), Vyhledávání na webu (najde aktuální informace na webu) a Načíst webovou stránku (přečte stránku, aby ji model mohl shrnout nebo citovat). Zapněte je v Nastavení \u2192 Nástroje. Každý je ve výchozím nastavení vypnutý a funguje pouze s modely, které podporují volání nástrojů — hledejte odznak s kladivem ve výběru modelů.</string>
+    <string name="faq_a12">Nástroje umožňují schopným modelům provádět během odpovědi akce. K dispozici jsou čtyři: Zjistit datum a čas (aktuální datum a čas v telefonu), Spustit JavaScript (matematika, data a zpracování textu v sandboxu v zařízení), Vyhledávání na webu (najde aktuální informace na webu) a Načíst webovou stránku (přečte stránku, aby ji model mohl shrnout nebo citovat). Zapněte je v Nastavení → Nástroje. Každý je ve výchozím nastavení vypnutý a funguje pouze s modely, které podporují volání nástrojů — hledejte odznak s kladivem ve výběru modelů.</string>
     <string name="faq_q13">Odesílají webové nástroje moje data online?</string>
     <string name="faq_a13">Pouze když je zapnete. Vyhledávání na webu odešle dotaz modelu do DuckDuckGo a Načíst webovou stránku stáhne stránky, které se model rozhodne otevřít — tyto požadavky jdou na samotné weby, nikoli vývojáři. Spustit JavaScript zůstává zcela ve vašem zařízení bez přístupu k internetu. Když jsou všechny nástroje vypnuté (výchozí stav), nic neopustí vaše zařízení. Podrobnosti naleznete v zásadách ochrany osobních údajů.</string>
     <string name="faq_q14">Upozorní mě aplikace, až bude odpověď připravena?</string>
@@ -352,6 +352,9 @@
     <string name="tool_call_output">Výstup</string>
     <string name="tool_run_javascript_desc">Spouští JavaScript v zabezpečeném sandboxu pro výpočty, data a zpracování textu. Bez přístupu k internetu nebo souborům.</string>
     <string name="tool_run_javascript_example">\"Kolik je (2 + 3) × 4 a jaký den v týdnu připadá na 1. ledna 2027?\"</string>
+    <string name="tool_get_date_time_title">Zjistit datum a čas</string>
+    <string name="tool_get_date_time_desc">Sdělí modelu dnešní datum, den v týdnu a aktuální čas z vašeho telefonu. Funguje offline.</string>
+    <string name="tool_get_date_time_example">\"Jaký je dnes den?\"</string>
     <string name="tool_run_javascript_title">Spustit JavaScript</string>
     <string name="tool_web_fetch_desc">Otevře odkaz a načte jeho hlavní obsah jako text, aby model mohl stránku shrnout nebo citovat.</string>
     <string name="tool_web_fetch_example">\"Shrň článek na tomto odkazu.\"</string>
