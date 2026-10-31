@@ -304,6 +304,9 @@
     <string name="html_artifact_code">Kode</string>
     <string name="html_artifact_writing">Menulis…</string>
     <string name="html_artifact_default_title">Halaman web</string>
+    <string name="html_artifact_download">Unduh</string>
+    <string name="html_artifact_saved">File HTML disimpan</string>
+    <string name="html_artifact_save_failed">Tidak dapat menyimpan file</string>
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam sandbox aman untuk matematika, tanggal, dan pemrosesan teks. Tanpa akses internet atau file.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>
