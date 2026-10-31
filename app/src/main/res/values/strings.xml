@@ -352,14 +352,12 @@
     <string name="tool_web_fetch_title">Fetch web page</string>
     <string name="tool_web_fetch_desc">Opens a link and reads its main content as text so the model can summarize or quote a page.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
-    <string name="tool_render_html_title">HTML preview</string>
-    <string name="tool_render_html_desc">Lets the model build web pages, widgets, and small games, and shows them as a live, interactive preview in the chat. Previews can load libraries, fonts, and images from the internet.</string>
-    <string name="tool_render_html_example">\"Make a tip calculator I can try right here.\"</string>
-    <string name="html_preview_show_code">Show code</string>
-    <string name="html_preview_show_preview">Show preview</string>
     <string name="html_preview_reload">Reload</string>
     <string name="html_preview_full_screen">Full screen</string>
-    <string name="html_preview_open">Preview HTML</string>
+    <string name="html_artifact_live_preview">Live preview</string>
+    <string name="html_artifact_code">Code</string>
+    <string name="html_artifact_writing">Writing…</string>
+    <string name="html_artifact_default_title">Web page</string>
 
     <!-- Inference engine service notification (foreground service while a
          model is loaded so the OS does not evict the :llama process). -->
