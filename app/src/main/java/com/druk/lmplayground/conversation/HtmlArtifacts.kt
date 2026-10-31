@@ -46,9 +46,18 @@ object HtmlArtifacts {
         val body: String,
         val closed: Boolean,
     ) {
-        /** An HTML page: an html/htm/xhtml block, or an unlabeled full document. */
+        /**
+         * An HTML page: an html/htm/xhtml block, or an unlabeled full
+         * document. A one-line snippet (`<br>` while explaining a tag) isn't a
+         * page, so it stays an ordinary code block — unless it is itself a
+         * complete document.
+         */
         val isHtml: Boolean
-            get() = lang in HTML_LANGS || (lang.isEmpty() && FULL_DOCUMENT.containsMatchIn(body))
+            get() {
+                val fullDocument = FULL_DOCUMENT.containsMatchIn(body)
+                if (lang.isEmpty()) return fullDocument
+                return lang in HTML_LANGS && (fullDocument || body.lines().count { it.isNotBlank() } >= 2)
+            }
     }
 
     /**
@@ -86,7 +95,8 @@ object HtmlArtifacts {
     /**
      * Split a reply into text and artifact segments. Each HTML code block
      * (see [Fence.isHtml]) becomes an [Segment.Artifact]; an unclosed one at
-     * the end — the reply is still streaming — is marked incomplete. Every
+     * the end — the reply is still streaming — is marked incomplete (it turns
+     * into a card once its second line arrives). Every
      * other code block stays in the text, fences included, so the Markdown
      * renderer shows it as before.
      */

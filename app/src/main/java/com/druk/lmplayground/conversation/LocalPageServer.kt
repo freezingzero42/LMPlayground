@@ -8,6 +8,7 @@ import java.net.Socket
 import java.net.SocketTimeoutException
 import java.net.URLEncoder
 import java.security.SecureRandom
+import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
 /**
@@ -24,9 +25,11 @@ import kotlin.concurrent.thread
  * - The page lives under a random, unguessable path; any other request is a
  *   404, so other apps on the phone can't list or guess it.
  * - Holds one page at a time, in memory; publishing a new page replaces it.
- * - Started on first use and kept for the life of the app process on a
- *   daemon thread. If the process is killed, the browser keeps the page it
- *   already loaded; reloading it there fails until the next Open in browser.
+ * - Started on first use and kept for the life of the app process: one
+ *   daemon thread accepts connections and a small fixed pool (4 daemon
+ *   threads) answers them, so a burst of requests can't spawn unbounded
+ *   threads. If the process is killed, the browser keeps the page it already
+ *   loaded; reloading it there fails until the next Open in browser.
  *
  * Plain java.net with no Android dependencies, so it is JVM-tested.
  */
@@ -37,6 +40,11 @@ object LocalPageServer {
     @Volatile private var page: Page? = null
     private var server: ServerSocket? = null
     private val random = SecureRandom()
+
+    /** Answers requests; daemon threads so it never keeps the process alive. */
+    private val workers = Executors.newFixedThreadPool(4) { task ->
+        Thread(task, "LocalPageServer-worker").apply { isDaemon = true }
+    }
 
     /**
      * Serve [html] and return its address, e.g.
@@ -73,7 +81,7 @@ object LocalPageServer {
                 } catch (_: IOException) {
                     break // closed by stop()
                 }
-                thread(name = "LocalPageServer-client", isDaemon = true) { handle(client) }
+                workers.execute { handle(client) }
             }
         }
         return socket

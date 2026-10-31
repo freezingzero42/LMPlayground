@@ -31,4 +31,14 @@ class ToolsViewModel(app: Application) : AndroidViewModel(app) {
         prefs.setToolEnabledDefault(toolName, value)
         _enabled.value = _enabled.value.toMutableMap().apply { put(toolName, value) }
     }
+
+    private val _htmlPreviewInternet = MutableStateFlow(prefs.htmlPreviewInternet)
+
+    /** Internet access for live HTML previews (app-wide, not per model). */
+    val htmlPreviewInternet: StateFlow<Boolean> = _htmlPreviewInternet
+
+    fun setHtmlPreviewInternet(value: Boolean) {
+        prefs.htmlPreviewInternet = value
+        _htmlPreviewInternet.value = value
+    }
 }

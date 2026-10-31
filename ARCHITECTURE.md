@@ -84,23 +84,32 @@ renders an assistant reply (`MessageChatBubble` → `AssistantReplyContent`).
 - `conversation/HtmlArtifacts` — pure Kotlin (JVM-tested in
   `HtmlArtifactsTest`). Scans the reply's fenced blocks with CommonMark
   fence rules and splits it into text and HTML segments; an unclosed block
-  while streaming is an incomplete artifact. html/htm/xhtml blocks count,
-  as does an unlabeled block holding a full document. With exactly one
-  HTML block, sibling ```css / ```js blocks are folded into its page.
-  Fragments are wrapped in a page with charset, viewport and base CSS.
+  while streaming is an incomplete artifact. html/htm/xhtml blocks of two
+  or more lines count (a one-line snippet stays ordinary code), as does an
+  unlabeled block holding a full document. With exactly one HTML block,
+  sibling ```css / ```js blocks are folded into its page. Fragments are
+  wrapped in a page with charset, viewport and base CSS.
 - `conversation/HtmlArtifactCard` — the card (title from `<title>`/`<h1>`,
-  code view that follows the stream, then Live preview, Download, Copy and
-  Full screen), plus the preview WebView: JavaScript and internet on (CDN
-  libraries, fonts, APIs), no JS bridge, no file/content access, no popups;
-  it never navigates away from its page and tapped links open in the
-  browser. Download writes the previewed document through the SAF
-  "save as" picker (`CreateDocument("text/html")`). Full screen repeats
-  every card action and adds Reload.
+  code view that follows the stream; Live preview, Copy, Download, Open in
+  browser, Full screen) and the full-screen view (the same actions plus
+  Reload). Download writes the previewed document through the SAF
+  "save as" picker (`CreateDocument("text/html")`).
+- `conversation/HtmlPreviewWebView` — the preview WebView: JavaScript on,
+  no JS bridge, no file/content access, no popups; it never navigates away
+  from its page and tapped links open in the browser. **Offline by
+  default**: internet access is an app-wide opt-in in Settings → Tools
+  (`StoragePreferences.htmlPreviewInternet`, read when a preview opens).
+  While it's off, network loads are blocked (`blockNetworkLoads` plus every
+  http(s) request intercepted and refused) and the card explains it when a
+  page tried to go online.
 - `conversation/LocalPageServer` — Open in browser. Browsers reliably open
   only http(s) addresses (many refuse a content:// file), so the page is
   served from memory at `http://127.0.0.1:PORT/<random token>/<name>.html`
-  by a tiny loopback-only HTTP server (plain java.net, JVM-tested), started
-  on first use. One page at a time; any other path is a 404.
+  by a tiny loopback-only HTTP server (plain java.net, JVM-tested): one
+  accept thread and a pool of 4 workers, started on first use. One page at
+  a time; any other path is a 404. The browser is a separate app, so the
+  preview's internet setting doesn't apply to it (stated in the setting's
+  description and the Privacy Policy).
 - Nothing is persisted beyond the message text itself, so cards and
   previews come back when a chat is reopened.
 

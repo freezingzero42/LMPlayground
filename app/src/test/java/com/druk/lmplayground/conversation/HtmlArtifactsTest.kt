@@ -40,7 +40,7 @@ class HtmlArtifactsTest {
 
     @Test
     fun `html inside another fenced block is not an artifact`() {
-        val reply = "````markdown\n```html\n<p>x</p>\n```\n````"
+        val reply = "````markdown\n```html\n<h1>x</h1>\n<p>y</p>\n```\n````"
         assertTrue(artifacts(reply).isEmpty())
     }
 
@@ -54,15 +54,29 @@ class HtmlArtifactsTest {
     }
 
     @Test
-    fun `fence opened on the last line gives an empty incomplete artifact`() {
-        val a = artifacts("Building it:\n```html").single()
-        assertEquals("", a.code)
+    fun `a streaming block becomes a card once its second line arrives`() {
+        assertTrue(artifacts("Building it:\n```html").isEmpty())
+        assertTrue(artifacts("Building it:\n```html\n<h1>Hi</h1>").isEmpty())
+        val a = artifacts("Building it:\n```html\n<h1>Hi</h1>\n<p>th").single()
         assertFalse(a.complete)
+        // A streaming full document is a card from its first line.
+        assertEquals(1, artifacts("```html\n<!DOCTYPE html>").size)
+    }
+
+    @Test
+    fun `one line html snippets stay ordinary code blocks`() {
+        val reply = "Use a line break:\n```html\n<br>\n```\nlike that."
+        assertTrue(artifacts(reply).isEmpty())
+        assertEquals(reply, texts(reply).single().text)
+        // Blank lines don't count towards the two lines.
+        assertTrue(artifacts("```html\n\n<p>x</p>\n\n```").isEmpty())
+        // A complete document on one line is still a page.
+        assertEquals(1, artifacts("```html\n<html><body>x</body></html>\n```").size)
     }
 
     @Test
     fun `ordinals count artifacts and are stable as the reply grows`() {
-        val one = "```html\n<p>a</p>\n```\ntext\n```html\n<p>b"
+        val one = "```html\n<h1>a</h1>\n<p>a</p>\n```\ntext\n```html\n<h1>b</h1>\n<p>b"
         val two = "$one</p>\n```\nmore"
         assertEquals(listOf(0, 1), artifacts(one).map { it.ordinal })
         assertEquals(listOf(0, 1), artifacts(two).map { it.ordinal })
@@ -71,11 +85,12 @@ class HtmlArtifactsTest {
 
     @Test
     fun `language tag is case insensitive and accepts htm and attributes`() {
-        assertEquals(1, artifacts("```HTML\n<p>x</p>\n```").size)
-        assertEquals(1, artifacts("```htm\n<p>x</p>\n```").size)
-        assertEquals(1, artifacts("```html title=\"index.html\"\n<p>x</p>\n```").size)
-        assertEquals(1, artifacts("~~~html\n<p>x</p>\n~~~").size)
-        assertEquals(1, artifacts("   ```html\n<p>x</p>\n   ```").size)
+        val page = "<h1>x</h1>\n<p>y</p>"
+        assertEquals(1, artifacts("```HTML\n$page\n```").size)
+        assertEquals(1, artifacts("```htm\n$page\n```").size)
+        assertEquals(1, artifacts("```html title=\"index.html\"\n$page\n```").size)
+        assertEquals(1, artifacts("~~~html\n$page\n~~~").size)
+        assertEquals(1, artifacts("   ```html\n$page\n   ```").size)
     }
 
     @Test
@@ -88,9 +103,9 @@ class HtmlArtifactsTest {
 
     @Test
     fun `closing fence must be at least as long as the opening one`() {
-        val reply = "````html\n<pre>```</pre>\n````\nafter"
+        val reply = "````html\n<h1>Fences</h1>\n<pre>```</pre>\n````\nafter"
         val a = artifacts(reply).single()
-        assertEquals("<pre>```</pre>", a.code)
+        assertEquals("<h1>Fences</h1>\n<pre>```</pre>", a.code)
         assertTrue(a.complete)
     }
 
@@ -122,7 +137,7 @@ class HtmlArtifactsTest {
 
     @Test
     fun `separate css and js blocks are folded into a single artifact`() {
-        val reply = "```html\n<button id=\"b\">Go</button>\n```\n\n```css\nbutton{color:red}\n```\n\n" +
+        val reply = "```html\n<h1>Counter</h1>\n<button id=\"b\">Go</button>\n```\n\n```css\nbutton{color:red}\n```\n\n" +
             "```javascript\nb.onclick = () => 1;\n```"
         val a = artifacts(reply).single()
         val doc = HtmlArtifacts.previewDocument(reply, a)
@@ -132,7 +147,7 @@ class HtmlArtifactsTest {
 
     @Test
     fun `with several html artifacts each previews on its own`() {
-        val reply = "```html\n<p>a</p>\n```\n```html\n<p>b</p>\n```\n```css\np{color:red}\n```"
+        val reply = "```html\n<h1>A</h1>\n<p>a</p>\n```\n```html\n<h1>B</h1>\n<p>b</p>\n```\n```css\np{color:red}\n```"
         val list = artifacts(reply)
         assertEquals(2, list.size)
         val doc = HtmlArtifacts.previewDocument(reply, list[1])
