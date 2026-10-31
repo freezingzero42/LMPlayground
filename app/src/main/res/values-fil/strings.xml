@@ -343,6 +343,9 @@
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Sinusulat…</string>
     <string name="html_artifact_default_title">Web page</string>
+    <string name="html_artifact_download">I-download</string>
+    <string name="html_artifact_saved">Na-save ang HTML file</string>
+    <string name="html_artifact_save_failed">Hindi ma-save ang file</string>
     <string name="tool_run_javascript_title">Patakbuhin ang JavaScript</string>
     <string name="tool_run_javascript_desc">Nagpapatakbo ng JavaScript sa isang secure na sandbox para sa math, mga petsa, at pagproseso ng teksto. Walang access sa internet o file.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

@@ -338,6 +338,9 @@
     <string name="html_artifact_code">Koodi</string>
     <string name="html_artifact_writing">Kirjoitetaan…</string>
     <string name="html_artifact_default_title">Verkkosivu</string>
+    <string name="html_artifact_download">Lataa</string>
+    <string name="html_artifact_saved">HTML-tiedosto tallennettu</string>
+    <string name="html_artifact_save_failed">Tiedostoa ei voitu tallentaa</string>
     <string name="tool_web_fetch_title">Nouda verkkosivu</string>
     <string name="tool_web_search_desc">Hakee verkosta ja palauttaa tulosten otsikot, linkit ja katkelmat, jotta malli voi löytää ajantasaista tietoa.</string>
     <string name="tool_web_search_example">\"Etsi tuoreita arvioita uusimmasta Pixel-puhelimesta.\"</string>

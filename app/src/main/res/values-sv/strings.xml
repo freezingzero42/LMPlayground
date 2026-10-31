@@ -334,6 +334,9 @@
     <string name="html_artifact_code">Kod</string>
     <string name="html_artifact_writing">Skriver…</string>
     <string name="html_artifact_default_title">Webbsida</string>
+    <string name="html_artifact_download">Ladda ned</string>
+    <string name="html_artifact_saved">HTML-filen har sparats</string>
+    <string name="html_artifact_save_failed">Det gick inte att spara filen</string>
     <string name="cd_supports_tools">Stöder verktyg</string>
     <string name="cd_supports_thinking">Stöder tänkande</string>
 

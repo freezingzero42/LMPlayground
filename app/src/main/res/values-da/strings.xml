@@ -334,6 +334,9 @@
     <string name="html_artifact_code">Kode</string>
     <string name="html_artifact_writing">Skriver…</string>
     <string name="html_artifact_default_title">Webside</string>
+    <string name="html_artifact_download">Download</string>
+    <string name="html_artifact_saved">HTML-filen er gemt</string>
+    <string name="html_artifact_save_failed">Filen kunne ikke gemmes</string>
     <string name="cd_supports_tools">Understøtter værktøjer</string>
     <string name="cd_supports_thinking">Understøtter tænkning</string>
 
