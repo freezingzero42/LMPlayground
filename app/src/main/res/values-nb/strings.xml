@@ -328,6 +328,13 @@
     <string name="tool_web_fetch_title">Hent nettside</string>
     <string name="tool_web_fetch_desc">Åpner en lenke og leser hovedinnholdet som tekst slik at modellen kan oppsummere eller sitere en side.</string>
     <string name="tool_web_fetch_example">“Oppsummer artikkelen på denne lenken.”</string>
+    <string name="tool_render_html_title">HTML-forhåndsvisning</string>
+    <string name="tool_render_html_desc">Lar modellen lage nettsider, widgeter og små spill og viser dem som en levende, interaktiv forhåndsvisning i chatten. Forhåndsvisninger kjører frakoblet i en sandkasse.</string>
+    <string name="tool_render_html_example">\"Lag en tipskalkulator jeg kan prøve her.\"</string>
+    <string name="html_preview_show_code">Vis kode</string>
+    <string name="html_preview_show_preview">Vis forhåndsvisning</string>
+    <string name="html_preview_reload">Last inn på nytt</string>
+    <string name="html_preview_full_screen">Fullskjerm</string>
     <string name="cd_supports_tools">Støtter verktøy</string>
     <string name="cd_supports_thinking">Støtter tenkning</string>
 

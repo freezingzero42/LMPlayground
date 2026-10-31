@@ -19,4 +19,6 @@ fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
         register(WebSearchTool(webLinkStore))
         register(WebFetchTool(webLinkStore))
         register(JavaScriptTool(context))
+        // Rendered by the chat UI from the call's arguments; see HtmlPreview.kt.
+        register(HtmlPreviewTool())
     }

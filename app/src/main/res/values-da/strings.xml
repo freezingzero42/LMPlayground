@@ -328,6 +328,13 @@
     <string name="tool_web_fetch_title">Hent webside</string>
     <string name="tool_web_fetch_desc">Åbner et link og læser hovedindholdet som tekst, så modellen kan opsummere eller citere en side.</string>
     <string name="tool_web_fetch_example">“Opsummer artiklen på dette link.”</string>
+    <string name="tool_render_html_title">HTML-forhåndsvisning</string>
+    <string name="tool_render_html_desc">Lader modellen bygge websider, widgets og små spil og viser dem som en levende, interaktiv forhåndsvisning i chatten. Forhåndsvisninger kører offline i en sandkasse.</string>
+    <string name="tool_render_html_example">\"Lav en drikkepengeberegner, jeg kan prøve lige her.\"</string>
+    <string name="html_preview_show_code">Vis kode</string>
+    <string name="html_preview_show_preview">Vis forhåndsvisning</string>
+    <string name="html_preview_reload">Genindlæs</string>
+    <string name="html_preview_full_screen">Fuld skærm</string>
     <string name="cd_supports_tools">Understøtter værktøjer</string>
     <string name="cd_supports_thinking">Understøtter tænkning</string>
 
