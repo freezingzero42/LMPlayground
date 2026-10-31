@@ -338,14 +338,13 @@
     <string name="tool_web_fetch_desc">Membuka pautan dan membaca kandungan utamanya sebagai teks supaya model dapat meringkaskan atau memetik sesuatu halaman.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
     <string name="tool_render_html_title">Pratonton HTML</string>
-    <string name="tool_render_html_desc">Membolehkan model membina halaman web, widget dan permainan kecil, lalu memaparkannya sebagai pratonton interaktif secara langsung dalam sembang. Pratonton berjalan di luar talian dalam kotak pasir.</string>
+    <string name="tool_render_html_desc">Membolehkan model membina halaman web, widget dan permainan kecil, lalu memaparkannya sebagai pratonton interaktif secara langsung dalam sembang. Pratonton boleh memuatkan pustaka, fon dan imej daripada internet.</string>
     <string name="tool_render_html_example">\"Buatkan kalkulator tip yang boleh saya cuba di sini.\"</string>
     <string name="html_preview_show_code">Tunjukkan kod</string>
     <string name="html_preview_show_preview">Tunjukkan pratonton</string>
     <string name="html_preview_reload">Muat semula</string>
     <string name="html_preview_full_screen">Skrin penuh</string>
     <string name="html_preview_open">Pratonton HTML</string>
-    <string name="html_preview_blocked_network">Halaman ini cuba memuatkan fail daripada internet. Pratonton berjalan di luar talian, jadi fail itu disekat dan sesetengah gaya atau ciri mungkin tiada.</string>
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam kotak pasir selamat untuk matematik, tarikh dan pemprosesan teks. Tiada akses internet atau fail.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

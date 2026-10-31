@@ -337,14 +337,13 @@
     <string name="tool_web_fetch_desc">เปิดลิงก์และอ่านเนื้อหาหลักเป็นข้อความ เพื่อให้โมเดลสรุปหรืออ้างอิงหน้าเว็บได้</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
     <string name="tool_render_html_title">ตัวอย่าง HTML</string>
-    <string name="tool_render_html_desc">ให้โมเดลสร้างหน้าเว็บ วิดเจ็ต และเกมเล็กๆ แล้วแสดงเป็นตัวอย่างแบบโต้ตอบได้สดๆ ในแชท ตัวอย่างทำงานแบบออฟไลน์ในแซนด์บ็อกซ์</string>
+    <string name="tool_render_html_desc">ให้โมเดลสร้างหน้าเว็บ วิดเจ็ต และเกมเล็กๆ แล้วแสดงเป็นตัวอย่างแบบโต้ตอบได้สดๆ ในแชท ตัวอย่างสามารถโหลดไลบรารี ฟอนต์ และรูปภาพจากอินเทอร์เน็ตได้</string>
     <string name="tool_render_html_example">\"สร้างเครื่องคิดเงินทิปที่ฉันลองใช้ได้ตรงนี้เลย\"</string>
     <string name="html_preview_show_code">แสดงโค้ด</string>
     <string name="html_preview_show_preview">แสดงตัวอย่าง</string>
     <string name="html_preview_reload">โหลดใหม่</string>
     <string name="html_preview_full_screen">เต็มหน้าจอ</string>
     <string name="html_preview_open">ดูตัวอย่าง HTML</string>
-    <string name="html_preview_blocked_network">หน้านี้พยายามโหลดไฟล์จากอินเทอร์เน็ต ตัวอย่างทำงานแบบออฟไลน์ ไฟล์เหล่านั้นจึงถูกบล็อก และสไตล์หรือฟีเจอร์บางอย่างอาจหายไป</string>
     <string name="tool_run_javascript_title">รัน JavaScript</string>
     <string name="tool_run_javascript_desc">รัน JavaScript ในแซนด์บ็อกซ์ที่ปลอดภัยสำหรับคณิตศาสตร์ วันที่ และการประมวลผลข้อความ ไม่มีการเข้าถึงอินเทอร์เน็ตหรือไฟล์</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

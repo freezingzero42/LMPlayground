@@ -143,18 +143,19 @@ class HtmlPreviewToolTest {
         assertTrue(ok(args("<p>x</p>", js = js)).html.contains(js))
     }
 
-    // ── Warnings ────────────────────────────────────────────────────
+    // ── Internet resources ──────────────────────────────────────────
 
     @Test
-    fun `external resources are reported back to the model`() {
-        val html = "<link rel=\"stylesheet\" href=\"https://cdn.example.com/a.css\">" +
-            "<script src=\"//cdn.tailwindcss.com\"></script><p>x</p>"
-        val result = JSONObject(tool.execute(args(html, css = "@import url('https://fonts.example.com/f.css');")))
+    fun `cdn links are kept as written and not flagged`() {
+        val html = "<script src=\"https://cdn.tailwindcss.com\"></script>" +
+            "<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Inter\">" +
+            "<h1 class=\"text-3xl font-bold\">Hi</h1>"
+        val result = JSONObject(tool.execute(args(html)))
         assertEquals("rendered", result.getString("status"))
-        val warnings = result.getJSONArray("warnings").toString()
-        assertTrue(warnings.contains("https://cdn.example.com/a.css"))
-        assertTrue(warnings.contains("//cdn.tailwindcss.com"))
-        assertTrue(warnings.contains("https://fonts.example.com/f.css"))
+        assertFalse(result.has("warnings"))
+        val doc = ok(args(html)).html
+        assertTrue(doc.contains("<script src=\"https://cdn.tailwindcss.com\"></script>"))
+        assertTrue(doc.contains("https://fonts.googleapis.com/css2?family=Inter"))
     }
 
     // ── Markdown fallback ───────────────────────────────────────────

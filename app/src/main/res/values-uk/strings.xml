@@ -296,14 +296,13 @@
     <string name="tool_web_fetch_desc">Відкриває посилання й читає його основний вміст як текст, щоб модель могла підсумувати або процитувати сторінку.</string>
     <string name="tool_web_fetch_example">\"Підсумуй статтю за цим посиланням.\"</string>
     <string name="tool_render_html_title">Попередній перегляд HTML</string>
-    <string name="tool_render_html_desc">Дає моделі змогу створювати вебсторінки, віджети й невеликі ігри та показує їх як живий інтерактивний попередній перегляд просто в чаті. Перегляд працює офлайн в ізольованому середовищі.</string>
+    <string name="tool_render_html_desc">Дає моделі змогу створювати вебсторінки, віджети й невеликі ігри та показує їх як живий інтерактивний попередній перегляд просто в чаті. Перегляд може завантажувати з інтернету бібліотеки, шрифти й зображення.</string>
     <string name="tool_render_html_example">\"Зроби калькулятор чайових, який я можу спробувати просто тут.\"</string>
     <string name="html_preview_show_code">Показати код</string>
     <string name="html_preview_show_preview">Показати перегляд</string>
     <string name="html_preview_reload">Перезавантажити</string>
     <string name="html_preview_full_screen">На весь екран</string>
     <string name="html_preview_open">Переглянути HTML</string>
-    <string name="html_preview_blocked_network">Ця сторінка намагалася завантажити файли з інтернету. Перегляд працює офлайн, тому ці файли заблоковано, і деяких стилів чи функцій може бракувати.</string>
     <string name="tool_web_fetch_title">Завантажити вебсторінку</string>
     <string name="tool_web_search_desc">Шукає в інтернеті й повертає заголовки результатів, посилання та фрагменти, щоб модель могла знайти актуальну інформацію.</string>
     <string name="tool_web_search_example">\"Знайди свіжі огляди найновішого телефона Pixel.\"</string>

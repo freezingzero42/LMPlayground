@@ -333,14 +333,13 @@
     <string name="tool_web_fetch_desc">Avaa linkin ja lukee sen pääsisällön tekstinä, jotta malli voi tiivistää tai lainata sivun.</string>
     <string name="tool_web_fetch_example">\"Tiivistä tämän linkin artikkeli.\"</string>
     <string name="tool_render_html_title">HTML-esikatselu</string>
-    <string name="tool_render_html_desc">Antaa mallin luoda verkkosivuja, widgettejä ja pieniä pelejä ja näyttää ne interaktiivisena esikatseluna suoraan keskustelussa. Esikatselut toimivat offline-tilassa eristetyssä hiekkalaatikossa.</string>
+    <string name="tool_render_html_desc">Antaa mallin luoda verkkosivuja, widgettejä ja pieniä pelejä ja näyttää ne interaktiivisena esikatseluna suoraan keskustelussa. Esikatselut voivat ladata kirjastoja, fontteja ja kuvia internetistä.</string>
     <string name="tool_render_html_example">\"Tee juomarahalaskuri, jota voin kokeilla tässä.\"</string>
     <string name="html_preview_show_code">Näytä koodi</string>
     <string name="html_preview_show_preview">Näytä esikatselu</string>
     <string name="html_preview_reload">Lataa uudelleen</string>
     <string name="html_preview_full_screen">Koko näyttö</string>
     <string name="html_preview_open">Esikatsele HTML</string>
-    <string name="html_preview_blocked_network">Tämä sivu yritti ladata tiedostoja internetistä. Esikatselut toimivat offline-tilassa, joten tiedostot estettiin ja osa tyyleistä tai toiminnoista voi puuttua.</string>
     <string name="tool_web_fetch_title">Nouda verkkosivu</string>
     <string name="tool_web_search_desc">Hakee verkosta ja palauttaa tulosten otsikot, linkit ja katkelmat, jotta malli voi löytää ajantasaista tietoa.</string>
     <string name="tool_web_search_example">\"Etsi tuoreita arvioita uusimmasta Pixel-puhelimesta.\"</string>

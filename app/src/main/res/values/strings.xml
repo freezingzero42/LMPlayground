@@ -353,14 +353,13 @@
     <string name="tool_web_fetch_desc">Opens a link and reads its main content as text so the model can summarize or quote a page.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
     <string name="tool_render_html_title">HTML preview</string>
-    <string name="tool_render_html_desc">Lets the model build web pages, widgets, and small games, and shows them as a live, interactive preview in the chat. Previews run offline in a sandbox.</string>
+    <string name="tool_render_html_desc">Lets the model build web pages, widgets, and small games, and shows them as a live, interactive preview in the chat. Previews can load libraries, fonts, and images from the internet.</string>
     <string name="tool_render_html_example">\"Make a tip calculator I can try right here.\"</string>
     <string name="html_preview_show_code">Show code</string>
     <string name="html_preview_show_preview">Show preview</string>
     <string name="html_preview_reload">Reload</string>
     <string name="html_preview_full_screen">Full screen</string>
     <string name="html_preview_open">Preview HTML</string>
-    <string name="html_preview_blocked_network">This page tried to load files from the internet. Previews are offline, so those files were blocked and some styles or features may be missing.</string>
 
     <!-- Inference engine service notification (foreground service while a
          model is loaded so the OS does not evict the :llama process). -->

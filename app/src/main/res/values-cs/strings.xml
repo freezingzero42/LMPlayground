@@ -336,14 +336,13 @@
     <string name="tool_web_fetch_desc">Otevře odkaz a načte jeho hlavní obsah jako text, aby model mohl stránku shrnout nebo citovat.</string>
     <string name="tool_web_fetch_example">\"Shrň článek na tomto odkazu.\"</string>
     <string name="tool_render_html_title">Náhled HTML</string>
-    <string name="tool_render_html_desc">Umožňuje modelu vytvářet webové stránky, widgety a malé hry a zobrazí je jako živý interaktivní náhled přímo v chatu. Náhledy běží offline v izolovaném prostředí.</string>
+    <string name="tool_render_html_desc">Umožňuje modelu vytvářet webové stránky, widgety a malé hry a zobrazí je jako živý interaktivní náhled přímo v chatu. Náhledy mohou z internetu načítat knihovny, písma a obrázky.</string>
     <string name="tool_render_html_example">\"Vytvoř kalkulačku spropitného, kterou si můžu vyzkoušet přímo tady.\"</string>
     <string name="html_preview_show_code">Zobrazit kód</string>
     <string name="html_preview_show_preview">Zobrazit náhled</string>
     <string name="html_preview_reload">Načíst znovu</string>
     <string name="html_preview_full_screen">Celá obrazovka</string>
     <string name="html_preview_open">Náhled HTML</string>
-    <string name="html_preview_blocked_network">Tato stránka se pokusila načíst soubory z internetu. Náhledy běží offline, proto byly tyto soubory zablokovány a některé styly nebo funkce mohou chybět.</string>
     <string name="tool_web_fetch_title">Načíst webovou stránku</string>
     <string name="tool_web_search_desc">Prohledá web a vrátí názvy výsledků, odkazy a úryvky, aby model mohl najít aktuální informace.</string>
     <string name="tool_web_search_example">\"Najdi nedávné recenze nejnovějšího telefonu Pixel.\"</string>
