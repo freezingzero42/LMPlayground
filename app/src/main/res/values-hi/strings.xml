@@ -309,14 +309,13 @@
     <string name="tool_web_fetch_desc">एक लिंक खोलता है और उसकी मुख्य सामग्री को टेक्स्ट के रूप में पढ़ता है ताकि मॉडल किसी पेज का सारांश दे सके या उद्धृत कर सके।</string>
     <string name="tool_web_fetch_example">\"इस लिंक पर मौजूद लेख का सारांश दें।\"</string>
     <string name="tool_render_html_title">HTML प्रीव्यू</string>
-    <string name="tool_render_html_desc">मॉडल को वेब पेज, विजेट और छोटे गेम बनाने देता है और उन्हें चैट में ही लाइव, इंटरैक्टिव प्रीव्यू के रूप में दिखाता है। प्रीव्यू ऑफ़लाइन एक सैंडबॉक्स में चलते हैं।</string>
+    <string name="tool_render_html_desc">मॉडल को वेब पेज, विजेट और छोटे गेम बनाने देता है और उन्हें चैट में ही लाइव, इंटरैक्टिव प्रीव्यू के रूप में दिखाता है। प्रीव्यू इंटरनेट से लाइब्रेरी, फ़ॉन्ट और इमेज लोड कर सकते हैं।</string>
     <string name="tool_render_html_example">\"एक टिप कैलकुलेटर बनाओ जिसे मैं यहीं आज़मा सकूँ।\"</string>
     <string name="html_preview_show_code">कोड दिखाएँ</string>
     <string name="html_preview_show_preview">प्रीव्यू दिखाएँ</string>
     <string name="html_preview_reload">फिर से लोड करें</string>
     <string name="html_preview_full_screen">फ़ुल स्क्रीन</string>
     <string name="html_preview_open">HTML प्रीव्यू करें</string>
-    <string name="html_preview_blocked_network">इस पेज ने इंटरनेट से फ़ाइलें लोड करने की कोशिश की। प्रीव्यू ऑफ़लाइन चलते हैं, इसलिए वे फ़ाइलें ब्लॉक कर दी गईं और कुछ स्टाइल या फ़ीचर गायब हो सकते हैं।</string>
     <string name="tool_run_javascript_title">JavaScript चलाएँ</string>
     <string name="tool_run_javascript_desc">गणित, तारीखों और टेक्स्ट प्रोसेसिंग के लिए एक सुरक्षित सैंडबॉक्स में JavaScript चलाता है। इंटरनेट या फ़ाइल एक्सेस नहीं।</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 कितना है, और 1 जनवरी 2027 को सप्ताह का कौन सा दिन है?\"</string>

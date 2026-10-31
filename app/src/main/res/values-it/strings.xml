@@ -301,14 +301,13 @@
     <string name="tool_web_fetch_desc">Apre un link e ne legge il contenuto principale come testo affinché il modello possa riassumere o citare una pagina.</string>
     <string name="tool_web_fetch_example">\"Riassumi l\'articolo a questo link.\"</string>
     <string name="tool_render_html_title">Anteprima HTML</string>
-    <string name="tool_render_html_desc">Consente al modello di creare pagine web, widget e piccoli giochi e li mostra come anteprima interattiva dal vivo nella chat. Le anteprime funzionano offline in una sandbox.</string>
+    <string name="tool_render_html_desc">Consente al modello di creare pagine web, widget e piccoli giochi e li mostra come anteprima interattiva dal vivo nella chat. Le anteprime possono caricare librerie, font e immagini da internet.</string>
     <string name="tool_render_html_example">\"Crea un calcolatore di mance che posso provare qui.\"</string>
     <string name="html_preview_show_code">Mostra codice</string>
     <string name="html_preview_show_preview">Mostra anteprima</string>
     <string name="html_preview_reload">Ricarica</string>
     <string name="html_preview_full_screen">Schermo intero</string>
     <string name="html_preview_open">Anteprima HTML</string>
-    <string name="html_preview_blocked_network">Questa pagina ha cercato di caricare file da internet. Le anteprime funzionano offline, quindi quei file sono stati bloccati e alcuni stili o funzioni potrebbero mancare.</string>
     <string name="tool_run_javascript_title">Esegui JavaScript</string>
     <string name="tool_run_javascript_desc">Esegue JavaScript in un ambiente isolato sicuro per calcoli, date ed elaborazione del testo. Nessun accesso a internet o ai file.</string>
     <string name="tool_run_javascript_example">\"Quanto fa (2 + 3) × 4 e che giorno della settimana è il 1° gennaio 2027?\"</string>

@@ -301,14 +301,13 @@
     <string name="tool_web_fetch_desc">Ouvre un lien et lit son contenu principal sous forme de texte pour que le modèle puisse résumer ou citer une page.</string>
     <string name="tool_web_fetch_example">\"Résume l\'article de ce lien.\"</string>
     <string name="tool_render_html_title">Aperçu HTML</string>
-    <string name="tool_render_html_desc">Permet au modèle de créer des pages web, des widgets et de petits jeux, et les affiche sous forme d\'aperçu interactif en direct dans la discussion. Les aperçus fonctionnent hors ligne, dans un bac à sable.</string>
+    <string name="tool_render_html_desc">Permet au modèle de créer des pages web, des widgets et de petits jeux, et les affiche sous forme d\'aperçu interactif en direct dans la discussion. Les aperçus peuvent charger des bibliothèques, des polices et des images depuis Internet.</string>
     <string name="tool_render_html_example">\"Crée un calculateur de pourboire que je peux essayer ici même.\"</string>
     <string name="html_preview_show_code">Afficher le code</string>
     <string name="html_preview_show_preview">Afficher l\'aperçu</string>
     <string name="html_preview_reload">Recharger</string>
     <string name="html_preview_full_screen">Plein écran</string>
     <string name="html_preview_open">Aperçu HTML</string>
-    <string name="html_preview_blocked_network">Cette page a tenté de charger des fichiers depuis Internet. Les aperçus fonctionnent hors ligne : ces fichiers ont été bloqués et certains styles ou fonctionnalités peuvent manquer.</string>
     <string name="tool_run_javascript_title">Exécuter JavaScript</string>
     <string name="tool_run_javascript_desc">Exécute du JavaScript dans un bac à sable sécurisé pour les calculs, les dates et le traitement de texte. Aucun accès à Internet ni aux fichiers.</string>
     <string name="tool_run_javascript_example">\"Combien font (2 + 3) × 4, et quel jour de la semaine est le 1er janvier 2027 ?\"</string>

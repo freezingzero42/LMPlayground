@@ -14,6 +14,9 @@ import org.json.JSONObject
  * short fields than at producing a complete, correctly escaped document inside
  * a single JSON string, and it guarantees styles land in a <style> block.
  *
+ * The preview has internet access, so pages may pull libraries (Tailwind,
+ * Chart.js...), fonts and images from CDNs.
+ *
  * The tool itself only validates and acknowledges. The chat UI renders the
  * page (see `conversation/HtmlPreview.kt`) from the tool call's persisted
  * arguments via [parse], so previews survive reopening a conversation.
@@ -26,8 +29,10 @@ class HtmlPreviewTool : Tool {
             "Call this whenever the user asks for a web page, website, UI, form, calculator, widget, chart, animation or game. " +
             "Put the markup in \"html\", the styles in \"css\" and the code in \"javascript\"; the app builds the page from them. " +
             "Write normal HTML, CSS and JavaScript: no markdown code fences, and escape quotes and newlines only once, like any JSON string. " +
-            "The preview has NO internet: do not use CDNs, frameworks (Tailwind, Bootstrap, jQuery), web fonts or remote images. " +
-            "Write your own CSS and use inline SVG, <canvas> or emoji for graphics. " +
+            "The preview is online: you may load libraries from a CDN with full https URLs " +
+            "(e.g. <script src=\"https://cdn.tailwindcss.com\"></script> or https://cdn.jsdelivr.net/npm/chart.js), " +
+            "web fonts, images by URL and public APIs with fetch(). Put those <script>/<link> tags in \"html\". " +
+            "For simple pages, plain CSS in \"css\" is fastest. " +
             "After the call, answer with one short sentence; do not repeat the code."
 
     override val parametersSchema = JSONObject()
@@ -79,17 +84,11 @@ class HtmlPreviewTool : Tool {
             is ParseResult.Ok -> r.preview
             is ParseResult.Error -> return JSONObject().put("error", r.message).toString()
         }
-        val result = JSONObject()
+        return JSONObject()
             .put("status", "rendered")
+            .put("title", preview.title)
             .put("note", "The user can see and use the page now. Reply with one short sentence; do not repeat the code.")
-        val warnings = externalResourceWarnings(preview.html)
-        if (warnings.isNotEmpty()) {
-            result.put(
-                "warnings",
-                JSONArray(warnings + "If the page needs these, call render_html again with the CSS/JS written inline."),
-            )
-        }
-        return result.toString()
+            .toString()
     }
 
     /** A validated page ready to render. [html] is the complete assembled document. */
@@ -300,24 +299,6 @@ class HtmlPreviewTool : Tool {
             }
             return content + doc
         }
-
-        private val EXTERNAL_RESOURCE = Regex(
-            "<(?:link|script|img|iframe)\\b[^>]*?(?:href|src)\\s*=\\s*[\"']?((?:https?:)?//[^\"'\\s>]+)" +
-                "|@import\\s+(?:url\\()?[\"']?((?:https?:)?//[^\"')\\s;]+)",
-            RegexOption.IGNORE_CASE,
-        )
-
-        /**
-         * External files the offline preview will block. Returned to the model
-         * in the tool result so it can retry with inline CSS/JS.
-         */
-        fun externalResourceWarnings(document: String): List<String> =
-            EXTERNAL_RESOURCE.findAll(document)
-                .map { m -> m.groupValues[1].ifEmpty { m.groupValues[2] } }
-                .distinct()
-                .take(5)
-                .map { "Will not load (the preview is offline): $it" }
-                .toList()
 
         private val HTML_FENCE = Regex(
             "```[ \\t]*(html|htm|xhtml|css|js|javascript)[ \\t]*\\r?\\n(.*?)```",

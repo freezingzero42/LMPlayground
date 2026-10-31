@@ -301,14 +301,13 @@
     <string name="tool_web_fetch_desc">Bir ba\u011Flant\u0131y\u0131 a\u00E7ar ve ana i\u00E7eri\u011Fini metin olarak okur, b\u00F6ylece model bir sayfay\u0131 \u00F6zetleyebilir veya al\u0131nt\u0131layabilir.</string>
     <string name="tool_web_fetch_example">\"Bu ba\u011Flant\u0131daki makaleyi \u00F6zetle.\"</string>
     <string name="tool_render_html_title">HTML önizleme</string>
-    <string name="tool_render_html_desc">Modelin web sayfaları, widget\'lar ve küçük oyunlar oluşturmasını sağlar ve bunları sohbette canlı, etkileşimli bir önizleme olarak gösterir. Önizlemeler çevrimdışı olarak bir korumalı alanda çalışır.</string>
+    <string name="tool_render_html_desc">Modelin web sayfaları, widget\'lar ve küçük oyunlar oluşturmasını sağlar ve bunları sohbette canlı, etkileşimli bir önizleme olarak gösterir. Önizlemeler internetten kitaplık, yazı tipi ve görsel yükleyebilir.</string>
     <string name="tool_render_html_example">\"Burada hemen deneyebileceğim bir bahşiş hesaplayıcı yap.\"</string>
     <string name="html_preview_show_code">Kodu göster</string>
     <string name="html_preview_show_preview">Önizlemeyi göster</string>
     <string name="html_preview_reload">Yeniden yükle</string>
     <string name="html_preview_full_screen">Tam ekran</string>
     <string name="html_preview_open">HTML önizle</string>
-    <string name="html_preview_blocked_network">Bu sayfa internetten dosya yüklemeye çalıştı. Önizlemeler çevrimdışı çalıştığından bu dosyalar engellendi; bazı stiller veya özellikler eksik olabilir.</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">Yan\u0131t \u00FCretiliyor…</string>

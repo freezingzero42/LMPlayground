@@ -1,15 +1,17 @@
 package com.druk.lmplayground.conversation
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -53,7 +55,6 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -71,7 +72,6 @@ import androidx.compose.ui.window.DialogProperties
 import com.druk.lmplayground.R
 import com.druk.lmplayground.tools.HtmlPreviewTool
 import org.json.JSONObject
-import java.io.ByteArrayInputStream
 
 private const val TAG = "HtmlPreview"
 
@@ -80,11 +80,11 @@ private val INLINE_PREVIEW_HEIGHT = 320.dp
 
 /**
  * Base URL for previewed pages. It gives the page a real (https) origin so
- * localStorage and friends work, while the reserved `.invalid` TLD guarantees
- * it can never resolve. Network loads are blocked anyway — see
- * [createPreviewWebView].
+ * localStorage, fetch() with CORS and friends work, while the reserved
+ * `.invalid` TLD guarantees it can never resolve to a real server.
  */
-private const val PREVIEW_BASE_URL = "https://preview.lmplayground.invalid/"
+private const val PREVIEW_HOST = "preview.lmplayground.invalid"
+private const val PREVIEW_BASE_URL = "https://$PREVIEW_HOST/"
 
 /**
  * The page to render for a `render_html` tool call, or null when the call
@@ -115,9 +115,6 @@ fun HtmlPreviewCard(
     var showCode by rememberSaveable(preview.html) { mutableStateOf(false) }
     var fullScreen by rememberSaveable(preview.html) { mutableStateOf(false) }
     var reloadCount by remember(preview.html) { mutableIntStateOf(0) }
-    // Set when the page tries to fetch something from the internet (a CDN
-    // stylesheet, a web font...). Explains a page that renders unstyled.
-    var blockedNetwork by remember(preview.html, reloadCount) { mutableStateOf(false) }
     val clipboardManager = LocalClipboardManager.current
     val title = preview.title.ifBlank { stringResource(R.string.tool_render_html_title) }
 
@@ -177,15 +174,6 @@ fun HtmlPreviewCard(
                 )
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            if (blockedNetwork && !showCode) {
-                Text(
-                    text = stringResource(R.string.html_preview_blocked_network),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                )
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -202,7 +190,6 @@ fun HtmlPreviewCard(
                             // Inside the scrolling chat, the page gets the
                             // gesture so drags (sliders, canvas games) work.
                             captureTouches = true,
-                            onBlockedRequest = { blockedNetwork = true },
                             modifier = Modifier.fillMaxSize(),
                         )
                     }
@@ -319,14 +306,10 @@ private fun HtmlWebView(
     html: String,
     captureTouches: Boolean,
     modifier: Modifier = Modifier,
-    onBlockedRequest: () -> Unit = {},
 ) {
-    val currentOnBlocked by rememberUpdatedState(onBlockedRequest)
     AndroidView(
         modifier = modifier,
-        factory = { context ->
-            createPreviewWebView(context, captureTouches) { currentOnBlocked() }
-        },
+        factory = { context -> createPreviewWebView(context, captureTouches) },
         update = { webView ->
             // Only (re)load when the page actually changed; recomposition
             // alone must not restart a running game or animation.
@@ -343,19 +326,20 @@ private fun HtmlWebView(
 }
 
 /**
- * A locked-down WebView for model-written pages:
+ * A sandboxed WebView for model-written pages:
  * - JavaScript on (the point of a live preview), but no JS bridge to the app.
+ * - Internet on, so pages can use CDN libraries (Tailwind, Chart.js...), web
+ *   fonts, remote images and public APIs. Files are cached normally so a
+ *   library downloads once.
  * - No file/content access, no geolocation, no popups.
- * - No network: blockNetworkLoads, plus shouldInterceptRequest refusing any
- *   http(s) request as a second line of defence. This keeps the app's
- *   offline, privacy-first promise and stops a page from phoning home.
- * - Navigation away from the page is refused, so a link can't replace it.
+ * - The preview never navigates away from its page. A link the user taps
+ *   opens in their browser instead; script- or redirect-driven navigation is
+ *   refused, so a page can't silently replace itself with another site.
  */
 @SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")
 private fun createPreviewWebView(
     context: Context,
     captureTouches: Boolean,
-    onBlockedRequest: () -> Unit,
 ): WebView =
     WebView(context).apply {
         layoutParams = ViewGroup.LayoutParams(
@@ -368,8 +352,11 @@ private fun createPreviewWebView(
             domStorageEnabled = true
             allowFileAccess = false
             allowContentAccess = false
-            blockNetworkLoads = true
-            cacheMode = WebSettings.LOAD_NO_CACHE
+            blockNetworkLoads = false
+            cacheMode = WebSettings.LOAD_DEFAULT
+            // The page's origin is https; let it still show http:// images
+            // and media that models often link to.
+            mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
             javaScriptCanOpenWindowsAutomatically = false
             setSupportMultipleWindows(false)
             setGeolocationEnabled(false)
@@ -379,28 +366,15 @@ private fun createPreviewWebView(
             override fun shouldOverrideUrlLoading(
                 view: WebView,
                 request: WebResourceRequest,
-            ): Boolean = true
-
-            override fun shouldInterceptRequest(
-                view: WebView,
-                request: WebResourceRequest,
-            ): WebResourceResponse? {
-                val scheme = request.url.scheme?.lowercase()
-                return if (scheme == "http" || scheme == "https") {
-                    // Called on a WebView background thread; hop to main for
-                    // the Compose state write.
-                    view.post { onBlockedRequest() }
-                    WebResourceResponse(
-                        "text/plain",
-                        "utf-8",
-                        403,
-                        "Blocked",
-                        emptyMap(),
-                        ByteArrayInputStream(ByteArray(0)),
-                    )
-                } else {
-                    null
+            ): Boolean {
+                val url = request.url
+                val scheme = url.scheme?.lowercase()
+                // In-page anchors (#section) just scroll; let them through.
+                if (url.host == PREVIEW_HOST && url.fragment != null) return false
+                if (request.hasGesture() && (scheme == "http" || scheme == "https")) {
+                    openInBrowser(view.context, url)
                 }
+                return true
             }
         }
         // A WebChromeClient lets the page use alert()/confirm(), which
@@ -457,5 +431,15 @@ fun HtmlCodeBlockPreviews(
                 }
             }
         }
+    }
+}
+
+/** Open a link the user tapped inside a preview in their default browser. */
+private fun openInBrowser(context: Context, uri: Uri) {
+    val intent = Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    try {
+        context.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Log.w(TAG, "No app to open $uri", e)
     }
 }
