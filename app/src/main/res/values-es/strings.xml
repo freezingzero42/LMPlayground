@@ -300,8 +300,8 @@
     <string name="tool_web_fetch_title">Obtener página web</string>
     <string name="tool_web_fetch_desc">Abre un enlace y lee su contenido principal como texto para que el modelo pueda resumir o citar una página.</string>
     <string name="tool_web_fetch_example">\"Resume el artículo de este enlace.\"</string>
-    <string name="html_preview_reload">Recargar</string>
-    <string name="html_preview_full_screen">Pantalla completa</string>
+    <string name="html_artifact_reload">Recargar</string>
+    <string name="html_artifact_full_screen">Pantalla completa</string>
     <string name="html_artifact_live_preview">Vista previa en vivo</string>
     <string name="html_artifact_code">Código</string>
     <string name="html_artifact_writing">Escribiendo…</string>

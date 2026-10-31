@@ -34,67 +34,82 @@ object HtmlArtifacts {
     private val OPEN_FENCE = Regex("^ {0,3}(`{3,}|~{3,})[ \\t]*([^`\\s]*)[^`]*$")
     private val FULL_DOCUMENT = Regex("^\\s*(<!doctype\\s+html|<html[\\s>])", RegexOption.IGNORE_CASE)
 
-    /** Closing fence for [fence]: same character (` and ~ aren't regex-special), at least as long. */
-    private fun closingFence(fence: String): Regex =
-        Regex("^ {0,3}${fence[0]}{${fence.length},}[ \\t]*$")
+    /**
+     * One fenced code block, as line indexes into the reply. [closeLine] is
+     * the closing fence's line, or the reply's line count when the block is
+     * still open (the reply is streaming).
+     */
+    private class Fence(
+        val openLine: Int,
+        val closeLine: Int,
+        val lang: String,
+        val body: String,
+        val closed: Boolean,
+    ) {
+        /** An HTML page: an html/htm/xhtml block, or an unlabeled full document. */
+        val isHtml: Boolean
+            get() = lang in HTML_LANGS || (lang.isEmpty() && FULL_DOCUMENT.containsMatchIn(body))
+    }
 
     /**
-     * Split a reply into text and artifact segments, following CommonMark
-     * fence rules (up to 3 spaces of indent, ``` or ~~~, the closing fence at
-     * least as long as the opening one). An unclosed HTML fence at the end —
-     * the reply is still streaming — becomes an incomplete artifact.
-     *
-     * A fence without a language counts as HTML when its content is a full
-     * document (starts with <!DOCTYPE html> or <html>), since some models
-     * leave the language off.
+     * Every fenced code block in [lines], following CommonMark fence rules:
+     * up to 3 spaces of indent, ``` or ~~~, and a closing fence of the same
+     * character at least as long as the opening one. An unclosed fence runs
+     * to the end of the reply.
+     */
+    private fun scanFences(lines: List<String>): List<Fence> {
+        val fences = mutableListOf<Fence>()
+        var i = 0
+        while (i < lines.size) {
+            val open = OPEN_FENCE.matchEntire(lines[i])
+            if (open == null) {
+                i++
+                continue
+            }
+            val marker = open.groupValues[1]
+            // ` and ~ aren't regex-special, so the marker can be used directly.
+            val close = Regex("^ {0,3}${marker[0]}{${marker.length},}[ \\t]*$")
+            var j = i + 1
+            while (j < lines.size && !close.matches(lines[j])) j++
+            fences += Fence(
+                openLine = i,
+                closeLine = j,
+                lang = open.groupValues[2].lowercase(),
+                body = lines.subList(i + 1, minOf(j, lines.size)).joinToString("\n"),
+                closed = j < lines.size,
+            )
+            i = j + 1
+        }
+        return fences
+    }
+
+    /**
+     * Split a reply into text and artifact segments. Each HTML code block
+     * (see [Fence.isHtml]) becomes an [Segment.Artifact]; an unclosed one at
+     * the end — the reply is still streaming — is marked incomplete. Every
+     * other code block stays in the text, fences included, so the Markdown
+     * renderer shows it as before.
      */
     fun split(text: String): List<Segment> {
         if (!text.contains("```") && !text.contains("~~~")) return listOf(Segment.Text(text))
         val lines = text.split('\n')
         val segments = mutableListOf<Segment>()
-        val textBuf = StringBuilder()
+        var textStart = 0
         var ordinal = 0
 
-        fun flushText() {
-            if (textBuf.isNotBlank()) segments += Segment.Text(textBuf.toString().trim('\n'))
-            textBuf.setLength(0)
+        fun addText(fromLine: Int, toLine: Int) {
+            if (fromLine >= toLine) return
+            val chunk = lines.subList(fromLine, toLine).joinToString("\n")
+            if (chunk.isNotBlank()) segments += Segment.Text(chunk.trim('\n'))
         }
 
-        var i = 0
-        while (i < lines.size) {
-            val line = lines[i]
-            val open = OPEN_FENCE.matchEntire(line)
-            if (open == null) {
-                textBuf.append(line)
-                if (i < lines.size - 1) textBuf.append('\n')
-                i++
-                continue
-            }
-            val fence = open.groupValues[1]
-            val lang = open.groupValues[2].lowercase()
-            // Find the closing fence: same character, at least as long.
-            val close = closingFence(fence)
-            var j = i + 1
-            while (j < lines.size && !close.matches(lines[j])) j++
-            val closed = j < lines.size
-            val body = lines.subList(i + 1, minOf(j, lines.size)).joinToString("\n")
-
-            val isHtml = lang in HTML_LANGS || (lang.isEmpty() && FULL_DOCUMENT.containsMatchIn(body))
-            if (isHtml) {
-                flushText()
-                segments += Segment.Artifact(code = body, ordinal = ordinal++, complete = closed)
-            } else {
-                // Not ours: keep the whole block, fences included, as text so
-                // the Markdown renderer shows it as an ordinary code block.
-                val end = if (closed) j else lines.size - 1
-                for (k in i..end) {
-                    textBuf.append(lines[k])
-                    if (k < lines.size - 1) textBuf.append('\n')
-                }
-            }
-            i = if (closed) j + 1 else lines.size
+        for (fence in scanFences(lines)) {
+            if (!fence.isHtml) continue
+            addText(textStart, fence.openLine)
+            segments += Segment.Artifact(code = fence.body, ordinal = ordinal++, complete = fence.closed)
+            textStart = fence.closeLine + 1
         }
-        flushText()
+        addText(textStart, lines.size)
         return segments
     }
 
@@ -104,38 +119,18 @@ object HtmlArtifacts {
      * a page), those are folded into the preview so it works as intended.
      */
     fun previewDocument(replyText: String, artifact: Segment.Artifact): String {
-        val segments = split(replyText)
-        val artifacts = segments.filterIsInstance<Segment.Artifact>()
-        if (artifacts.size != 1) return buildDocument(artifact.code)
+        val fences = scanFences(replyText.split('\n'))
+        if (fences.count { it.isHtml } != 1) return buildDocument(artifact.code)
         val css = StringBuilder()
         val js = StringBuilder()
-        for (block in otherCodeBlocks(replyText)) {
-            when (block.first) {
-                in CSS_LANGS -> css.append(block.second).append('\n')
-                in JS_LANGS -> js.append(block.second).append('\n')
+        for (fence in fences) {
+            if (!fence.closed || fence.isHtml) continue
+            when (fence.lang) {
+                in CSS_LANGS -> css.append(fence.body).append('\n')
+                in JS_LANGS -> js.append(fence.body).append('\n')
             }
         }
         return buildDocument(artifact.code, css.toString(), js.toString())
-    }
-
-    /** (language, body) for every closed, non-HTML fenced block in [text]. */
-    private fun otherCodeBlocks(text: String): List<Pair<String, String>> {
-        val out = mutableListOf<Pair<String, String>>()
-        val lines = text.split('\n')
-        var i = 0
-        while (i < lines.size) {
-            val open = OPEN_FENCE.matchEntire(lines[i])
-            if (open == null) { i++; continue }
-            val fence = open.groupValues[1]
-            val lang = open.groupValues[2].lowercase()
-            val close = closingFence(fence)
-            var j = i + 1
-            while (j < lines.size && !close.matches(lines[j])) j++
-            if (j >= lines.size) break
-            if (lang !in HTML_LANGS) out += lang to lines.subList(i + 1, j).joinToString("\n")
-            i = j + 1
-        }
-        return out
     }
 
     /**

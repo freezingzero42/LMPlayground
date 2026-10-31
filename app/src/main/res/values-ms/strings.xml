@@ -337,8 +337,8 @@
     <string name="tool_web_fetch_title">Ambil halaman web</string>
     <string name="tool_web_fetch_desc">Membuka pautan dan membaca kandungan utamanya sebagai teks supaya model dapat meringkaskan atau memetik sesuatu halaman.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
-    <string name="html_preview_reload">Muat semula</string>
-    <string name="html_preview_full_screen">Skrin penuh</string>
+    <string name="html_artifact_reload">Muat semula</string>
+    <string name="html_artifact_full_screen">Skrin penuh</string>
     <string name="html_artifact_live_preview">Pratonton langsung</string>
     <string name="html_artifact_code">Kod</string>
     <string name="html_artifact_writing">Sedang menulis…</string>

@@ -308,8 +308,8 @@
     <string name="tool_web_fetch_title">वेब पेज फ़ेच करें</string>
     <string name="tool_web_fetch_desc">एक लिंक खोलता है और उसकी मुख्य सामग्री को टेक्स्ट के रूप में पढ़ता है ताकि मॉडल किसी पेज का सारांश दे सके या उद्धृत कर सके।</string>
     <string name="tool_web_fetch_example">\"इस लिंक पर मौजूद लेख का सारांश दें।\"</string>
-    <string name="html_preview_reload">फिर से लोड करें</string>
-    <string name="html_preview_full_screen">फ़ुल स्क्रीन</string>
+    <string name="html_artifact_reload">फिर से लोड करें</string>
+    <string name="html_artifact_full_screen">फ़ुल स्क्रीन</string>
     <string name="html_artifact_live_preview">लाइव प्रीव्यू</string>
     <string name="html_artifact_code">कोड</string>
     <string name="html_artifact_writing">लिखा जा रहा है…</string>

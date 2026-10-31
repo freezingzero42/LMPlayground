@@ -300,8 +300,8 @@
     <string name="tool_web_fetch_title">Charger une page web</string>
     <string name="tool_web_fetch_desc">Ouvre un lien et lit son contenu principal sous forme de texte pour que le modèle puisse résumer ou citer une page.</string>
     <string name="tool_web_fetch_example">\"Résume l\'article de ce lien.\"</string>
-    <string name="html_preview_reload">Recharger</string>
-    <string name="html_preview_full_screen">Plein écran</string>
+    <string name="html_artifact_reload">Recharger</string>
+    <string name="html_artifact_full_screen">Plein écran</string>
     <string name="html_artifact_live_preview">Aperçu en direct</string>
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Écriture…</string>

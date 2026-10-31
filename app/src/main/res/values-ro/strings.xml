@@ -301,8 +301,8 @@
     <string name="tool_web_fetch_title">Încarcă pagină web</string>
     <string name="tool_web_fetch_desc">Deschide un link și îi citește conținutul principal ca text pentru ca modelul să poată rezuma sau cita o pagină.</string>
     <string name="tool_web_fetch_example">\"Rezumă articolul de la acest link.\"</string>
-    <string name="html_preview_reload">Reîncarcă</string>
-    <string name="html_preview_full_screen">Ecran complet</string>
+    <string name="html_artifact_reload">Reîncarcă</string>
+    <string name="html_artifact_full_screen">Ecran complet</string>
     <string name="html_artifact_live_preview">Previzualizare live</string>
     <string name="html_artifact_code">Cod</string>
     <string name="html_artifact_writing">Se scrie…</string>

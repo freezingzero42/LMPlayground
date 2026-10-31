@@ -298,8 +298,8 @@
     <string name="tool_web_fetch_title">Ambil halaman web</string>
     <string name="tool_web_fetch_desc">Membuka tautan dan membaca konten utamanya sebagai teks agar model dapat meringkas atau mengutip sebuah halaman.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
-    <string name="html_preview_reload">Muat ulang</string>
-    <string name="html_preview_full_screen">Layar penuh</string>
+    <string name="html_artifact_reload">Muat ulang</string>
+    <string name="html_artifact_full_screen">Layar penuh</string>
     <string name="html_artifact_live_preview">Pratinjau langsung</string>
     <string name="html_artifact_code">Kode</string>
     <string name="html_artifact_writing">Menulis…</string>

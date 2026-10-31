@@ -74,6 +74,30 @@ turn — see `ConversationViewModel.buildWireContent`).
   call, then unloads (`EmbeddingModelManager`) so ~300 MB doesn't sit
   next to a multi-GB chat model.
 
+## HTML artifacts (live preview)
+
+When a model writes a web page as a ```html code block, the reply shows it
+as an artifact card instead of plain code; the user taps Live preview to
+run it. Nothing reaches the model or the engine — it is purely how the UI
+renders an assistant reply (`MessageChatBubble` → `AssistantReplyContent`).
+
+- `conversation/HtmlArtifacts` — pure Kotlin (JVM-tested in
+  `HtmlArtifactsTest`). Scans the reply's fenced blocks with CommonMark
+  fence rules and splits it into text and HTML segments; an unclosed block
+  while streaming is an incomplete artifact. html/htm/xhtml blocks count,
+  as does an unlabeled block holding a full document. With exactly one
+  HTML block, sibling ```css / ```js blocks are folded into its page.
+  Fragments are wrapped in a page with charset, viewport and base CSS.
+- `conversation/HtmlArtifactCard` — the card (title from `<title>`/`<h1>`,
+  code view that follows the stream, then Live preview, Download, Copy and
+  Full screen), plus the preview WebView: JavaScript and internet on (CDN
+  libraries, fonts, APIs), no JS bridge, no file/content access, no popups;
+  it never navigates away from its page and tapped links open in the
+  browser. Download writes the previewed document through the SAF
+  "save as" picker (`CreateDocument("text/html")`).
+- Nothing is persisted beyond the message text itself, so cards and
+  previews come back when a chat is reopened.
+
 ## KV-cache reuse and rewind
 
 A generation session keeps its KV cache between turns and feeds only

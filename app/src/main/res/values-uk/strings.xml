@@ -295,8 +295,8 @@
     <string name="tool_run_javascript_title">Виконати JavaScript</string>
     <string name="tool_web_fetch_desc">Відкриває посилання й читає його основний вміст як текст, щоб модель могла підсумувати або процитувати сторінку.</string>
     <string name="tool_web_fetch_example">\"Підсумуй статтю за цим посиланням.\"</string>
-    <string name="html_preview_reload">Перезавантажити</string>
-    <string name="html_preview_full_screen">На весь екран</string>
+    <string name="html_artifact_reload">Перезавантажити</string>
+    <string name="html_artifact_full_screen">На весь екран</string>
     <string name="html_artifact_live_preview">Живий перегляд</string>
     <string name="html_artifact_code">Код</string>
     <string name="html_artifact_writing">Пишеться…</string>
