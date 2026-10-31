@@ -95,9 +95,12 @@ renders an assistant reply (`MessageChatBubble` → `AssistantReplyContent`).
   it never navigates away from its page and tapped links open in the
   browser. Download writes the previewed document through the SAF
   "save as" picker (`CreateDocument("text/html")`). Full screen repeats
-  every card action and adds Reload and Open in browser, which writes the
-  page to `cache/html_previews/` and hands it to the browser through the
-  app's FileProvider with a read grant (no server).
+  every card action and adds Reload.
+- `conversation/LocalPageServer` — Open in browser. Browsers reliably open
+  only http(s) addresses (many refuse a content:// file), so the page is
+  served from memory at `http://127.0.0.1:PORT/<random token>/<name>.html`
+  by a tiny loopback-only HTTP server (plain java.net, JVM-tested), started
+  on first use. One page at a time; any other path is a 404.
 - Nothing is persisted beyond the message text itself, so cards and
   previews come back when a chat is reopened.
 
