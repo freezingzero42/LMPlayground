@@ -362,10 +362,13 @@ class SettingsFragment : Fragment() {
     @androidx.compose.runtime.Composable
     private fun ToolsDetailPane() {
         val enabled by toolsViewModel.enabled.collectAsStateWithLifecycle()
+        val htmlPreviewInternet by toolsViewModel.htmlPreviewInternet.collectAsStateWithLifecycle()
         ToolsContent(
             tools = toolsViewModel.tools,
             enabledStates = enabled,
             onToolEnabledChanged = { name, value -> toolsViewModel.setEnabled(name, value) },
+            htmlPreviewInternet = htmlPreviewInternet,
+            onHtmlPreviewInternetChanged = { toolsViewModel.setHtmlPreviewInternet(it) },
         )
     }
 

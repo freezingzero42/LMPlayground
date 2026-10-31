@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import com.druk.llamacpp.tools.Tool
 import com.druk.llamacpp.tools.ToolRegistry
 import com.druk.lmplayground.tools.createDefault
+import com.druk.lmplayground.conversation.HtmlPreviewInternet
 
 /**
  * Backs the Settings → Tools screen. Reads and writes the *global default*
@@ -30,5 +31,16 @@ class ToolsViewModel(app: Application) : AndroidViewModel(app) {
     fun setEnabled(toolName: String, value: Boolean) {
         prefs.setToolEnabledDefault(toolName, value)
         _enabled.value = _enabled.value.toMutableMap().apply { put(toolName, value) }
+    }
+
+    private val _htmlPreviewInternet = MutableStateFlow(HtmlPreviewInternet.isEnabled(app))
+
+    /** Internet access for live HTML previews (app-wide, not per model). */
+    val htmlPreviewInternet: StateFlow<Boolean> = _htmlPreviewInternet
+
+    /** Turning access off also deletes everything previews stored online. */
+    fun setHtmlPreviewInternet(value: Boolean) {
+        HtmlPreviewInternet.setEnabled(getApplication(), value)
+        _htmlPreviewInternet.value = value
     }
 }

@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -76,6 +77,8 @@ fun ToolsScreen(
     tools: List<Tool>,
     enabledStates: Map<String, Boolean>,
     onToolEnabledChanged: (String, Boolean) -> Unit,
+    htmlPreviewInternet: Boolean,
+    onHtmlPreviewInternetChanged: (Boolean) -> Unit,
     onBackClick: () -> Unit,
 ) {
     Scaffold(
@@ -100,16 +103,24 @@ fun ToolsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
+            htmlPreviewInternet = htmlPreviewInternet,
+            onHtmlPreviewInternetChanged = onHtmlPreviewInternetChanged,
         )
     }
 }
 
+/**
+ * The tool rows. When [htmlPreviewInternet] is given, the "Internet access in
+ * previews" row follows them, styled like another tool.
+ */
 @Composable
 fun ToolsContent(
     tools: List<Tool>,
     enabledStates: Map<String, Boolean>,
     onToolEnabledChanged: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    htmlPreviewInternet: Boolean? = null,
+    onHtmlPreviewInternetChanged: (Boolean) -> Unit = {},
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         tools.forEach { tool ->
@@ -120,8 +131,33 @@ fun ToolsContent(
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         }
+        if (htmlPreviewInternet != null) {
+            HtmlPreviewInternetRow(
+                enabled = htmlPreviewInternet,
+                onToggle = onHtmlPreviewInternetChanged,
+            )
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+        }
     }
 }
+
+/**
+ * "Internet access in previews" for live HTML previews, styled like a tool
+ * row. App-wide and off by default, so previews stay offline unless the user
+ * opts in; shown on the Tools page and in a model's Tools tab, both writing
+ * the same setting.
+ */
+@Composable
+fun HtmlPreviewInternetRow(
+    enabled: Boolean,
+    onToggle: (Boolean) -> Unit,
+) = SwitchRow(
+    icon = Icons.Outlined.Language,
+    title = stringResource(R.string.tools_html_preview_internet_title),
+    description = stringResource(R.string.tools_html_preview_internet_desc),
+    checked = enabled,
+    onCheckedChange = onToggle,
+)
 
 @Composable
 private fun ToolRow(

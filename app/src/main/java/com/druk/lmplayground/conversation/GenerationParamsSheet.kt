@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -53,10 +52,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.HorizontalDivider
 import com.druk.lmplayground.R
 import com.druk.lmplayground.data.SystemPromptEntity
 import com.druk.lmplayground.settings.SystemPromptEditorSheet
 import com.druk.lmplayground.settings.ToolsContent
+import com.druk.lmplayground.settings.HtmlPreviewInternetRow
 import com.druk.llamacpp.tools.Tool
 import kotlin.math.roundToInt
 
@@ -538,6 +540,16 @@ private fun ToolsTab(
     minHeight: Dp,
     maxHeight: Dp
 ) {
+    // "Internet access in previews" is app-wide (the same setting as
+    // Settings → Tools), so it is read and written here directly rather than
+    // per model. Turning it off deletes everything previews stored online.
+    val context = LocalContext.current
+    var previewInternet by remember { mutableStateOf(HtmlPreviewInternet.isEnabled(context)) }
+    val setPreviewInternet: (Boolean) -> Unit = {
+        HtmlPreviewInternet.setEnabled(context, it)
+        previewInternet = it
+    }
+
     if (supportsToolCalling && tools.isNotEmpty()) {
         // Reuse the Settings → Tools rows (icon, title, description, example,
         // Switch). ToolsContent scrolls internally, so it gets a bounded
@@ -548,20 +560,29 @@ private fun ToolsTab(
             onToolEnabledChanged = onToolEnabledChanged,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = minHeight, max = maxHeight)
+                .heightIn(min = minHeight, max = maxHeight),
+            htmlPreviewInternet = previewInternet,
+            onHtmlPreviewInternetChanged = setPreviewInternet,
         )
     } else {
-        Box(
+        // Live previews work with every model, so their internet toggle
+        // stays available even when the model can't call tools.
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = minHeight, max = maxHeight),
-            contentAlignment = Alignment.Center
+                .heightIn(min = minHeight, max = maxHeight)
+                .verticalScroll(rememberScrollState()),
         ) {
             Text(
                 text = stringResource(R.string.tools_unsupported),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 24.dp)
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp)
+            )
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+            HtmlPreviewInternetRow(
+                enabled = previewInternet,
+                onToggle = setPreviewInternet,
             )
         }
     }

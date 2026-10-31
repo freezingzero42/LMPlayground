@@ -27,10 +27,13 @@ class ToolsFragment : Fragment() {
         setContent {
             PlaygroundTheme {
                 val enabled by toolsViewModel.enabled.collectAsStateWithLifecycle()
+                val htmlPreviewInternet by toolsViewModel.htmlPreviewInternet.collectAsStateWithLifecycle()
                 ToolsScreen(
                     tools = toolsViewModel.tools,
                     enabledStates = enabled,
                     onToolEnabledChanged = { name, value -> toolsViewModel.setEnabled(name, value) },
+                    htmlPreviewInternet = htmlPreviewInternet,
+                    onHtmlPreviewInternetChanged = { toolsViewModel.setHtmlPreviewInternet(it) },
                     onBackClick = { findNavController().popBackStack() },
                 )
             }
