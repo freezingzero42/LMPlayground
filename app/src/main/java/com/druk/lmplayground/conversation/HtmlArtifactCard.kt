@@ -228,8 +228,8 @@ fun HtmlArtifactCard(
     ) {
         Column {
             // Header: one row. Title and status on the left; every action on
-            // the right — Live preview <-> Code, Open in browser, Download,
-            // Copy, Full screen.
+            // the right — Live preview <-> Code, Copy, Download, Open in
+            // browser, Full screen.
             Row(
                 modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -271,24 +271,22 @@ fun HtmlArtifactCard(
                     enabled = !writing,
                     emphasized = true,
                 )
-                if (!writing) {
-                    CardIconButton(
-                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
-                        description = stringResource(R.string.html_artifact_open_in_browser),
-                        onClick = openInBrowser,
-                    )
-                    CardIconButton(
-                        icon = Icons.Outlined.Download,
-                        description = stringResource(R.string.html_artifact_download),
-                        onClick = download,
-                    )
-                }
                 CardIconButton(
                     icon = Icons.Outlined.ContentCopy,
                     description = stringResource(R.string.copy),
                     onClick = copyCode,
                 )
                 if (!writing) {
+                    CardIconButton(
+                        icon = Icons.Outlined.Download,
+                        description = stringResource(R.string.html_artifact_download),
+                        onClick = download,
+                    )
+                    CardIconButton(
+                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        description = stringResource(R.string.html_artifact_open_in_browser),
+                        onClick = openInBrowser,
+                    )
                     CardIconButton(
                         icon = Icons.Outlined.Fullscreen,
                         description = stringResource(R.string.html_artifact_full_screen),
@@ -390,9 +388,9 @@ private fun CodeView(code: String, followTail: Boolean, modifier: Modifier = Mod
 }
 
 /**
- * Full-screen view of an artifact. Its top bar carries every action from the
- * card — Live preview <-> Code, Download and Copy — plus Reload (while
- * previewing) and Open in browser. Opens on the live preview.
+ * Full-screen view of an artifact. Its top bar, in order: Live preview <->
+ * Code, Copy, Download, Open in browser, then Reload (while previewing).
+ * Opens on the live preview.
  */
 @Composable
 private fun HtmlFullScreenDialog(
@@ -447,17 +445,10 @@ private fun HtmlFullScreenDialog(
                         onClick = { showPreview = !showPreview },
                         emphasized = true,
                     )
-                    if (showPreview) {
-                        CardIconButton(
-                            icon = Icons.Outlined.Refresh,
-                            description = stringResource(R.string.html_artifact_reload),
-                            onClick = { reloadCount++ },
-                        )
-                    }
                     CardIconButton(
-                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
-                        description = stringResource(R.string.html_artifact_open_in_browser),
-                        onClick = onOpenInBrowser,
+                        icon = Icons.Outlined.ContentCopy,
+                        description = stringResource(R.string.copy),
+                        onClick = onCopy,
                     )
                     CardIconButton(
                         icon = Icons.Outlined.Download,
@@ -465,10 +456,18 @@ private fun HtmlFullScreenDialog(
                         onClick = onDownload,
                     )
                     CardIconButton(
-                        icon = Icons.Outlined.ContentCopy,
-                        description = stringResource(R.string.copy),
-                        onClick = onCopy,
+                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        description = stringResource(R.string.html_artifact_open_in_browser),
+                        onClick = onOpenInBrowser,
                     )
+                    // Reload is last; it only appears while previewing.
+                    if (showPreview) {
+                        CardIconButton(
+                            icon = Icons.Outlined.Refresh,
+                            description = stringResource(R.string.html_artifact_reload),
+                            onClick = { reloadCount++ },
+                        )
+                    }
                 }
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 if (showPreview) {
