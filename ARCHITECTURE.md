@@ -97,8 +97,10 @@ renders an assistant reply (`MessageChatBubble` → `AssistantReplyContent`).
 - `conversation/HtmlPreviewWebView` — the preview WebView: JavaScript on,
   no JS bridge, no file/content access, no popups; it never navigates away
   from its page and tapped links open in the browser. **Offline by
-  default**: internet access is an app-wide opt-in in Settings → Tools
-  (`StoragePreferences.htmlPreviewInternet`, read when a preview opens).
+  default**: internet access is an app-wide opt-in, shown as a row in
+  Settings → Tools and in a model's Tools tab (even for models without tool
+  calling); both write `StoragePreferences.htmlPreviewInternet`, which is
+  read when a preview opens.
   While it's off, network loads are blocked (`blockNetworkLoads` plus every
   http(s) request intercepted and refused) and the card explains it when a
   page tried to go online.

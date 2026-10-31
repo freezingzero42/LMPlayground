@@ -303,7 +303,6 @@
     <string name="html_artifact_save_failed">Datei konnte nicht gespeichert werden</string>
     <string name="html_artifact_open_in_browser">Im Browser öffnen</string>
     <string name="html_artifact_no_browser">Keine App gefunden, die diese Seite öffnen kann</string>
-    <string name="tools_html_preview_section">Live-HTML-Vorschau</string>
     <string name="tools_html_preview_internet_title">Internetzugriff in Vorschauen</string>
     <string name="tools_html_preview_internet_desc">Erlaubt Live-Vorschauen, Bibliotheken, Schriften, Bilder und Daten aus dem Internet zu laden. Wenn deaktiviert, laufen Vorschauen vollständig offline. Im Browser öffnen nutzt deine Browser-App, die diese Einstellung nicht steuert.</string>
     <string name="html_artifact_offline_notice">Diese Seite wollte Dateien aus dem Internet laden. Vorschauen sind offline; du kannst den Internetzugriff unter Einstellungen \u2192 Tools erlauben.</string>

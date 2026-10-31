@@ -342,7 +342,6 @@
     <string name="html_artifact_save_failed">Kunne ikke lagre filen</string>
     <string name="html_artifact_open_in_browser">Åpne i nettleser</string>
     <string name="html_artifact_no_browser">Fant ingen app som kan åpne siden</string>
-    <string name="tools_html_preview_section">Direkte HTML-forhåndsvisning</string>
     <string name="tools_html_preview_internet_title">Internettilgang i forhåndsvisninger</string>
     <string name="tools_html_preview_internet_desc">Lar direkte forhåndsvisninger laste inn biblioteker, skrifter, bilder og data fra internett. Når den er av, kjører forhåndsvisninger helt frakoblet. Åpne i nettleser bruker nettleserappen din, som denne innstillingen ikke styrer.</string>
     <string name="html_artifact_offline_notice">Denne siden prøvde å laste inn filer fra internett. Forhåndsvisninger er frakoblet; du kan tillate internettilgang under Innstillinger \u2192 Verktøy.</string>

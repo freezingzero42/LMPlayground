@@ -312,7 +312,6 @@
     <string name="html_artifact_save_failed">파일을 저장하지 못했습니다</string>
     <string name="html_artifact_open_in_browser">브라우저에서 열기</string>
     <string name="html_artifact_no_browser">이 페이지를 열 수 있는 앱이 없습니다</string>
-    <string name="tools_html_preview_section">실시간 HTML 미리보기</string>
     <string name="tools_html_preview_internet_title">미리보기의 인터넷 액세스</string>
     <string name="tools_html_preview_internet_desc">실시간 미리보기가 인터넷에서 라이브러리, 글꼴, 이미지, 데이터를 불러올 수 있게 합니다. 끄면 미리보기는 완전히 오프라인으로 실행됩니다. 브라우저에서 열기는 사용 중인 브라우저 앱을 사용하므로 이 설정의 영향을 받지 않습니다.</string>
     <string name="html_artifact_offline_notice">이 페이지가 인터넷에서 파일을 불러오려고 했습니다. 미리보기는 오프라인입니다. 설정 \u2192 도구에서 인터넷 액세스를 허용할 수 있습니다.</string>

@@ -309,7 +309,6 @@
     <string name="html_artifact_save_failed">Не вдалося зберегти файл</string>
     <string name="html_artifact_open_in_browser">Відкрити в браузері</string>
     <string name="html_artifact_no_browser">Не знайдено застосунку, щоб відкрити цю сторінку</string>
-    <string name="tools_html_preview_section">Живий перегляд HTML</string>
     <string name="tools_html_preview_internet_title">Доступ до інтернету в переглядах</string>
     <string name="tools_html_preview_internet_desc">Дозволяє живим переглядам завантажувати з інтернету бібліотеки, шрифти, зображення й дані. Коли вимкнено, перегляди працюють повністю офлайн. «Відкрити в браузері» використовує ваш застосунок браузера, яким це налаштування не керує.</string>
     <string name="html_artifact_offline_notice">Ця сторінка намагалася завантажити файли з інтернету. Перегляди працюють офлайн; дозволити доступ до інтернету можна в Налаштування \u2192 Інструменти.</string>

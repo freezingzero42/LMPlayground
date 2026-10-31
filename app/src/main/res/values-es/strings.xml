@@ -314,7 +314,6 @@
     <string name="html_artifact_save_failed">No se pudo guardar el archivo</string>
     <string name="html_artifact_open_in_browser">Abrir en el navegador</string>
     <string name="html_artifact_no_browser">No se encontró ninguna app para abrir esta página</string>
-    <string name="tools_html_preview_section">Vista previa HTML en vivo</string>
     <string name="tools_html_preview_internet_title">Acceso a internet en vistas previas</string>
     <string name="tools_html_preview_internet_desc">Permite que las vistas previas en vivo carguen bibliotecas, fuentes, imágenes y datos de internet. Si está desactivado, las vistas previas funcionan totalmente sin conexión. Abrir en el navegador usa tu app de navegador, que este ajuste no controla.</string>
     <string name="html_artifact_offline_notice">Esta página intentó cargar archivos de internet. Las vistas previas funcionan sin conexión; puedes permitir el acceso a internet en Ajustes \u2192 Herramientas.</string>

@@ -351,7 +351,6 @@
     <string name="html_artifact_save_failed">Tidak dapat menyimpan fail</string>
     <string name="html_artifact_open_in_browser">Buka dalam penyemak imbas</string>
     <string name="html_artifact_no_browser">Tiada apl ditemui untuk membuka halaman ini</string>
-    <string name="tools_html_preview_section">Pratonton HTML langsung</string>
     <string name="tools_html_preview_internet_title">Akses internet dalam pratonton</string>
     <string name="tools_html_preview_internet_desc">Membenarkan pratonton langsung memuatkan pustaka, fon, imej dan data daripada internet. Apabila dimatikan, pratonton berjalan sepenuhnya di luar talian. Buka dalam penyemak imbas menggunakan apl penyemak imbas anda, yang tidak dikawal oleh tetapan ini.</string>
     <string name="html_artifact_offline_notice">Halaman ini cuba memuatkan fail daripada internet. Pratonton berjalan di luar talian; anda boleh membenarkan akses internet dalam Tetapan \u2192 Alat.</string>

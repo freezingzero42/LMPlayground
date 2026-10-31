@@ -364,7 +364,6 @@
     <string name="html_artifact_save_failed">לא ניתן היה לשמור את הקובץ</string>
     <string name="html_artifact_open_in_browser">פתיחה בדפדפן</string>
     <string name="html_artifact_no_browser">לא נמצאה אפליקציה שיכולה לפתוח את הדף</string>
-    <string name="tools_html_preview_section">תצוגה מקדימה חיה של HTML</string>
     <string name="tools_html_preview_internet_title">גישה לאינטרנט בתצוגות מקדימות</string>
     <string name="tools_html_preview_internet_desc">מאפשר לתצוגות מקדימות חיות לטעון ספריות, גופנים, תמונות ונתונים מהאינטרנט. כשההגדרה כבויה, התצוגות פועלות במצב לא מקוון לחלוטין. פתיחה בדפדפן משתמשת באפליקציית הדפדפן שלך, שההגדרה הזו לא שולטת בה.</string>
     <string name="html_artifact_offline_notice">הדף ניסה לטעון קבצים מהאינטרנט. התצוגות המקדימות פועלות במצב לא מקוון; אפשר לאפשר גישה לאינטרנט בהגדרות \u2192 כלים.</string>

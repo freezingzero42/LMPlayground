@@ -351,7 +351,6 @@
     <string name="html_artifact_save_failed">Hindi ma-save ang file</string>
     <string name="html_artifact_open_in_browser">Buksan sa browser</string>
     <string name="html_artifact_no_browser">Walang nahanap na app para buksan ang page na ito</string>
-    <string name="tools_html_preview_section">Live HTML preview</string>
     <string name="tools_html_preview_internet_title">Internet access sa mga preview</string>
     <string name="tools_html_preview_internet_desc">Pinapayagan ang mga live preview na mag-load ng mga library, font, larawan at data mula sa internet. Kapag naka-off, tumatakbo nang ganap na offline ang mga preview. Ginagamit ng Buksan sa browser ang iyong browser app, na hindi kinokontrol ng setting na ito.</string>
     <string name="html_artifact_offline_notice">Sinubukan ng page na ito na mag-load ng mga file mula sa internet. Offline ang mga preview; puwede mong payagan ang internet access sa Settings \u2192 Tools.</string>

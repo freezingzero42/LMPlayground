@@ -350,7 +350,6 @@
     <string name="html_artifact_save_failed">บันทึกไฟล์ไม่ได้</string>
     <string name="html_artifact_open_in_browser">เปิดในเบราว์เซอร์</string>
     <string name="html_artifact_no_browser">ไม่พบแอปที่เปิดหน้านี้ได้</string>
-    <string name="tools_html_preview_section">ตัวอย่าง HTML แบบสด</string>
     <string name="tools_html_preview_internet_title">การเข้าถึงอินเทอร์เน็ตในตัวอย่าง</string>
     <string name="tools_html_preview_internet_desc">อนุญาตให้ตัวอย่างแบบสดโหลดไลบรารี ฟอนต์ รูปภาพ และข้อมูลจากอินเทอร์เน็ต เมื่อปิดไว้ ตัวอย่างจะทำงานแบบออฟไลน์ทั้งหมด การเปิดในเบราว์เซอร์จะใช้แอปเบราว์เซอร์ของคุณ ซึ่งการตั้งค่านี้ไม่ได้ควบคุม</string>
     <string name="html_artifact_offline_notice">หน้านี้พยายามโหลดไฟล์จากอินเทอร์เน็ต ตัวอย่างทำงานแบบออฟไลน์ คุณอนุญาตการเข้าถึงอินเทอร์เน็ตได้ที่ การตั้งค่า \u2192 เครื่องมือ</string>

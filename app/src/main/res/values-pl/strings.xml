@@ -309,7 +309,6 @@
     <string name="html_artifact_save_failed">Nie udało się zapisać pliku</string>
     <string name="html_artifact_open_in_browser">Otwórz w przeglądarce</string>
     <string name="html_artifact_no_browser">Nie znaleziono aplikacji, która otworzy tę stronę</string>
-    <string name="tools_html_preview_section">Podgląd HTML na żywo</string>
     <string name="tools_html_preview_internet_title">Dostęp do internetu w podglądach</string>
     <string name="tools_html_preview_internet_desc">Pozwala podglądom na żywo wczytywać biblioteki, czcionki, obrazy i dane z internetu. Gdy jest wyłączone, podglądy działają całkowicie offline. Otwórz w przeglądarce korzysta z Twojej aplikacji przeglądarki, której to ustawienie nie dotyczy.</string>
     <string name="html_artifact_offline_notice">Ta strona próbowała wczytać pliki z internetu. Podglądy działają offline; dostęp do internetu możesz włączyć w Ustawienia \u2192 Narzędzia.</string>

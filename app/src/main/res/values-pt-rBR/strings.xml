@@ -314,7 +314,6 @@
     <string name="html_artifact_save_failed">Não foi possível salvar o arquivo</string>
     <string name="html_artifact_open_in_browser">Abrir no navegador</string>
     <string name="html_artifact_no_browser">Nenhum app encontrado para abrir esta página</string>
-    <string name="tools_html_preview_section">Prévia HTML ao vivo</string>
     <string name="tools_html_preview_internet_title">Acesso à internet nas prévias</string>
     <string name="tools_html_preview_internet_desc">Permite que as prévias ao vivo carreguem bibliotecas, fontes, imagens e dados da internet. Quando desativado, as prévias funcionam totalmente offline. Abrir no navegador usa seu app de navegador, que esta configuração não controla.</string>
     <string name="html_artifact_offline_notice">Esta página tentou carregar arquivos da internet. As prévias estão offline; você pode permitir o acesso à internet em Configurações \u2192 Ferramentas.</string>

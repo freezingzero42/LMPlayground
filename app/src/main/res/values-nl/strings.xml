@@ -343,7 +343,6 @@
     <string name="html_artifact_save_failed">Kan het bestand niet opslaan</string>
     <string name="html_artifact_open_in_browser">Openen in browser</string>
     <string name="html_artifact_no_browser">Geen app gevonden om deze pagina te openen</string>
-    <string name="tools_html_preview_section">Live HTML-voorbeeld</string>
     <string name="tools_html_preview_internet_title">Internettoegang in voorbeelden</string>
     <string name="tools_html_preview_internet_desc">Laat live voorbeelden bibliotheken, lettertypen, afbeeldingen en gegevens van internet laden. Als dit uit staat, werken voorbeelden volledig offline. Openen in browser gebruikt je browser-app, die deze instelling niet regelt.</string>
     <string name="html_artifact_offline_notice">Deze pagina probeerde bestanden van internet te laden. Voorbeelden zijn offline; je kunt internettoegang toestaan via Instellingen \u2192 Tools.</string>

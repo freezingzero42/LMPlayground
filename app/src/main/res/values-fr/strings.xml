@@ -314,7 +314,6 @@
     <string name="html_artifact_save_failed">Impossible d\'enregistrer le fichier</string>
     <string name="html_artifact_open_in_browser">Ouvrir dans le navigateur</string>
     <string name="html_artifact_no_browser">Aucune application ne peut ouvrir cette page</string>
-    <string name="tools_html_preview_section">Aperçu HTML en direct</string>
     <string name="tools_html_preview_internet_title">Accès à Internet dans les aperçus</string>
     <string name="tools_html_preview_internet_desc">Permet aux aperçus en direct de charger des bibliothèques, des polices, des images et des données depuis Internet. Désactivé, les aperçus fonctionnent entièrement hors ligne. Ouvrir dans le navigateur utilise votre application de navigation, que ce réglage ne contrôle pas.</string>
     <string name="html_artifact_offline_notice">Cette page a tenté de charger des fichiers depuis Internet. Les aperçus sont hors ligne ; vous pouvez autoriser l\'accès à Internet dans Paramètres \u2192 Outils.</string>

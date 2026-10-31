@@ -312,7 +312,6 @@
     <string name="html_artifact_save_failed">ファイルを保存できませんでした</string>
     <string name="html_artifact_open_in_browser">ブラウザで開く</string>
     <string name="html_artifact_no_browser">このページを開けるアプリが見つかりません</string>
-    <string name="tools_html_preview_section">HTMLライブプレビュー</string>
     <string name="tools_html_preview_internet_title">プレビューでのインターネットアクセス</string>
     <string name="tools_html_preview_internet_desc">ライブプレビューがインターネットからライブラリ、フォント、画像、データを読み込めるようにします。オフにすると、プレビューは完全にオフラインで動作します。「ブラウザで開く」はお使いのブラウザアプリを使うため、この設定の対象外です。</string>
     <string name="html_artifact_offline_notice">このページはインターネットからファイルを読み込もうとしました。プレビューはオフラインです。設定 \u2192 ツールでインターネットアクセスを許可できます。</string>

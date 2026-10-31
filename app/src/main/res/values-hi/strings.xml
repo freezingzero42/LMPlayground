@@ -322,7 +322,6 @@
     <string name="html_artifact_save_failed">फ़ाइल सेव नहीं हो सकी</string>
     <string name="html_artifact_open_in_browser">ब्राउज़र में खोलें</string>
     <string name="html_artifact_no_browser">इस पेज को खोलने के लिए कोई ऐप नहीं मिला</string>
-    <string name="tools_html_preview_section">लाइव HTML प्रीव्यू</string>
     <string name="tools_html_preview_internet_title">प्रीव्यू में इंटरनेट एक्सेस</string>
     <string name="tools_html_preview_internet_desc">लाइव प्रीव्यू को इंटरनेट से लाइब्रेरी, फ़ॉन्ट, इमेज और डेटा लोड करने देता है। बंद होने पर प्रीव्यू पूरी तरह ऑफ़लाइन चलते हैं। ब्राउज़र में खोलें आपके ब्राउज़र ऐप का इस्तेमाल करता है, जिसे यह सेटिंग नियंत्रित नहीं करती।</string>
     <string name="html_artifact_offline_notice">इस पेज ने इंटरनेट से फ़ाइलें लोड करने की कोशिश की। प्रीव्यू ऑफ़लाइन हैं; आप सेटिंग्स \u2192 टूल्स में इंटरनेट एक्सेस की अनुमति दे सकते हैं।</string>

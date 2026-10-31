@@ -314,7 +314,6 @@
     <string name="html_artifact_save_failed">Impossibile salvare il file</string>
     <string name="html_artifact_open_in_browser">Apri nel browser</string>
     <string name="html_artifact_no_browser">Nessuna app trovata per aprire questa pagina</string>
-    <string name="tools_html_preview_section">Anteprima HTML dal vivo</string>
     <string name="tools_html_preview_internet_title">Accesso a internet nelle anteprime</string>
     <string name="tools_html_preview_internet_desc">Consente alle anteprime dal vivo di caricare librerie, font, immagini e dati da internet. Se disattivato, le anteprime funzionano completamente offline. Apri nel browser usa la tua app browser, che questa impostazione non controlla.</string>
     <string name="html_artifact_offline_notice">Questa pagina ha cercato di caricare file da internet. Le anteprime sono offline; puoi consentire l\'accesso a internet in Impostazioni \u2192 Strumenti.</string>

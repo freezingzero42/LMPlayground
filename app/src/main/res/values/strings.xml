@@ -366,7 +366,6 @@
     <string name="html_artifact_save_failed">Couldn\'t save the file</string>
     <string name="html_artifact_open_in_browser">Open in browser</string>
     <string name="html_artifact_no_browser">No app found to open this page</string>
-    <string name="tools_html_preview_section">Live HTML preview</string>
     <string name="tools_html_preview_internet_title">Internet access in previews</string>
     <string name="tools_html_preview_internet_desc">Lets live previews load libraries, fonts, images and data from the internet. When off, previews run fully offline. Open in browser uses your browser app, which this setting doesn\'t control.</string>
     <string name="html_artifact_offline_notice">This page tried to load files from the internet. Previews are offline; you can allow internet access in Settings \u2192 Tools.</string>

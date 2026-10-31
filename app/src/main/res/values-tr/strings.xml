@@ -314,7 +314,6 @@
     <string name="html_artifact_save_failed">Dosya kaydedilemedi</string>
     <string name="html_artifact_open_in_browser">Tarayıcıda aç</string>
     <string name="html_artifact_no_browser">Bu sayfayı açacak uygulama bulunamadı</string>
-    <string name="tools_html_preview_section">Canlı HTML önizleme</string>
     <string name="tools_html_preview_internet_title">Önizlemelerde internet erişimi</string>
     <string name="tools_html_preview_internet_desc">Canlı önizlemelerin internetten kitaplık, yazı tipi, görsel ve veri yüklemesine izin verir. Kapalıyken önizlemeler tamamen çevrimdışı çalışır. Tarayıcıda aç, bu ayarın denetlemediği tarayıcı uygulamanızı kullanır.</string>
     <string name="html_artifact_offline_notice">Bu sayfa internetten dosya yüklemeye çalıştı. Önizlemeler çevrimdışı; internet erişimine Ayarlar \u2192 Araçlar bölümünden izin verebilirsiniz.</string>

@@ -346,7 +346,6 @@
     <string name="html_artifact_save_failed">Tiedostoa ei voitu tallentaa</string>
     <string name="html_artifact_open_in_browser">Avaa selaimessa</string>
     <string name="html_artifact_no_browser">Sivun avaamiseen ei löytynyt sovellusta</string>
-    <string name="tools_html_preview_section">Live-HTML-esikatselu</string>
     <string name="tools_html_preview_internet_title">Internetyhteys esikatseluissa</string>
     <string name="tools_html_preview_internet_desc">Sallii live-esikatseluiden ladata kirjastoja, fontteja, kuvia ja dataa internetistä. Kun asetus on pois päältä, esikatselut toimivat täysin offline-tilassa. Avaa selaimessa käyttää selainsovellustasi, jota tämä asetus ei ohjaa.</string>
     <string name="html_artifact_offline_notice">Tämä sivu yritti ladata tiedostoja internetistä. Esikatselut ovat offline-tilassa; voit sallia internetyhteyden kohdassa Asetukset \u2192 Työkalut.</string>

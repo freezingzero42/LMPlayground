@@ -326,7 +326,6 @@
     <string name="html_artifact_save_failed">تعذّر حفظ الملف</string>
     <string name="html_artifact_open_in_browser">فتح في المتصفح</string>
     <string name="html_artifact_no_browser">لم يتم العثور على تطبيق لفتح هذه الصفحة</string>
-    <string name="tools_html_preview_section">معاينة HTML المباشرة</string>
     <string name="tools_html_preview_internet_title">الوصول إلى الإنترنت في المعاينات</string>
     <string name="tools_html_preview_internet_desc">يسمح للمعاينات المباشرة بتحميل المكتبات والخطوط والصور والبيانات من الإنترنت. عند إيقافه، تعمل المعاينات دون اتصال تمامًا. يستخدم خيار الفتح في المتصفح تطبيق المتصفح لديك، ولا يتحكم فيه هذا الإعداد.</string>
     <string name="html_artifact_offline_notice">حاولت هذه الصفحة تحميل ملفات من الإنترنت. المعاينات تعمل دون اتصال؛ يمكنك السماح بالوصول إلى الإنترنت من الإعدادات \u2190 الأدوات.</string>

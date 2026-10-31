@@ -361,7 +361,6 @@
     <string name="html_artifact_save_failed">ফাইলটি সেভ করা যায়নি</string>
     <string name="html_artifact_open_in_browser">ব্রাউজারে খুলুন</string>
     <string name="html_artifact_no_browser">এই পেজটি খোলার মতো কোনো অ্যাপ পাওয়া যায়নি</string>
-    <string name="tools_html_preview_section">লাইভ HTML প্রিভিউ</string>
     <string name="tools_html_preview_internet_title">প্রিভিউতে ইন্টারনেট অ্যাক্সেস</string>
     <string name="tools_html_preview_internet_desc">লাইভ প্রিভিউকে ইন্টারনেট থেকে লাইব্রেরি, ফন্ট, ছবি ও ডেটা লোড করতে দেয়। বন্ধ থাকলে প্রিভিউ সম্পূর্ণ অফলাইনে চলে। ব্রাউজারে খুলুন আপনার ব্রাউজার অ্যাপ ব্যবহার করে, যা এই সেটিং নিয়ন্ত্রণ করে না।</string>
     <string name="html_artifact_offline_notice">এই পেজটি ইন্টারনেট থেকে ফাইল লোড করার চেষ্টা করেছে। প্রিভিউ অফলাইনে চলে; সেটিংস \u2192 টুলস থেকে ইন্টারনেট অ্যাক্সেস চালু করতে পারেন।</string>

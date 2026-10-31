@@ -312,7 +312,6 @@
     <string name="html_artifact_save_failed">Không thể lưu tệp</string>
     <string name="html_artifact_open_in_browser">Mở trong trình duyệt</string>
     <string name="html_artifact_no_browser">Không tìm thấy ứng dụng để mở trang này</string>
-    <string name="tools_html_preview_section">Xem trước HTML trực tiếp</string>
     <string name="tools_html_preview_internet_title">Truy cập internet trong bản xem trước</string>
     <string name="tools_html_preview_internet_desc">Cho phép bản xem trước trực tiếp tải thư viện, phông chữ, hình ảnh và dữ liệu từ internet. Khi tắt, bản xem trước chạy hoàn toàn ngoại tuyến. Mở trong trình duyệt dùng ứng dụng trình duyệt của bạn, vốn không chịu sự kiểm soát của cài đặt này.</string>
     <string name="html_artifact_offline_notice">Trang này đã cố tải tệp từ internet. Bản xem trước đang ngoại tuyến; bạn có thể cho phép truy cập internet trong Cài đặt \u2192 Công cụ.</string>

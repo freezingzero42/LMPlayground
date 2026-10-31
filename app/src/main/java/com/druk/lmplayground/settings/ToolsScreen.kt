@@ -110,9 +110,8 @@ fun ToolsScreen(
 }
 
 /**
- * The tool rows. [htmlPreviewInternet] adds the live-HTML-preview section
- * below them; it is app-wide, so the Tools page passes it and a model's
- * params sheet (per-model tool overrides) leaves it null.
+ * The tool rows. When [htmlPreviewInternet] is given, the "Internet access in
+ * previews" row follows them, styled like another tool.
  */
 @Composable
 fun ToolsContent(
@@ -133,30 +132,30 @@ fun ToolsContent(
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         }
         if (htmlPreviewInternet != null) {
-            HtmlPreviewSection(
-                internetEnabled = htmlPreviewInternet,
-                onInternetChanged = onHtmlPreviewInternetChanged,
+            HtmlPreviewInternetRow(
+                enabled = htmlPreviewInternet,
+                onToggle = onHtmlPreviewInternetChanged,
             )
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         }
     }
 }
 
-/** Settings for live HTML previews: just internet access, off by default. */
+/**
+ * "Internet access in previews" for live HTML previews, styled like a tool
+ * row. App-wide and off by default, so previews stay offline unless the user
+ * opts in; shown on the Tools page and in a model's Tools tab, both writing
+ * the same setting.
+ */
 @Composable
-private fun HtmlPreviewSection(
-    internetEnabled: Boolean,
-    onInternetChanged: (Boolean) -> Unit,
+fun HtmlPreviewInternetRow(
+    enabled: Boolean,
+    onToggle: (Boolean) -> Unit,
 ) {
-    Text(
-        text = stringResource(R.string.tools_html_preview_section),
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 4.dp),
-    )
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onInternetChanged(!internetEnabled) }
+            .clickable { onToggle(!enabled) }
             .padding(16.dp),
         verticalAlignment = Alignment.Top,
     ) {
@@ -180,8 +179,8 @@ private fun HtmlPreviewSection(
         }
         Spacer(Modifier.width(8.dp))
         Switch(
-            checked = internetEnabled,
-            onCheckedChange = onInternetChanged,
+            checked = enabled,
+            onCheckedChange = onToggle,
             modifier = Modifier.align(Alignment.CenterVertically),
         )
     }

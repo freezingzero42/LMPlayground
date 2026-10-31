@@ -312,7 +312,6 @@
     <string name="html_artifact_save_failed">Tidak dapat menyimpan file</string>
     <string name="html_artifact_open_in_browser">Buka di browser</string>
     <string name="html_artifact_no_browser">Tidak ada aplikasi untuk membuka halaman ini</string>
-    <string name="tools_html_preview_section">Pratinjau HTML langsung</string>
     <string name="tools_html_preview_internet_title">Akses internet di pratinjau</string>
     <string name="tools_html_preview_internet_desc">Mengizinkan pratinjau langsung memuat library, font, gambar, dan data dari internet. Jika nonaktif, pratinjau berjalan sepenuhnya offline. Buka di browser menggunakan aplikasi browser Anda, yang tidak diatur oleh setelan ini.</string>
     <string name="html_artifact_offline_notice">Halaman ini mencoba memuat file dari internet. Pratinjau berjalan offline; Anda dapat mengizinkan akses internet di Setelan \u2192 Alat.</string>

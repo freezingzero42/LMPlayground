@@ -312,7 +312,6 @@
     <string name="html_artifact_save_failed">无法保存文件</string>
     <string name="html_artifact_open_in_browser">在浏览器中打开</string>
     <string name="html_artifact_no_browser">找不到可打开此页面的应用</string>
-    <string name="tools_html_preview_section">HTML 实时预览</string>
     <string name="tools_html_preview_internet_title">预览中的互联网访问</string>
     <string name="tools_html_preview_internet_desc">允许实时预览从互联网加载库、字体、图片和数据。关闭后，预览完全离线运行。“在浏览器中打开”使用您的浏览器应用，不受此设置控制。</string>
     <string name="html_artifact_offline_notice">此页面尝试从互联网加载文件。预览处于离线状态；您可以在“设置 \u2192 工具”中允许互联网访问。</string>

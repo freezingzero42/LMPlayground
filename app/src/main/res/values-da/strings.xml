@@ -342,7 +342,6 @@
     <string name="html_artifact_save_failed">Filen kunne ikke gemmes</string>
     <string name="html_artifact_open_in_browser">Åbn i browser</string>
     <string name="html_artifact_no_browser">Der blev ikke fundet en app, der kan åbne siden</string>
-    <string name="tools_html_preview_section">Live HTML-forhåndsvisning</string>
     <string name="tools_html_preview_internet_title">Internetadgang i forhåndsvisninger</string>
     <string name="tools_html_preview_internet_desc">Lader live-forhåndsvisninger hente biblioteker, skrifttyper, billeder og data fra internettet. Når den er slået fra, kører forhåndsvisninger helt offline. Åbn i browser bruger din browserapp, som denne indstilling ikke styrer.</string>
     <string name="html_artifact_offline_notice">Denne side forsøgte at hente filer fra internettet. Forhåndsvisninger er offline; du kan tillade internetadgang under Indstillinger \u2192 Værktøjer.</string>

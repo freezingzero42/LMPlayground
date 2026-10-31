@@ -315,7 +315,6 @@
     <string name="html_artifact_save_failed">Fișierul nu a putut fi salvat</string>
     <string name="html_artifact_open_in_browser">Deschide în browser</string>
     <string name="html_artifact_no_browser">Nu s-a găsit nicio aplicație care să deschidă pagina</string>
-    <string name="tools_html_preview_section">Previzualizare HTML live</string>
     <string name="tools_html_preview_internet_title">Acces la internet în previzualizări</string>
     <string name="tools_html_preview_internet_desc">Permite previzualizărilor live să încarce biblioteci, fonturi, imagini și date de pe internet. Când este dezactivat, previzualizările rulează complet offline. Deschide în browser folosește aplicația ta de browser, pe care această setare nu o controlează.</string>
     <string name="html_artifact_offline_notice">Această pagină a încercat să încarce fișiere de pe internet. Previzualizările sunt offline; poți permite accesul la internet din Setări \u2192 Instrumente.</string>
