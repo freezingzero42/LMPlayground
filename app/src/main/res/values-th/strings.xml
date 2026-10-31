@@ -342,6 +342,9 @@
     <string name="html_artifact_code">โค้ด</string>
     <string name="html_artifact_writing">กำลังเขียน…</string>
     <string name="html_artifact_default_title">หน้าเว็บ</string>
+    <string name="html_artifact_download">ดาวน์โหลด</string>
+    <string name="html_artifact_saved">บันทึกไฟล์ HTML แล้ว</string>
+    <string name="html_artifact_save_failed">บันทึกไฟล์ไม่ได้</string>
     <string name="tool_run_javascript_title">รัน JavaScript</string>
     <string name="tool_run_javascript_desc">รัน JavaScript ในแซนด์บ็อกซ์ที่ปลอดภัยสำหรับคณิตศาสตร์ วันที่ และการประมวลผลข้อความ ไม่มีการเข้าถึงอินเทอร์เน็ตหรือไฟล์</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

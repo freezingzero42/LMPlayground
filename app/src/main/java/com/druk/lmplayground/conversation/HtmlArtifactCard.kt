@@ -15,11 +15,15 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -40,6 +44,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Refresh
@@ -59,6 +64,8 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -66,6 +73,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -77,6 +85,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.druk.lmplayground.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG = "HtmlArtifact"
 
@@ -139,8 +150,9 @@ fun AssistantReplyContent(
 
 /**
  * A web page the model wrote, shown as an artifact: the code first (streaming
- * in while the model writes), then a Live preview button that runs it in a
- * sandboxed WebView. Copy and full screen are always one tap away.
+ * in while the model writes), then a Live preview button — in the header
+ * next to Download, Copy and Full screen — that runs it in a sandboxed
+ * WebView. Download saves the page as an .html file where the user chooses.
  */
 @Composable
 fun HtmlArtifactCard(
@@ -154,13 +166,45 @@ fun HtmlArtifactCard(
     var fullScreen by rememberSaveable { mutableStateOf(false) }
     var reloadCount by remember { mutableIntStateOf(0) }
     val clipboardManager = LocalClipboardManager.current
-    val title = remember(code) { HtmlArtifacts.title(code) }
-        .ifBlank { stringResource(R.string.html_artifact_default_title) }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val pageTitle = remember(code) { HtmlArtifacts.title(code) }
+    val title = pageTitle.ifBlank { stringResource(R.string.html_artifact_default_title) }
     // Only build the document when it's going to be shown.
     val document = if ((showPreview || fullScreen) && !writing) {
         remember(documentKey) { buildDocument() }
     } else {
         null
+    }
+
+    // Download: Android's "save as" picker lets the user choose the folder
+    // and file name; we then write the page there. The file is the same
+    // document the live preview runs, so it opens identically in a browser.
+    val savedMessage = stringResource(R.string.html_artifact_saved)
+    val saveFailedMessage = stringResource(R.string.html_artifact_save_failed)
+    val currentBuildDocument by rememberUpdatedState(buildDocument)
+    val saveLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("text/html"),
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult // cancelled
+        val page = currentBuildDocument()
+        scope.launch {
+            val saved = withContext(Dispatchers.IO) {
+                try {
+                    context.contentResolver.openOutputStream(uri, "w")?.use { out ->
+                        out.write(page.toByteArray(Charsets.UTF_8))
+                    } != null
+                } catch (e: Exception) {
+                    Log.w(TAG, "Saving HTML to $uri failed", e)
+                    false
+                }
+            }
+            Toast.makeText(
+                context,
+                if (saved) savedMessage else saveFailedMessage,
+                Toast.LENGTH_SHORT,
+            ).show()
+        }
     }
 
     Surface(
@@ -170,9 +214,9 @@ fun HtmlArtifactCard(
         color = MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
         Column {
-            // Header: title + status, copy, full screen.
+            // Header, row 1: what this is. The title gets the full width.
             Row(
-                modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -198,17 +242,70 @@ fun HtmlArtifactCard(
                         color = MaterialTheme.colorScheme.outline,
                     )
                 }
-                CardIconButton(
-                    icon = Icons.Outlined.ContentCopy,
-                    description = stringResource(R.string.copy),
-                    onClick = { clipboardManager.setText(AnnotatedString(code)) },
-                )
-                if (!writing) {
-                    CardIconButton(
-                        icon = Icons.Outlined.Fullscreen,
-                        description = stringResource(R.string.html_preview_full_screen),
-                        onClick = { fullScreen = true },
+            }
+            // Header, row 2: every action together. Live preview <-> Code is
+            // the labelled main action; Reload, Download, Copy and Full
+            // screen sit beside it.
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, end = 4.dp, top = 2.dp, bottom = 6.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // weight(fill = false): the button takes its natural width but
+                // shrinks (label ellipsized) before it can push the icons off
+                // the card in languages with long labels.
+                FilledTonalButton(
+                    onClick = { showPreview = !showPreview },
+                    enabled = !writing,
+                    contentPadding = PaddingValues(start = 12.dp, end = 16.dp),
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .height(36.dp),
+                ) {
+                    val previewing = showPreview && !writing
+                    Icon(
+                        imageVector = if (previewing) Icons.Outlined.Code else Icons.Outlined.PlayArrow,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
                     )
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        text = stringResource(
+                            if (previewing) R.string.html_artifact_code else R.string.html_artifact_live_preview,
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (showPreview && !writing) {
+                        CardIconButton(
+                            icon = Icons.Outlined.Refresh,
+                            description = stringResource(R.string.html_preview_reload),
+                            onClick = { reloadCount++ },
+                        )
+                    }
+                    if (!writing) {
+                        CardIconButton(
+                            icon = Icons.Outlined.Download,
+                            description = stringResource(R.string.html_artifact_download),
+                            onClick = { saveLauncher.launch(HtmlArtifacts.fileName(pageTitle)) },
+                        )
+                    }
+                    CardIconButton(
+                        icon = Icons.Outlined.ContentCopy,
+                        description = stringResource(R.string.copy),
+                        onClick = { clipboardManager.setText(AnnotatedString(code)) },
+                    )
+                    if (!writing) {
+                        CardIconButton(
+                            icon = Icons.Outlined.Fullscreen,
+                            description = stringResource(R.string.html_preview_full_screen),
+                            onClick = { fullScreen = true },
+                        )
+                    }
                 }
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
@@ -228,38 +325,6 @@ fun HtmlArtifactCard(
             } else {
                 CodeView(code = code, followTail = writing)
             }
-
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            // Footer: the main action. Code <-> Live preview, plus reload.
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                if (showPreview && !writing) {
-                    FilledTonalButton(onClick = { showPreview = false }) {
-                        Icon(Icons.Outlined.Code, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.html_artifact_code))
-                    }
-                    Spacer(Modifier.weight(1f))
-                    CardIconButton(
-                        icon = Icons.Outlined.Refresh,
-                        description = stringResource(R.string.html_preview_reload),
-                        onClick = { reloadCount++ },
-                    )
-                } else {
-                    FilledTonalButton(
-                        onClick = { showPreview = true },
-                        enabled = !writing,
-                    ) {
-                        Icon(Icons.Outlined.PlayArrow, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.html_artifact_live_preview))
-                    }
-                }
-            }
         }
     }
 
@@ -278,7 +343,7 @@ private fun CardIconButton(
     description: String,
     onClick: () -> Unit,
 ) {
-    IconButton(onClick = onClick, modifier = Modifier.size(40.dp)) {
+    IconButton(onClick = onClick, modifier = Modifier.size(36.dp)) {
         Icon(
             imageVector = icon,
             contentDescription = description,
