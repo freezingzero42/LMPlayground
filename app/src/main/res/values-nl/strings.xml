@@ -132,7 +132,7 @@
     <string name="faq_q11">Wat zijn systeemprompts?</string>
     <string name="faq_a11">Een systeemprompt is een herbruikbare instructie die bepaalt hoe het model reageert — bijvoorbeeld „Je bent een bondige wetenschapsleraar. Leg ideeën helder uit met alledaagse voorbeelden.” of „Je bent een senior code-reviewer. Wijs op bugs, randgevallen en beveiligingsproblemen.” Maak en beheer ze in Instellingen → Systeemprompts en pas er vervolgens een toe op je chat. Ze worden op je apparaat bewaard en alleen naar het lokale model verstuurd.</string>
     <string name="faq_q12">Wat zijn tools en welke zijn er beschikbaar?</string>
-    <string name="faq_a12">Met tools kunnen capabele modellen acties uitvoeren tijdens een antwoord. Er zijn er vier beschikbaar: Datum en tijd ophalen (de huidige datum en tijd van je telefoon), JavaScript uitvoeren (wiskunde, datums en tekstverwerking in een sandbox op het apparaat), Zoeken op het web (vindt actuele informatie op het web) en Webpagina ophalen (leest een pagina zodat het model die kan samenvatten of citeren). Schakel ze in via Instellingen → Tools. Elke staat standaard uit en werkt alleen met modellen die tool-aanroepen ondersteunen — let op het hamersymbool in de modelkiezer.</string>
+    <string name="faq_a12">Met tools kunnen capabele modellen acties uitvoeren tijdens een antwoord. Er zijn er vijf beschikbaar: Datum en tijd ophalen (de huidige datum en tijd van je telefoon), Wekker instellen (zet een wekker in de Klok-app van je telefoon), JavaScript uitvoeren (wiskunde, datums en tekstverwerking in een sandbox op het apparaat), Zoeken op het web (vindt actuele informatie op het web) en Webpagina ophalen (leest een pagina zodat het model die kan samenvatten of citeren). Schakel ze in via Instellingen → Tools. Elke staat standaard uit en werkt alleen met modellen die tool-aanroepen ondersteunen — let op het hamersymbool in de modelkiezer.</string>
     <string name="faq_q13">Versturen de webtools mijn gegevens online?</string>
     <string name="faq_a13">Alleen wanneer je ze inschakelt. Zoeken op het web stuurt de zoekopdracht van het model naar DuckDuckGo, en Webpagina ophalen downloadt de pagina\'s die het model kiest te openen — die verzoeken gaan naar de websites zelf, niet naar de ontwikkelaar. JavaScript uitvoeren blijft volledig op je apparaat zonder internettoegang. Met elke tool uit (de standaard) verlaat er niets je apparaat. Zie het privacybeleid voor details.</string>
     <string name="faq_q14">Geeft de app een melding wanneer een antwoord klaar is?</string>
@@ -352,6 +352,9 @@
     <string name="tool_web_fetch_title">Webpagina ophalen</string>
     <string name="tool_web_fetch_desc">Opent een link en leest de belangrijkste inhoud als tekst, zodat het model een pagina kan samenvatten of citeren.</string>
     <string name="tool_web_fetch_example">“Vat het artikel achter deze link samen.”</string>
+    <string name="tool_set_alarm_title">Wekker instellen</string>
+    <string name="tool_set_alarm_desc">Maakt een wekker in je Klok-app. Werkt offline; je kunt hem wijzigen of verwijderen in de Klok-app.</string>
+    <string name="tool_set_alarm_example">\"Zet een wekker om 6:30 uur.\"</string>
     <string name="html_artifact_reload">Opnieuw laden</string>
     <string name="html_artifact_full_screen">Volledig scherm</string>
     <string name="html_artifact_live_preview">Live voorbeeld</string>

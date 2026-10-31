@@ -130,7 +130,7 @@
     <string name="faq_q11">Apakah gesaan sistem?</string>
     <string name="faq_a11">Gesaan sistem ialah arahan boleh guna semula yang membentuk cara model bertindak balas \u2014 sebagai contoh, \u201CAnda ialah tutor sains yang ringkas. Terangkan idea dengan jelas menggunakan contoh harian\u201D atau \u201CAnda ialah penyemak kod kanan. Tunjukkan pepijat, kes tepi dan isu keselamatan\u201D. Cipta dan urus di Tetapan \u2192 Gesaan Sistem, kemudian gunakan satu pada sembang anda. Ia disimpan pada peranti anda dan hanya dihantar ke model setempat.</string>
     <string name="faq_q12">Apakah alat dan yang manakah tersedia?</string>
-    <string name="faq_a12">Alat membolehkan model yang berkemampuan mengambil tindakan semasa membalas. Empat tersedia: Dapatkan tarikh dan masa (tarikh dan masa semasa telefon anda), Jalankan JavaScript (matematik, tarikh dan pemprosesan teks dalam kotak pasir pada peranti), Carian web (mencari maklumat semasa di web), dan Ambil halaman web (membaca halaman supaya model dapat meringkas atau memetiknya). Hidupkannya di Tetapan → Alat. Setiap satu dimatikan secara lalai dan hanya berfungsi dengan model yang menyokong pemanggilan alat — cari lencana tukul dalam pemilih model.</string>
+    <string name="faq_a12">Alat membolehkan model yang berkemampuan mengambil tindakan semasa membalas. Lima tersedia: Dapatkan tarikh dan masa (tarikh dan masa semasa telefon anda), Tetapkan penggera (menetapkan penggera dalam apl Jam telefon anda), Jalankan JavaScript (matematik, tarikh dan pemprosesan teks dalam kotak pasir pada peranti), Carian web (mencari maklumat semasa di web), dan Ambil halaman web (membaca halaman supaya model dapat meringkas atau memetiknya). Hidupkannya di Tetapan → Alat. Setiap satu dimatikan secara lalai dan hanya berfungsi dengan model yang menyokong pemanggilan alat — cari lencana tukul dalam pemilih model.</string>
     <string name="faq_q13">Adakah alat web menghantar data saya dalam talian?</string>
     <string name="faq_a13">Hanya apabila anda mendayakannya. Carian web menghantar pertanyaan model ke DuckDuckGo, dan Ambil halaman web memuat turun halaman yang model pilih untuk dibuka \u2014 permintaan tersebut pergi ke tapak web itu sendiri, bukan kepada pembangun. Jalankan JavaScript kekal sepenuhnya pada peranti anda tanpa akses internet. Dengan setiap alat dimatikan (lalai), tiada apa-apa meninggalkan peranti anda. Lihat Dasar Privasi untuk butiran.</string>
     <string name="faq_q14">Adakah aplikasi akan memberitahu saya apabila respons sedia?</string>
@@ -357,6 +357,9 @@
     <string name="tool_web_fetch_title">Ambil halaman web</string>
     <string name="tool_web_fetch_desc">Membuka pautan dan membaca kandungan utamanya sebagai teks supaya model dapat meringkaskan atau memetik sesuatu halaman.</string>
     <string name="tool_web_fetch_example">\"Summarize the article at this link.\"</string>
+    <string name="tool_set_alarm_title">Tetapkan penggera</string>
+    <string name="tool_set_alarm_desc">Mencipta penggera dalam apl Jam anda. Berfungsi di luar talian; anda boleh menukar atau memadamkannya dalam apl Jam.</string>
+    <string name="tool_set_alarm_example">\"Tetapkan penggera pukul 6:30 pagi.\"</string>
     <string name="html_artifact_reload">Muat semula</string>
     <string name="html_artifact_full_screen">Skrin penuh</string>
     <string name="html_artifact_live_preview">Pratonton langsung</string>
