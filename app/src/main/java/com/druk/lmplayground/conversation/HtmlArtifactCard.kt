@@ -82,12 +82,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.core.content.FileProvider
 import com.druk.lmplayground.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 
 private const val TAG = "HtmlArtifact"
 
@@ -152,8 +150,8 @@ fun AssistantReplyContent(
  * A web page the model wrote, shown as an artifact: the code first (streaming
  * in while the model writes), then a Live preview icon — in the header row
  * next to Download, Copy and Full screen — that runs it in a sandboxed
- * WebView. Download saves the page as an .html file where the user chooses;
- * Full screen adds Reload and Open in browser.
+ * WebView. Open in browser hands it to the user's browser; Download saves it
+ * as an .html file where the user chooses; Full screen adds Reload.
  */
 @Composable
 fun HtmlArtifactCard(
@@ -230,7 +228,8 @@ fun HtmlArtifactCard(
     ) {
         Column {
             // Header: one row. Title and status on the left; every action on
-            // the right — Live preview <-> Code, Download, Copy, Full screen.
+            // the right — Live preview <-> Code, Open in browser, Download,
+            // Copy, Full screen.
             Row(
                 modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -273,6 +272,11 @@ fun HtmlArtifactCard(
                     emphasized = true,
                 )
                 if (!writing) {
+                    CardIconButton(
+                        icon = Icons.AutoMirrored.Outlined.OpenInNew,
+                        description = stringResource(R.string.html_artifact_open_in_browser),
+                        onClick = openInBrowser,
+                    )
                     CardIconButton(
                         icon = Icons.Outlined.Download,
                         description = stringResource(R.string.html_artifact_download),
@@ -585,35 +589,25 @@ private fun createPreviewWebView(context: Context, captureTouches: Boolean): Web
     }
 
 /**
- * Open [html] in the user's browser. Browsers can't load a page straight from
- * the app's memory, so it is written to the app's cache (one page at a time;
- * the previous one is removed) and handed over through the app's
- * FileProvider with a read grant — no server needed. CDN libraries and
- * images load as usual; the page runs as a local file, so APIs that check
- * the page's origin may refuse it. Returns false when no app can open it.
+ * Open [html] in the user's browser. The page is served by [LocalPageServer]
+ * at an http://127.0.0.1 address, which every browser opens (unlike a local
+ * file, which many browsers refuse). Returns false when the page couldn't be
+ * served or no browser is installed.
  */
 private suspend fun openPageInBrowser(context: Context, html: String, fileName: String): Boolean {
-    val uri = try {
-        withContext(Dispatchers.IO) {
-            val dir = File(context.cacheDir, "html_previews")
-            dir.deleteRecursively()
-            dir.mkdirs()
-            val file = File(dir, fileName)
-            file.writeText(html, Charsets.UTF_8)
-            FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-        }
+    val url = try {
+        withContext(Dispatchers.IO) { LocalPageServer.publish(html, fileName) }
     } catch (e: Exception) {
-        Log.w(TAG, "Couldn't write the page for the browser", e)
+        Log.w(TAG, "Couldn't serve the page for the browser", e)
         return false
     }
-    val intent = Intent(Intent.ACTION_VIEW)
-        .setDataAndType(uri, "text/html")
-        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        .addCategory(Intent.CATEGORY_BROWSABLE)
     return try {
         context.startActivity(intent)
         true
     } catch (e: ActivityNotFoundException) {
-        Log.w(TAG, "No app to open $uri", e)
+        Log.w(TAG, "No browser to open $url", e)
         false
     }
 }
