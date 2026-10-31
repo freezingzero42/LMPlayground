@@ -7,6 +7,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.net.HttpURLConnection
 import java.net.URI
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 /** [LocalPageServer] over real loopback sockets, the way a browser uses it. */
 class LocalPageServerTest {
@@ -66,6 +69,18 @@ class LocalPageServerTest {
         val url = LocalPageServer.publish("<p>x</p>", "ゲーム page.html")
         assertTrue(url, url.endsWith("/%E3%82%B2%E3%83%BC%E3%83%A0%20page.html"))
         assertEquals(200, get(url).first)
+    }
+
+    @Test
+    fun `a burst of parallel requests is served by the small worker pool`() {
+        val url = LocalPageServer.publish("<p>burst</p>", "page.html")
+        val pool = Executors.newFixedThreadPool(20)
+        try {
+            val results = (1..20).map { pool.submit(Callable { get(url) }) }.map { it.get(10, TimeUnit.SECONDS) }
+            assertTrue(results.all { it.first == 200 && it.second == "<p>burst</p>" })
+        } finally {
+            pool.shutdownNow()
+        }
     }
 
     @Test

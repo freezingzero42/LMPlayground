@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -76,6 +77,8 @@ fun ToolsScreen(
     tools: List<Tool>,
     enabledStates: Map<String, Boolean>,
     onToolEnabledChanged: (String, Boolean) -> Unit,
+    htmlPreviewInternet: Boolean,
+    onHtmlPreviewInternetChanged: (Boolean) -> Unit,
     onBackClick: () -> Unit,
 ) {
     Scaffold(
@@ -100,16 +103,25 @@ fun ToolsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
+            htmlPreviewInternet = htmlPreviewInternet,
+            onHtmlPreviewInternetChanged = onHtmlPreviewInternetChanged,
         )
     }
 }
 
+/**
+ * The tool rows. [htmlPreviewInternet] adds the live-HTML-preview section
+ * below them; it is app-wide, so the Tools page passes it and a model's
+ * params sheet (per-model tool overrides) leaves it null.
+ */
 @Composable
 fun ToolsContent(
     tools: List<Tool>,
     enabledStates: Map<String, Boolean>,
     onToolEnabledChanged: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    htmlPreviewInternet: Boolean? = null,
+    onHtmlPreviewInternetChanged: (Boolean) -> Unit = {},
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         tools.forEach { tool ->
@@ -120,6 +132,58 @@ fun ToolsContent(
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         }
+        if (htmlPreviewInternet != null) {
+            HtmlPreviewSection(
+                internetEnabled = htmlPreviewInternet,
+                onInternetChanged = onHtmlPreviewInternetChanged,
+            )
+        }
+    }
+}
+
+/** Settings for live HTML previews: just internet access, off by default. */
+@Composable
+private fun HtmlPreviewSection(
+    internetEnabled: Boolean,
+    onInternetChanged: (Boolean) -> Unit,
+) {
+    Text(
+        text = stringResource(R.string.tools_html_preview_section),
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 4.dp),
+    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onInternetChanged(!internetEnabled) }
+            .padding(16.dp),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Language,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.width(16.dp))
+        Column(Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.tools_html_preview_internet_title),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = stringResource(R.string.tools_html_preview_internet_desc),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Spacer(Modifier.width(8.dp))
+        Switch(
+            checked = internetEnabled,
+            onCheckedChange = onInternetChanged,
+            modifier = Modifier.align(Alignment.CenterVertically),
+        )
     }
 }
 

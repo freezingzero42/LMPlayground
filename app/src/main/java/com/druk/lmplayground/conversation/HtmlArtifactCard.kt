@@ -1,25 +1,12 @@
 package com.druk.lmplayground.conversation
 
-import android.annotation.SuppressLint
 import android.content.ClipData
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
 import android.util.Log
-import android.view.MotionEvent
-import android.view.ViewGroup
-import android.webkit.ConsoleMessage
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -79,7 +66,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.druk.lmplayground.R
@@ -94,14 +80,6 @@ private val CODE_MAX_HEIGHT = 320.dp
 
 /** Height of the inline live preview. */
 private val PREVIEW_HEIGHT = 420.dp
-
-/**
- * Base URL for previewed pages. It gives the page a real (https) origin so
- * localStorage, fetch() with CORS and friends work, while the reserved
- * `.invalid` TLD guarantees it can never resolve to a real server.
- */
-private const val PREVIEW_HOST = "preview.lmplayground.invalid"
-private const val PREVIEW_BASE_URL = "https://$PREVIEW_HOST/"
 
 /**
  * An assistant reply: Markdown text, with every ```html code block shown as
@@ -298,12 +276,15 @@ fun HtmlArtifactCard(
 
             if (showPreview && document != null) {
                 // Switching back to Code and to Live preview again restarts
-                // the page; Full screen also has a Reload button.
+                // the page (and resets the notice); Full screen has Reload.
+                var blocked by remember { mutableStateOf(false) }
+                if (blocked) OfflineNotice()
                 HtmlWebView(
                     html = document,
                     // Inside the scrolling chat the page gets the gesture,
                     // so drags (sliders, canvas games) work.
                     captureTouches = true,
+                    onBlockedRequest = { blocked = true },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(PREVIEW_HEIGHT),
@@ -329,6 +310,23 @@ fun HtmlArtifactCard(
             onDismiss = { fullScreen = false },
         )
     }
+}
+
+/**
+ * Shown above a preview that tried to load something from the internet while
+ * internet access for previews is off, so a half-styled page makes sense.
+ */
+@Composable
+private fun OfflineNotice() {
+    Text(
+        text = stringResource(R.string.html_artifact_offline_notice),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+    )
 }
 
 @Composable
@@ -472,9 +470,12 @@ private fun HtmlFullScreenDialog(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 if (showPreview) {
                     key(reloadCount) {
+                        var blocked by remember { mutableStateOf(false) }
+                        if (blocked) OfflineNotice()
                         HtmlWebView(
                             html = html,
                             captureTouches = false,
+                            onBlockedRequest = { blocked = true },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(1f),
@@ -489,134 +490,5 @@ private fun HtmlFullScreenDialog(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun HtmlWebView(
-    html: String,
-    captureTouches: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    AndroidView(
-        modifier = modifier,
-        factory = { context -> createPreviewWebView(context, captureTouches) },
-        update = { webView ->
-            // Only (re)load when the page actually changed; recomposition
-            // alone must not restart a running game or animation.
-            if (webView.tag != html) {
-                webView.tag = html
-                webView.loadDataWithBaseURL(PREVIEW_BASE_URL, html, "text/html", "utf-8", null)
-            }
-        },
-        onRelease = { webView ->
-            webView.stopLoading()
-            webView.destroy()
-        },
-    )
-}
-
-/**
- * A sandboxed WebView for model-written pages:
- * - JavaScript on (the point of a live preview), but no JS bridge to the app.
- * - Internet on, so pages can use CDN libraries (Tailwind, Chart.js...), web
- *   fonts, remote images and public APIs. Normal HTTP caching, so a library
- *   downloads once.
- * - No file/content access, no geolocation, no popups.
- * - The preview never navigates away from its page. A link the user taps
- *   opens in their browser; script- or redirect-driven navigation is refused,
- *   so a page can't silently replace itself with another site.
- */
-@SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")
-private fun createPreviewWebView(context: Context, captureTouches: Boolean): WebView =
-    WebView(context).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-        )
-        setBackgroundColor(Color.WHITE)
-        settings.apply {
-            javaScriptEnabled = true
-            domStorageEnabled = true
-            allowFileAccess = false
-            allowContentAccess = false
-            blockNetworkLoads = false
-            cacheMode = WebSettings.LOAD_DEFAULT
-            // The page's origin is https; still show http:// images and
-            // media that models often link to.
-            mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
-            javaScriptCanOpenWindowsAutomatically = false
-            setSupportMultipleWindows(false)
-            setGeolocationEnabled(false)
-            mediaPlaybackRequiresUserGesture = true
-        }
-        webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(
-                view: WebView,
-                request: WebResourceRequest,
-            ): Boolean {
-                val url = request.url
-                // In-page anchors (#section) just scroll; let them through.
-                if (url.host == PREVIEW_HOST && url.fragment != null) return false
-                val scheme = url.scheme?.lowercase()
-                if (request.hasGesture() && (scheme == "http" || scheme == "https")) {
-                    openInBrowser(view.context, url)
-                }
-                return true
-            }
-        }
-        // A WebChromeClient enables alert()/confirm()/prompt() dialogs, which
-        // generated games and demos commonly rely on.
-        webChromeClient = object : WebChromeClient() {
-            override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
-                Log.d(
-                    TAG,
-                    "${consoleMessage.messageLevel()}: ${consoleMessage.message()} " +
-                        "(line ${consoleMessage.lineNumber()})",
-                )
-                return true
-            }
-        }
-        if (captureTouches) {
-            setOnTouchListener { view, event ->
-                if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                    view.parent?.requestDisallowInterceptTouchEvent(true)
-                }
-                false
-            }
-        }
-    }
-
-/**
- * Open [html] in the user's browser. The page is served by [LocalPageServer]
- * at an http://127.0.0.1 address, which every browser opens (unlike a local
- * file, which many browsers refuse). Returns false when the page couldn't be
- * served or no browser is installed.
- */
-private suspend fun openPageInBrowser(context: Context, html: String, fileName: String): Boolean {
-    val url = try {
-        withContext(Dispatchers.IO) { LocalPageServer.publish(html, fileName) }
-    } catch (e: Exception) {
-        Log.w(TAG, "Couldn't serve the page for the browser", e)
-        return false
-    }
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        .addCategory(Intent.CATEGORY_BROWSABLE)
-    return try {
-        context.startActivity(intent)
-        true
-    } catch (e: ActivityNotFoundException) {
-        Log.w(TAG, "No browser to open $url", e)
-        false
-    }
-}
-
-/** Open a link the user tapped inside a preview in their default browser. */
-private fun openInBrowser(context: Context, uri: Uri) {
-    val intent = Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    try {
-        context.startActivity(intent)
-    } catch (e: ActivityNotFoundException) {
-        Log.w(TAG, "No app to open $uri", e)
     }
 }
