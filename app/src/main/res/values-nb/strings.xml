@@ -335,6 +335,8 @@
     <string name="html_preview_show_preview">Vis forhåndsvisning</string>
     <string name="html_preview_reload">Last inn på nytt</string>
     <string name="html_preview_full_screen">Fullskjerm</string>
+    <string name="html_preview_open">Forhåndsvis HTML</string>
+    <string name="html_preview_blocked_network">Denne siden prøvde å laste inn filer fra internett. Forhåndsvisninger kjører frakoblet, så filene ble blokkert, og noen stiler eller funksjoner kan mangle.</string>
     <string name="cd_supports_tools">Støtter verktøy</string>
     <string name="cd_supports_thinking">Støtter tenkning</string>
 

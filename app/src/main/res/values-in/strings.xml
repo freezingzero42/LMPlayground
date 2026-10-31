@@ -305,6 +305,8 @@
     <string name="html_preview_show_preview">Tampilkan pratinjau</string>
     <string name="html_preview_reload">Muat ulang</string>
     <string name="html_preview_full_screen">Layar penuh</string>
+    <string name="html_preview_open">Pratinjau HTML</string>
+    <string name="html_preview_blocked_network">Halaman ini mencoba memuat file dari internet. Pratinjau berjalan offline, jadi file tersebut diblokir dan beberapa gaya atau fitur mungkin tidak muncul.</string>
     <string name="tool_run_javascript_title">Jalankan JavaScript</string>
     <string name="tool_run_javascript_desc">Menjalankan JavaScript dalam sandbox aman untuk matematika, tanggal, dan pemrosesan teks. Tanpa akses internet atau file.</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

@@ -319,6 +319,8 @@
     <string name="html_preview_show_preview">عرض المعاينة</string>
     <string name="html_preview_reload">إعادة التحميل</string>
     <string name="html_preview_full_screen">ملء الشاشة</string>
+    <string name="html_preview_open">معاينة HTML</string>
+    <string name="html_preview_blocked_network">حاولت هذه الصفحة تحميل ملفات من الإنترنت. تعمل المعاينات دون اتصال، لذلك تم حظر هذه الملفات وقد تكون بعض الأنماط أو الميزات مفقودة.</string>
     <string name="tool_run_javascript_title">تشغيل JavaScript</string>
     <string name="tool_run_javascript_desc">يشغّل JavaScript في بيئة معزولة آمنة للحسابات والتواريخ ومعالجة النصوص. لا وصول للإنترنت أو الملفات.</string>
     <string name="tool_run_javascript_example">\"كم يساوي (2 + 3) × 4، وما يوم الأسبوع الموافق 1 يناير 2027؟\"</string>

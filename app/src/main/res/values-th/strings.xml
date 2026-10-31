@@ -343,6 +343,8 @@
     <string name="html_preview_show_preview">แสดงตัวอย่าง</string>
     <string name="html_preview_reload">โหลดใหม่</string>
     <string name="html_preview_full_screen">เต็มหน้าจอ</string>
+    <string name="html_preview_open">ดูตัวอย่าง HTML</string>
+    <string name="html_preview_blocked_network">หน้านี้พยายามโหลดไฟล์จากอินเทอร์เน็ต ตัวอย่างทำงานแบบออฟไลน์ ไฟล์เหล่านั้นจึงถูกบล็อก และสไตล์หรือฟีเจอร์บางอย่างอาจหายไป</string>
     <string name="tool_run_javascript_title">รัน JavaScript</string>
     <string name="tool_run_javascript_desc">รัน JavaScript ในแซนด์บ็อกซ์ที่ปลอดภัยสำหรับคณิตศาสตร์ วันที่ และการประมวลผลข้อความ ไม่มีการเข้าถึงอินเทอร์เน็ตหรือไฟล์</string>
     <string name="tool_run_javascript_example">\"What is (2 + 3) × 4, and what weekday is Jan 1 2027?\"</string>

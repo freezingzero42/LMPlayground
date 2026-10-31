@@ -315,6 +315,8 @@
     <string name="html_preview_show_preview">प्रीव्यू दिखाएँ</string>
     <string name="html_preview_reload">फिर से लोड करें</string>
     <string name="html_preview_full_screen">फ़ुल स्क्रीन</string>
+    <string name="html_preview_open">HTML प्रीव्यू करें</string>
+    <string name="html_preview_blocked_network">इस पेज ने इंटरनेट से फ़ाइलें लोड करने की कोशिश की। प्रीव्यू ऑफ़लाइन चलते हैं, इसलिए वे फ़ाइलें ब्लॉक कर दी गईं और कुछ स्टाइल या फ़ीचर गायब हो सकते हैं।</string>
     <string name="tool_run_javascript_title">JavaScript चलाएँ</string>
     <string name="tool_run_javascript_desc">गणित, तारीखों और टेक्स्ट प्रोसेसिंग के लिए एक सुरक्षित सैंडबॉक्स में JavaScript चलाता है। इंटरनेट या फ़ाइल एक्सेस नहीं।</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 कितना है, और 1 जनवरी 2027 को सप्ताह का कौन सा दिन है?\"</string>

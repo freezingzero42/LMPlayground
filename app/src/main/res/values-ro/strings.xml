@@ -308,6 +308,8 @@
     <string name="html_preview_show_preview">Afișează previzualizarea</string>
     <string name="html_preview_reload">Reîncarcă</string>
     <string name="html_preview_full_screen">Ecran complet</string>
+    <string name="html_preview_open">Previzualizează HTML</string>
+    <string name="html_preview_blocked_network">Această pagină a încercat să încarce fișiere de pe internet. Previzualizările rulează offline, așa că fișierele au fost blocate și unele stiluri sau funcții pot lipsi.</string>
     <string name="tool_run_javascript_title">Rulează JavaScript</string>
     <string name="tool_run_javascript_desc">Rulează JavaScript într-un mediu izolat securizat pentru calcule, date și procesarea textului. Fără acces la internet sau la fișiere.</string>
     <string name="tool_run_javascript_example">\"Cât este (2 + 3) × 4 și în ce zi a săptămânii cade 1 ianuarie 2027?\"</string>

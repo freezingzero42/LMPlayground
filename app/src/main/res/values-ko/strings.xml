@@ -305,6 +305,8 @@
     <string name="html_preview_show_preview">미리보기 보기</string>
     <string name="html_preview_reload">새로고침</string>
     <string name="html_preview_full_screen">전체 화면</string>
+    <string name="html_preview_open">HTML 미리보기</string>
+    <string name="html_preview_blocked_network">이 페이지가 인터넷에서 파일을 불러오려고 했습니다. 미리보기는 오프라인으로 실행되므로 해당 파일이 차단되어 일부 스타일이나 기능이 빠질 수 있습니다.</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">응답 생성 중…</string>

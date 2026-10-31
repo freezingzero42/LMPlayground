@@ -357,6 +357,8 @@
     <string name="html_preview_show_preview">הצגת תצוגה מקדימה</string>
     <string name="html_preview_reload">טעינה מחדש</string>
     <string name="html_preview_full_screen">מסך מלא</string>
+    <string name="html_preview_open">תצוגה מקדימה של HTML</string>
+    <string name="html_preview_blocked_network">הדף ניסה לטעון קבצים מהאינטרנט. התצוגות המקדימות פועלות במצב לא מקוון, ולכן הקבצים נחסמו וייתכן שחלק מהעיצוב או מהתכונות חסרים.</string>
     <string name="tool_run_javascript_title">הרץ JavaScript</string>
     <string name="tool_run_javascript_desc">מריץ JavaScript בארגז חול מאובטח לחישובים, תאריכים ועיבוד טקסט. ללא גישה לאינטרנט או לקבצים.</string>
     <string name="tool_run_javascript_example">\"כמה זה (2 + 3) × 4, ובאיזה יום בשבוע חל 1 בינואר 2027?\"</string>

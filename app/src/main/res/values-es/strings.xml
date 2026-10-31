@@ -307,6 +307,8 @@
     <string name="html_preview_show_preview">Ver vista previa</string>
     <string name="html_preview_reload">Recargar</string>
     <string name="html_preview_full_screen">Pantalla completa</string>
+    <string name="html_preview_open">Vista previa HTML</string>
+    <string name="html_preview_blocked_network">Esta página intentó cargar archivos de internet. Las vistas previas funcionan sin conexión, así que se bloquearon y puede que falten algunos estilos o funciones.</string>
     <string name="tool_run_javascript_title">Ejecutar JavaScript</string>
     <string name="tool_run_javascript_desc">Ejecuta JavaScript en un entorno aislado seguro para matemáticas, fechas y procesamiento de texto. Sin acceso a internet ni a archivos.</string>
     <string name="tool_run_javascript_example">\"¿Cuánto es (2 + 3) × 4 y qué día de la semana es el 1 de enero de 2027?\"</string>

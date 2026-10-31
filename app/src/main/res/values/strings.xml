@@ -359,6 +359,8 @@
     <string name="html_preview_show_preview">Show preview</string>
     <string name="html_preview_reload">Reload</string>
     <string name="html_preview_full_screen">Full screen</string>
+    <string name="html_preview_open">Preview HTML</string>
+    <string name="html_preview_blocked_network">This page tried to load files from the internet. Previews are offline, so those files were blocked and some styles or features may be missing.</string>
 
     <!-- Inference engine service notification (foreground service while a
          model is loaded so the OS does not evict the :llama process). -->
