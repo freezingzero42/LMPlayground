@@ -23,9 +23,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +32,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,7 +46,6 @@ import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Web
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -150,7 +146,7 @@ fun AssistantReplyContent(
 
 /**
  * A web page the model wrote, shown as an artifact: the code first (streaming
- * in while the model writes), then a Live preview button — in the header
+ * in while the model writes), then a Live preview icon — in the header row
  * next to Download, Copy and Full screen — that runs it in a sandboxed
  * WebView. Download saves the page as an .html file where the user chooses.
  */
@@ -164,7 +160,6 @@ fun HtmlArtifactCard(
 ) {
     var showPreview by rememberSaveable { mutableStateOf(false) }
     var fullScreen by rememberSaveable { mutableStateOf(false) }
-    var reloadCount by remember { mutableIntStateOf(0) }
     val clipboardManager = LocalClipboardManager.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -214,9 +209,10 @@ fun HtmlArtifactCard(
         color = MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
         Column {
-            // Header, row 1: what this is. The title gets the full width.
+            // Header: one row. Title and status on the left; every action on
+            // the right — Live preview <-> Code, Download, Copy, Full screen.
             Row(
-                modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 10.dp),
+                modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -225,10 +221,12 @@ fun HtmlArtifactCard(
                     modifier = Modifier.size(20.dp),
                     tint = MaterialTheme.colorScheme.primary,
                 )
+                // weight(1f): the title takes the space left by the icons and
+                // ellipsizes rather than pushing them off the card.
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(start = 10.dp),
+                        .padding(start = 10.dp, end = 4.dp),
                 ) {
                     Text(
                         text = title,
@@ -242,86 +240,52 @@ fun HtmlArtifactCard(
                         color = MaterialTheme.colorScheme.outline,
                     )
                 }
-            }
-            // Header, row 2: every action together. Live preview <-> Code is
-            // the labelled main action; Reload, Download, Copy and Full
-            // screen sit beside it.
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 4.dp, top = 2.dp, bottom = 6.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                // weight(fill = false): the button takes its natural width but
-                // shrinks (label ellipsized) before it can push the icons off
-                // the card in languages with long labels.
-                FilledTonalButton(
+                // Live preview <-> Code. Tinted primary as the main action;
+                // disabled until the model has finished writing the page.
+                val previewing = showPreview && !writing
+                CardIconButton(
+                    icon = if (previewing) Icons.Outlined.Code else Icons.Outlined.PlayArrow,
+                    description = stringResource(
+                        if (previewing) R.string.html_artifact_code else R.string.html_artifact_live_preview,
+                    ),
                     onClick = { showPreview = !showPreview },
                     enabled = !writing,
-                    contentPadding = PaddingValues(start = 12.dp, end = 16.dp),
-                    modifier = Modifier
-                        .weight(1f, fill = false)
-                        .height(36.dp),
-                ) {
-                    val previewing = showPreview && !writing
-                    Icon(
-                        imageVector = if (previewing) Icons.Outlined.Code else Icons.Outlined.PlayArrow,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(Modifier.width(6.dp))
-                    Text(
-                        text = stringResource(
-                            if (previewing) R.string.html_artifact_code else R.string.html_artifact_live_preview,
-                        ),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                    emphasized = true,
+                )
+                if (!writing) {
+                    CardIconButton(
+                        icon = Icons.Outlined.Download,
+                        description = stringResource(R.string.html_artifact_download),
+                        onClick = { saveLauncher.launch(HtmlArtifacts.fileName(pageTitle)) },
                     )
                 }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (showPreview && !writing) {
-                        CardIconButton(
-                            icon = Icons.Outlined.Refresh,
-                            description = stringResource(R.string.html_preview_reload),
-                            onClick = { reloadCount++ },
-                        )
-                    }
-                    if (!writing) {
-                        CardIconButton(
-                            icon = Icons.Outlined.Download,
-                            description = stringResource(R.string.html_artifact_download),
-                            onClick = { saveLauncher.launch(HtmlArtifacts.fileName(pageTitle)) },
-                        )
-                    }
+                CardIconButton(
+                    icon = Icons.Outlined.ContentCopy,
+                    description = stringResource(R.string.copy),
+                    onClick = { clipboardManager.setText(AnnotatedString(code)) },
+                )
+                if (!writing) {
                     CardIconButton(
-                        icon = Icons.Outlined.ContentCopy,
-                        description = stringResource(R.string.copy),
-                        onClick = { clipboardManager.setText(AnnotatedString(code)) },
+                        icon = Icons.Outlined.Fullscreen,
+                        description = stringResource(R.string.html_preview_full_screen),
+                        onClick = { fullScreen = true },
                     )
-                    if (!writing) {
-                        CardIconButton(
-                            icon = Icons.Outlined.Fullscreen,
-                            description = stringResource(R.string.html_preview_full_screen),
-                            onClick = { fullScreen = true },
-                        )
-                    }
                 }
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
             if (showPreview && document != null) {
-                key(reloadCount) {
-                    HtmlWebView(
-                        html = document,
-                        // Inside the scrolling chat the page gets the gesture,
-                        // so drags (sliders, canvas games) work.
-                        captureTouches = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(PREVIEW_HEIGHT),
-                    )
-                }
+                // Switching back to Code and to Live preview again restarts
+                // the page; Full screen also has a Reload button.
+                HtmlWebView(
+                    html = document,
+                    // Inside the scrolling chat the page gets the gesture,
+                    // so drags (sliders, canvas games) work.
+                    captureTouches = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(PREVIEW_HEIGHT),
+                )
             } else {
                 CodeView(code = code, followTail = writing)
             }
@@ -342,13 +306,19 @@ private fun CardIconButton(
     icon: ImageVector,
     description: String,
     onClick: () -> Unit,
+    enabled: Boolean = true,
+    emphasized: Boolean = false,
 ) {
-    IconButton(onClick = onClick, modifier = Modifier.size(36.dp)) {
+    IconButton(onClick = onClick, enabled = enabled, modifier = Modifier.size(36.dp)) {
         Icon(
             imageVector = icon,
             contentDescription = description,
-            modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.size(if (emphasized) 22.dp else 18.dp),
+            tint = when {
+                !enabled -> MaterialTheme.colorScheme.outline
+                emphasized -> MaterialTheme.colorScheme.primary
+                else -> MaterialTheme.colorScheme.secondary
+            },
         )
     }
 }
