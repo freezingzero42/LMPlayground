@@ -347,6 +347,13 @@
     <string name="tool_web_fetch_title">ওয়েব পেজ ফেচ করুন</string>
     <string name="tool_web_fetch_desc">একটি লিঙ্ক খোলে এবং এর মূল বিষয়বস্তু টেক্সট হিসেবে পড়ে যাতে মডেল কোনো পেজের সারসংক্ষেপ বা উদ্ধৃতি দিতে পারে।</string>
     <string name="tool_web_fetch_example">\"এই লিঙ্কের নিবন্ধটির সারসংক্ষেপ দিন।\"</string>
+    <string name="tool_render_html_title">HTML প্রিভিউ</string>
+    <string name="tool_render_html_desc">মডেলকে ওয়েব পেজ, উইজেট ও ছোট গেম তৈরি করতে দেয় এবং চ্যাটেই সেগুলো লাইভ, ইন্টারঅ্যাক্টিভ প্রিভিউ হিসেবে দেখায়। প্রিভিউ অফলাইনে একটি স্যান্ডবক্সে চলে।</string>
+    <string name="tool_render_html_example">\"একটা টিপ ক্যালকুলেটর বানাও যা আমি এখানেই চালিয়ে দেখতে পারি।\"</string>
+    <string name="html_preview_show_code">কোড দেখুন</string>
+    <string name="html_preview_show_preview">প্রিভিউ দেখুন</string>
+    <string name="html_preview_reload">আবার লোড করুন</string>
+    <string name="html_preview_full_screen">পূর্ণ স্ক্রিন</string>
     <string name="tool_run_javascript_title">JavaScript চালান</string>
     <string name="tool_run_javascript_desc">গণিত, তারিখ ও টেক্সট প্রক্রিয়াকরণের জন্য একটি নিরাপদ স্যান্ডবক্সে JavaScript চালায়। ইন্টারনেট বা ফাইল অ্যাক্সেস নেই।</string>
     <string name="tool_run_javascript_example">\"(2 + 3) × 4 কত, এবং ১ জানুয়ারি ২০২৭ সপ্তাহের কোন দিন?\"</string>

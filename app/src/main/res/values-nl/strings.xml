@@ -329,6 +329,13 @@
     <string name="tool_web_fetch_title">Webpagina ophalen</string>
     <string name="tool_web_fetch_desc">Opent een link en leest de belangrijkste inhoud als tekst, zodat het model een pagina kan samenvatten of citeren.</string>
     <string name="tool_web_fetch_example">“Vat het artikel achter deze link samen.”</string>
+    <string name="tool_render_html_title">HTML-voorbeeld</string>
+    <string name="tool_render_html_desc">Laat het model webpagina\'s, widgets en kleine spellen maken en toont ze als live, interactief voorbeeld in de chat. Voorbeelden draaien offline in een sandbox.</string>
+    <string name="tool_render_html_example">\"Maak een fooiencalculator die ik hier meteen kan proberen.\"</string>
+    <string name="html_preview_show_code">Code tonen</string>
+    <string name="html_preview_show_preview">Voorbeeld tonen</string>
+    <string name="html_preview_reload">Opnieuw laden</string>
+    <string name="html_preview_full_screen">Volledig scherm</string>
     <string name="cd_supports_tools">Ondersteunt tools</string>
     <string name="cd_supports_thinking">Ondersteunt denken</string>
 

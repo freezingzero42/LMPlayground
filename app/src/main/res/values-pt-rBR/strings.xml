@@ -300,6 +300,13 @@
     <string name="tool_web_fetch_title">Carregar página web</string>
     <string name="tool_web_fetch_desc">Abre um link e lê seu conteúdo principal como texto para que o modelo possa resumir ou citar uma página.</string>
     <string name="tool_web_fetch_example">\"Resuma o artigo deste link.\"</string>
+    <string name="tool_render_html_title">Prévia de HTML</string>
+    <string name="tool_render_html_desc">Permite que o modelo crie páginas web, widgets e jogos simples e os mostre como uma prévia interativa ao vivo no chat. As prévias rodam offline em uma sandbox.</string>
+    <string name="tool_render_html_example">\"Crie uma calculadora de gorjeta que eu possa testar aqui mesmo.\"</string>
+    <string name="html_preview_show_code">Mostrar código</string>
+    <string name="html_preview_show_preview">Mostrar prévia</string>
+    <string name="html_preview_reload">Recarregar</string>
+    <string name="html_preview_full_screen">Tela cheia</string>
     <string name="tool_run_javascript_title">Executar JavaScript</string>
     <string name="tool_run_javascript_desc">Executa JavaScript em um ambiente isolado seguro para cálculos, datas e processamento de texto. Sem acesso à internet ou a arquivos.</string>
     <string name="tool_run_javascript_example">\"Quanto é (2 + 3) × 4 e que dia da semana é 1 de janeiro de 2027?\"</string>

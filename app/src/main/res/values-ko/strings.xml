@@ -298,6 +298,13 @@
     <string name="tool_web_fetch_title">웹 페이지 가져오기</string>
     <string name="tool_web_fetch_desc">링크를 열어 주요 내용을 텍스트로 읽어 모델이 페이지를 요약하거나 인용할 수 있게 합니다.</string>
     <string name="tool_web_fetch_example">\"이 링크의 기사를 요약해줘.\"</string>
+    <string name="tool_render_html_title">HTML 미리보기</string>
+    <string name="tool_render_html_desc">모델이 웹 페이지, 위젯, 간단한 게임을 만들고 채팅 안에서 실시간 인터랙티브 미리보기로 보여 줍니다. 미리보기는 샌드박스에서 오프라인으로 실행됩니다.</string>
+    <string name="tool_render_html_example">\"여기서 바로 써 볼 수 있는 팁 계산기를 만들어 줘.\"</string>
+    <string name="html_preview_show_code">코드 보기</string>
+    <string name="html_preview_show_preview">미리보기 보기</string>
+    <string name="html_preview_reload">새로고침</string>
+    <string name="html_preview_full_screen">전체 화면</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">응답 생성 중…</string>
