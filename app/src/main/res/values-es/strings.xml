@@ -306,6 +306,9 @@
     <string name="html_artifact_code">Código</string>
     <string name="html_artifact_writing">Escribiendo…</string>
     <string name="html_artifact_default_title">Página web</string>
+    <string name="html_artifact_download">Descargar</string>
+    <string name="html_artifact_saved">Archivo HTML guardado</string>
+    <string name="html_artifact_save_failed">No se pudo guardar el archivo</string>
     <string name="tool_run_javascript_title">Ejecutar JavaScript</string>
     <string name="tool_run_javascript_desc">Ejecuta JavaScript en un entorno aislado seguro para matemáticas, fechas y procesamiento de texto. Sin acceso a internet ni a archivos.</string>
     <string name="tool_run_javascript_example">\"¿Cuánto es (2 + 3) × 4 y qué día de la semana es el 1 de enero de 2027?\"</string>

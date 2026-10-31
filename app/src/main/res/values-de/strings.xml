@@ -295,6 +295,9 @@
     <string name="html_artifact_code">Code</string>
     <string name="html_artifact_writing">Wird geschrieben…</string>
     <string name="html_artifact_default_title">Webseite</string>
+    <string name="html_artifact_download">Herunterladen</string>
+    <string name="html_artifact_saved">HTML-Datei gespeichert</string>
+    <string name="html_artifact_save_failed">Datei konnte nicht gespeichert werden</string>
     <string name="cd_supports_tools">Unterstützt Tools</string>
     <string name="cd_supports_thinking">Unterstützt Thinking</string>
 

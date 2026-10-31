@@ -304,6 +304,9 @@
     <string name="html_artifact_code">代码</string>
     <string name="html_artifact_writing">正在编写…</string>
     <string name="html_artifact_default_title">网页</string>
+    <string name="html_artifact_download">下载</string>
+    <string name="html_artifact_saved">HTML 文件已保存</string>
+    <string name="html_artifact_save_failed">无法保存文件</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">正在生成回复…</string>
