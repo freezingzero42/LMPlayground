@@ -296,6 +296,8 @@
     <string name="html_preview_show_preview">Vorschau anzeigen</string>
     <string name="html_preview_reload">Neu laden</string>
     <string name="html_preview_full_screen">Vollbild</string>
+    <string name="html_preview_open">HTML-Vorschau öffnen</string>
+    <string name="html_preview_blocked_network">Diese Seite wollte Dateien aus dem Internet laden. Vorschauen laufen offline, daher wurden diese Dateien blockiert und einige Stile oder Funktionen fehlen eventuell.</string>
     <string name="cd_supports_tools">Unterstützt Tools</string>
     <string name="cd_supports_thinking">Unterstützt Thinking</string>
 

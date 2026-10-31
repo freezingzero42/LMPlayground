@@ -305,6 +305,8 @@
     <string name="html_preview_show_preview">プレビューを表示</string>
     <string name="html_preview_reload">再読み込み</string>
     <string name="html_preview_full_screen">全画面表示</string>
+    <string name="html_preview_open">HTMLをプレビュー</string>
+    <string name="html_preview_blocked_network">このページはインターネットからファイルを読み込もうとしました。プレビューはオフラインで動作するため、それらのファイルはブロックされ、一部のスタイルや機能が欠けている場合があります。</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">応答を生成中…</string>

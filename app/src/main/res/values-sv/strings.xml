@@ -335,6 +335,8 @@
     <string name="html_preview_show_preview">Visa förhandsvisning</string>
     <string name="html_preview_reload">Läs in igen</string>
     <string name="html_preview_full_screen">Helskärm</string>
+    <string name="html_preview_open">Förhandsgranska HTML</string>
+    <string name="html_preview_blocked_network">Sidan försökte läsa in filer från internet. Förhandsvisningar körs offline, så filerna blockerades och vissa stilar eller funktioner kan saknas.</string>
     <string name="cd_supports_tools">Stöder verktyg</string>
     <string name="cd_supports_thinking">Stöder tänkande</string>
 

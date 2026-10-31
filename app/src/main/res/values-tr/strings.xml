@@ -307,6 +307,8 @@
     <string name="html_preview_show_preview">Önizlemeyi göster</string>
     <string name="html_preview_reload">Yeniden yükle</string>
     <string name="html_preview_full_screen">Tam ekran</string>
+    <string name="html_preview_open">HTML önizle</string>
+    <string name="html_preview_blocked_network">Bu sayfa internetten dosya yüklemeye çalıştı. Önizlemeler çevrimdışı çalıştığından bu dosyalar engellendi; bazı stiller veya özellikler eksik olabilir.</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">Yan\u0131t \u00FCretiliyor…</string>

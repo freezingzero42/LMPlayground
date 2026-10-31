@@ -302,6 +302,8 @@
     <string name="html_preview_show_preview">Pokaż podgląd</string>
     <string name="html_preview_reload">Odśwież</string>
     <string name="html_preview_full_screen">Pełny ekran</string>
+    <string name="html_preview_open">Podgląd HTML</string>
+    <string name="html_preview_blocked_network">Ta strona próbowała wczytać pliki z internetu. Podglądy działają offline, więc te pliki zostały zablokowane i może brakować niektórych stylów lub funkcji.</string>
     <string name="tool_web_fetch_title">Pobierz stronę internetową</string>
     <string name="tool_web_search_desc">Przeszukuje sieć i zwraca tytuły wyników, linki oraz fragmenty, aby model mógł znaleźć aktualne informacje.</string>
     <string name="tool_web_search_example">\"Znajdź najnowsze recenzje najnowszego telefonu Pixel.\"</string>

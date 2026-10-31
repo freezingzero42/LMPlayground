@@ -167,6 +167,11 @@ fun ChatItemBubble(
                         style = MaterialTheme.typography.bodyLarge.copy(color = LocalContentColor.current)
                     )
                 }
+                // The model wrote the page as ```html code instead of calling
+                // render_html: offer a preview once the reply is complete.
+                if (!isGenerating) {
+                    HtmlCodeBlockPreviews(responseText = split.responseContent)
+                }
             }
         }
 

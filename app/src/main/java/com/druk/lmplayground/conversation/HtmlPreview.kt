@@ -25,6 +25,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,12 +46,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -111,6 +115,9 @@ fun HtmlPreviewCard(
     var showCode by rememberSaveable(preview.html) { mutableStateOf(false) }
     var fullScreen by rememberSaveable(preview.html) { mutableStateOf(false) }
     var reloadCount by remember(preview.html) { mutableIntStateOf(0) }
+    // Set when the page tries to fetch something from the internet (a CDN
+    // stylesheet, a web font...). Explains a page that renders unstyled.
+    var blockedNetwork by remember(preview.html, reloadCount) { mutableStateOf(false) }
     val clipboardManager = LocalClipboardManager.current
     val title = preview.title.ifBlank { stringResource(R.string.tool_render_html_title) }
 
@@ -170,6 +177,15 @@ fun HtmlPreviewCard(
                 )
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            if (blockedNetwork && !showCode) {
+                Text(
+                    text = stringResource(R.string.html_preview_blocked_network),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                )
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -186,6 +202,7 @@ fun HtmlPreviewCard(
                             // Inside the scrolling chat, the page gets the
                             // gesture so drags (sliders, canvas games) work.
                             captureTouches = true,
+                            onBlockedRequest = { blockedNetwork = true },
                             modifier = Modifier.fillMaxSize(),
                         )
                     }
@@ -302,10 +319,14 @@ private fun HtmlWebView(
     html: String,
     captureTouches: Boolean,
     modifier: Modifier = Modifier,
+    onBlockedRequest: () -> Unit = {},
 ) {
+    val currentOnBlocked by rememberUpdatedState(onBlockedRequest)
     AndroidView(
         modifier = modifier,
-        factory = { context -> createPreviewWebView(context, captureTouches) },
+        factory = { context ->
+            createPreviewWebView(context, captureTouches) { currentOnBlocked() }
+        },
         update = { webView ->
             // Only (re)load when the page actually changed; recomposition
             // alone must not restart a running game or animation.
@@ -331,7 +352,11 @@ private fun HtmlWebView(
  * - Navigation away from the page is refused, so a link can't replace it.
  */
 @SuppressLint("SetJavaScriptEnabled", "ClickableViewAccessibility")
-private fun createPreviewWebView(context: Context, captureTouches: Boolean): WebView =
+private fun createPreviewWebView(
+    context: Context,
+    captureTouches: Boolean,
+    onBlockedRequest: () -> Unit,
+): WebView =
     WebView(context).apply {
         layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -362,6 +387,9 @@ private fun createPreviewWebView(context: Context, captureTouches: Boolean): Web
             ): WebResourceResponse? {
                 val scheme = request.url.scheme?.lowercase()
                 return if (scheme == "http" || scheme == "https") {
+                    // Called on a WebView background thread; hop to main for
+                    // the Compose state write.
+                    view.post { onBlockedRequest() }
                     WebResourceResponse(
                         "text/plain",
                         "utf-8",
@@ -393,3 +421,41 @@ private fun createPreviewWebView(context: Context, captureTouches: Boolean): Web
             }
         }
     }
+
+/**
+ * Fallback for replies that contain the page as Markdown code blocks instead
+ * of a `render_html` call (common with models that can't call tools). Shows a
+ * "Preview" button per page; the live preview opens only on tap, so an
+ * ordinary coding answer doesn't start running scripts by itself.
+ */
+@Composable
+fun HtmlCodeBlockPreviews(
+    responseText: String,
+    modifier: Modifier = Modifier,
+) {
+    val previews = remember(responseText) { HtmlPreviewTool.previewsFromMarkdown(responseText) }
+    if (previews.isEmpty()) return
+    Column(modifier = modifier) {
+        previews.forEachIndexed { index, preview ->
+            // key() gives each page its own saved state; without it every
+            // iteration shares one rememberSaveable slot.
+            key(index) {
+                var open by rememberSaveable(responseText) { mutableStateOf(false) }
+                if (open) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    HtmlPreviewCard(preview = preview)
+                } else {
+                    TextButton(onClick = { open = true }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Web,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(stringResource(R.string.html_preview_open))
+                    }
+                }
+            }
+        }
+    }
+}

@@ -305,6 +305,8 @@
     <string name="html_preview_show_preview">显示预览</string>
     <string name="html_preview_reload">重新加载</string>
     <string name="html_preview_full_screen">全屏</string>
+    <string name="html_preview_open">预览 HTML</string>
+    <string name="html_preview_blocked_network">此页面尝试从互联网加载文件。预览以离线方式运行，因此这些文件已被拦截，部分样式或功能可能缺失。</string>
 
     <!-- Inference engine notifications (1.7.0) -->
     <string name="inference_notification_generating_title">正在生成回复…</string>
