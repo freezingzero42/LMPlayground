@@ -201,6 +201,9 @@
     <!-- General UI -->
     <string name="select_model">בחר מודל</string>
     <string name="select_model_subtitle">בחרו מודל לשימוש</string>
+    <string name="tool_add_calendar_event_title">הוספת אירוע ליומן</string>
+    <string name="tool_add_calendar_event_desc">פותח את אפליקציית היומן עם אירוע חדש ממולא; שום דבר לא נשמר עד שמקישים על שמירה. האפליקציה לא יכולה לקרוא את היומן שלך.</string>
+    <string name="tool_add_calendar_event_example">\"תוסיף רופא שיניים ביום שישי ב־15:00.\"</string>
     <string name="new_conversation">שיחה חדשה</string>
     <string name="close">סגור</string>
     <string name="pinned_label">מוצמד</string>

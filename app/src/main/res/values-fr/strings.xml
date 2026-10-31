@@ -164,6 +164,9 @@
     <string name="migration_progress">Copie de %1$d sur %2$d</string>
     <string name="select_model">S\u00E9lectionner un mod\u00E8le</string>
     <string name="select_model_subtitle">Choisissez un modèle à utiliser</string>
+    <string name="tool_add_calendar_event_title">Ajouter un événement</string>
+    <string name="tool_add_calendar_event_desc">Ouvre votre application Agenda avec un nouvel événement prérempli ; rien n\'est enregistré tant que vous n\'appuyez pas sur Enregistrer. L\'application ne peut pas lire votre agenda.</string>
+    <string name="tool_add_calendar_event_example">\"Ajoute dentiste vendredi à 15 h.\"</string>
     <string name="new_conversation">Nouvelle conversation</string>
     <string name="close">Fermer</string>
     <string name="pinned_label">\u00C9pingl\u00E9s</string>

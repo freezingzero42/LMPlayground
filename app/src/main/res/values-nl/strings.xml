@@ -202,6 +202,9 @@
     <!-- General UI -->
     <string name="select_model">Model selecteren</string>
     <string name="select_model_subtitle">Kies een model om te gebruiken</string>
+    <string name="tool_add_calendar_event_title">Agenda-afspraak toevoegen</string>
+    <string name="tool_add_calendar_event_desc">Opent je Agenda-app met een ingevulde nieuwe afspraak; er wordt niets opgeslagen tot je op Opslaan tikt. De app kan je agenda niet lezen.</string>
+    <string name="tool_add_calendar_event_example">\"Zet tandarts op vrijdag om 15.00 uur.\"</string>
     <string name="new_conversation">Nieuw gesprek</string>
     <string name="close">Sluiten</string>
     <string name="pinned_label">Vastgezet</string>

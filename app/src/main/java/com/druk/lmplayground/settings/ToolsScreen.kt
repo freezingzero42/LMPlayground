@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
@@ -54,6 +55,12 @@ private data class ToolUiInfo(
 )
 
 private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
+    "add_calendar_event" to ToolUiInfo(
+        R.string.tool_add_calendar_event_title,
+        R.string.tool_add_calendar_event_desc,
+        R.string.tool_add_calendar_event_example,
+        Icons.Outlined.Event,
+    ),
     "run_javascript" to ToolUiInfo(
         R.string.tool_run_javascript_title,
         R.string.tool_run_javascript_desc,

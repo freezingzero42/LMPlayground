@@ -164,6 +164,9 @@
     <string name="migration_progress">Copia di %1$d su %2$d</string>
     <string name="select_model">Seleziona modello</string>
     <string name="select_model_subtitle">Scegli un modello da usare</string>
+    <string name="tool_add_calendar_event_title">Aggiungi evento al calendario</string>
+    <string name="tool_add_calendar_event_desc">Apre l\'app Calendario con un nuovo evento già compilato; non viene salvato nulla finché non tocchi Salva. L\'app non può leggere il tuo calendario.</string>
+    <string name="tool_add_calendar_event_example">\"Aggiungi dentista venerdì alle 15.\"</string>
     <string name="new_conversation">Nuova conversazione</string>
     <string name="close">Chiudi</string>
     <string name="pinned_label">Fissati</string>

@@ -164,6 +164,9 @@
     <string name="migration_progress">Menyalin %1$d dari %2$d</string>
     <string name="select_model">Pilih Model</string>
     <string name="select_model_subtitle">Pilih model yang akan digunakan</string>
+    <string name="tool_add_calendar_event_title">Tambah acara kalender</string>
+    <string name="tool_add_calendar_event_desc">Membuka aplikasi Kalender dengan acara baru yang sudah terisi; tidak ada yang disimpan sampai Anda mengetuk Simpan. Aplikasi ini tidak dapat membaca kalender Anda.</string>
+    <string name="tool_add_calendar_event_example">\"Tambahkan dokter gigi hari Jumat pukul 3 sore.\"</string>
     <string name="new_conversation">Percakapan Baru</string>
     <string name="close">Tutup</string>
     <string name="pinned_label">Disematkan</string>

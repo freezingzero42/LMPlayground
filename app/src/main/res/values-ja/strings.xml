@@ -164,6 +164,9 @@
     <string name="migration_progress">%2$d 個中 %1$d 個をコピー中</string>
     <string name="select_model">モデルを選択</string>
     <string name="select_model_subtitle">使用するモデルを選択</string>
+    <string name="tool_add_calendar_event_title">カレンダーに予定を追加</string>
+    <string name="tool_add_calendar_event_desc">カレンダーアプリで新しい予定を入力済みの状態で開きます。保存をタップするまで何も保存されません。アプリはカレンダーを読み取れません。</string>
+    <string name="tool_add_calendar_event_example">\"金曜の午後3時に歯医者を追加して。\"</string>
     <string name="new_conversation">新しい会話</string>
     <string name="close">閉じる</string>
     <string name="pinned_label">ピン留め</string>

@@ -201,6 +201,9 @@
     <!-- General UI -->
     <string name="select_model">Vælg model</string>
     <string name="select_model_subtitle">Vælg en model, du vil bruge</string>
+    <string name="tool_add_calendar_event_title">Tilføj kalenderbegivenhed</string>
+    <string name="tool_add_calendar_event_desc">Åbner din Kalender-app med en ny begivenhed udfyldt; intet gemmes, før du trykker på Gem. Appen kan ikke læse din kalender.</string>
+    <string name="tool_add_calendar_event_example">\"Tilføj tandlæge på fredag kl. 15.\"</string>
     <string name="new_conversation">Ny samtale</string>
     <string name="close">Luk</string>
     <string name="pinned_label">Fastgjort</string>

@@ -200,6 +200,9 @@
     <!-- General UI -->
     <string name="select_model">মডেল নির্বাচন করুন</string>
     <string name="select_model_subtitle">ব্যবহারের জন্য একটি মডেল বেছে নিন</string>
+    <string name="tool_add_calendar_event_title">ক্যালেন্ডারে ইভেন্ট যোগ করুন</string>
+    <string name="tool_add_calendar_event_desc">আপনার ক্যালেন্ডার অ্যাপে একটি নতুন ইভেন্ট পূরণ করে খোলে; সেভ ট্যাপ না করা পর্যন্ত কিছু সেভ হয় না। অ্যাপটি আপনার ক্যালেন্ডার পড়তে পারে না।</string>
+    <string name="tool_add_calendar_event_example">\"শুক্রবার বিকেল ৩টায় ডেন্টিস্ট যোগ করো।\"</string>
     <string name="new_conversation">নতুন কথোপকথন</string>
     <string name="close">বন্ধ করুন</string>
     <string name="pinned_label">পিন করা</string>

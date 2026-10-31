@@ -201,6 +201,9 @@
     <!-- General UI -->
     <string name="select_model">Valitse malli</string>
     <string name="select_model_subtitle">Valitse käytettävä malli</string>
+    <string name="tool_add_calendar_event_title">Lisää kalenteritapahtuma</string>
+    <string name="tool_add_calendar_event_desc">Avaa Kalenteri-sovelluksen valmiiksi täytetyllä uudella tapahtumalla; mitään ei tallenneta ennen kuin napautat Tallenna. Sovellus ei voi lukea kalenteriasi.</string>
+    <string name="tool_add_calendar_event_example">\"Lisää hammaslääkäri perjantaiksi klo 15.\"</string>
     <string name="new_conversation">Uusi keskustelu</string>
     <string name="close">Sulje</string>
     <string name="pinned_label">Kiinnitetty</string>

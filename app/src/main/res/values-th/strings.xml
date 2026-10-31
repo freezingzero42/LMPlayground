@@ -201,6 +201,9 @@
     <!-- General UI -->
     <string name="select_model">เลือกโมเดล</string>
     <string name="select_model_subtitle">เลือกโมเดลที่จะใช้</string>
+    <string name="tool_add_calendar_event_title">เพิ่มกิจกรรมในปฏิทิน</string>
+    <string name="tool_add_calendar_event_desc">เปิดแอปปฏิทินพร้อมกิจกรรมใหม่ที่กรอกไว้แล้ว จะไม่มีอะไรถูกบันทึกจนกว่าคุณจะแตะบันทึก แอปไม่สามารถอ่านปฏิทินของคุณได้</string>
+    <string name="tool_add_calendar_event_example">\"เพิ่มนัดหมอฟันวันศุกร์บ่าย 3 โมง\"</string>
     <string name="new_conversation">บทสนทนาใหม่</string>
     <string name="close">ปิด</string>
     <string name="pinned_label">ปักหมุดแล้ว</string>

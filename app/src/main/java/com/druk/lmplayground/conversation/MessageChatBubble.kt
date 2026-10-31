@@ -371,6 +371,7 @@ private fun formatDuration(seconds: Int): String {
 /** Friendly display name for a tool (falls back to the raw name for unknowns). */
 @Composable
 private fun toolDisplayName(name: String): String = when (name) {
+    "add_calendar_event" -> stringResource(R.string.tool_add_calendar_event_title)
     "run_javascript" -> stringResource(R.string.tool_run_javascript_title)
     "get_date_time" -> stringResource(R.string.tool_get_date_time_title)
     "web_search" -> stringResource(R.string.tool_web_search_title)

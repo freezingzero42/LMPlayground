@@ -201,6 +201,9 @@
     <!-- General UI -->
     <string name="select_model">Velg modell</string>
     <string name="select_model_subtitle">Velg en modell du vil bruke</string>
+    <string name="tool_add_calendar_event_title">Legg til kalenderhendelse</string>
+    <string name="tool_add_calendar_event_desc">Åpner Kalender-appen med en ny hendelse fylt ut; ingenting lagres før du trykker på Lagre. Appen kan ikke lese kalenderen din.</string>
+    <string name="tool_add_calendar_event_example">\"Legg til tannlege på fredag kl. 15.\"</string>
     <string name="new_conversation">Ny samtale</string>
     <string name="close">Lukk</string>
     <string name="pinned_label">Festet</string>

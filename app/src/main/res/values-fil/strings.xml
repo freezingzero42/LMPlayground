@@ -200,6 +200,9 @@
     <!-- General UI -->
     <string name="select_model">Pumili ng Modelo</string>
     <string name="select_model_subtitle">Pumili ng model na gagamitin</string>
+    <string name="tool_add_calendar_event_title">Magdagdag ng event sa kalendaryo</string>
+    <string name="tool_add_calendar_event_desc">Binubuksan ang iyong Calendar app na may nakahandang bagong event; walang mase-save hangga\'t hindi mo tina-tap ang Save. Hindi mababasa ng app ang iyong kalendaryo.</string>
+    <string name="tool_add_calendar_event_example">\"Idagdag ang dentista sa Biyernes nang 3 pm.\"</string>
     <string name="new_conversation">Bagong Usapan</string>
     <string name="close">Isara</string>
     <string name="pinned_label">Naka-pin</string>

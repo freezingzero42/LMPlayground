@@ -164,6 +164,9 @@
     <string name="migration_progress">正在复制第 %1$d 个，共 %2$d 个</string>
     <string name="select_model">选择模型</string>
     <string name="select_model_subtitle">选择要使用的模型</string>
+    <string name="tool_add_calendar_event_title">添加日历活动</string>
+    <string name="tool_add_calendar_event_desc">打开“日历”应用并预填新活动；在您点按“保存”之前不会保存任何内容。本应用无法读取您的日历。</string>
+    <string name="tool_add_calendar_event_example">\"周五下午 3 点添加看牙医。\"</string>
     <string name="new_conversation">新建对话</string>
     <string name="close">关闭</string>
     <string name="pinned_label">已置顶</string>

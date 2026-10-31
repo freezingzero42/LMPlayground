@@ -202,6 +202,9 @@
     <!-- General UI -->
     <string name="select_model">Vybrat model</string>
     <string name="select_model_subtitle">Vyberte model, který chcete použít</string>
+    <string name="tool_add_calendar_event_title">Přidat událost do kalendáře</string>
+    <string name="tool_add_calendar_event_desc">Otevře aplikaci Kalendář s vyplněnou novou událostí; nic se neuloží, dokud neklepnete na Uložit. Aplikace nemůže číst váš kalendář.</string>
+    <string name="tool_add_calendar_event_example">\"Přidej zubaře na pátek ve 3 odpoledne.\"</string>
     <string name="new_conversation">Nová konverzace</string>
     <string name="close">Zavřít</string>
     <string name="pinned_label">Připnuto</string>

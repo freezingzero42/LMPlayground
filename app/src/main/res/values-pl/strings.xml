@@ -164,6 +164,9 @@
     <string name="migration_progress">Kopiowanie %1$d z %2$d</string>
     <string name="select_model">Wybierz model</string>
     <string name="select_model_subtitle">Wybierz model do użycia</string>
+    <string name="tool_add_calendar_event_title">Dodaj wydarzenie do kalendarza</string>
+    <string name="tool_add_calendar_event_desc">Otwiera aplikację Kalendarz z wypełnionym nowym wydarzeniem; nic nie zostanie zapisane, dopóki nie dotkniesz Zapisz. Aplikacja nie może odczytać Twojego kalendarza.</string>
+    <string name="tool_add_calendar_event_example">\"Dodaj dentystę w piątek o 15.\"</string>
     <string name="new_conversation">Nowa rozmowa</string>
     <string name="close">Zamknij</string>
     <string name="pinned_label">Przypięte</string>

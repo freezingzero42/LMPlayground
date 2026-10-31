@@ -164,6 +164,9 @@
     <string name="migration_progress">Copiere %1$d din %2$d</string>
     <string name="select_model">Selecteaz\u0103 modelul</string>
     <string name="select_model_subtitle">Alege un model de folosit</string>
+    <string name="tool_add_calendar_event_title">Adaugă eveniment în calendar</string>
+    <string name="tool_add_calendar_event_desc">Deschide aplicația Calendar cu un eveniment nou completat; nimic nu se salvează până nu atingi Salvează. Aplicația nu îți poate citi calendarul.</string>
+    <string name="tool_add_calendar_event_example">\"Adaugă dentist vineri la 15:00.\"</string>
     <string name="new_conversation">Conversa\u021Bie nou\u0103</string>
     <string name="close">\u00CEnchide</string>
     <string name="pinned_label">Fixate</string>

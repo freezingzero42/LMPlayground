@@ -164,6 +164,9 @@
     <string name="migration_progress">\u0110ang sao ch\u00E9p %1$d / %2$d</string>
     <string name="select_model">Ch\u1ECDn m\u00F4 h\u00ECnh</string>
     <string name="select_model_subtitle">Chọn một mô hình để sử dụng</string>
+    <string name="tool_add_calendar_event_title">Thêm sự kiện lịch</string>
+    <string name="tool_add_calendar_event_desc">Mở ứng dụng Lịch với sự kiện mới đã điền sẵn; không có gì được lưu cho đến khi bạn nhấn Lưu. Ứng dụng không thể đọc lịch của bạn.</string>
+    <string name="tool_add_calendar_event_example">\"Thêm lịch nha sĩ vào thứ Sáu lúc 3 giờ chiều.\"</string>
     <string name="new_conversation">Cu\u1ED9c tr\u00F2 chuy\u1EC7n m\u1EDBi</string>
     <string name="close">\u0110\u00F3ng</string>
     <string name="pinned_label">\u0110\u00E3 ghim</string>

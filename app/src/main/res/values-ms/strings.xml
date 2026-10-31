@@ -200,6 +200,9 @@
     <!-- General UI -->
     <string name="select_model">Pilih Model</string>
     <string name="select_model_subtitle">Pilih model untuk digunakan</string>
+    <string name="tool_add_calendar_event_title">Tambah acara kalendar</string>
+    <string name="tool_add_calendar_event_desc">Membuka apl Kalendar dengan acara baharu yang telah diisi; tiada apa-apa disimpan sehingga anda mengetik Simpan. Apl ini tidak boleh membaca kalendar anda.</string>
+    <string name="tool_add_calendar_event_example">\"Tambah doktor gigi pada hari Jumaat pukul 3 petang.\"</string>
     <string name="new_conversation">Perbualan Baharu</string>
     <string name="close">Tutup</string>
     <string name="pinned_label">Disematkan</string>
