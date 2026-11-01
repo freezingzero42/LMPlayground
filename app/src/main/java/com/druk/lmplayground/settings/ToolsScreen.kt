@@ -2,6 +2,14 @@
 
 package com.druk.lmplayground.settings
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.compose.LocalActivityResultRegistryOwner
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,6 +30,7 @@ import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Search
@@ -37,12 +46,18 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.druk.lmplayground.R
 import com.druk.llamacpp.tools.Tool
 
@@ -119,6 +134,12 @@ private val TOOL_UI: Map<String, ToolUiInfo> = mapOf(
         R.string.tool_wikipedia_example,
         Icons.AutoMirrored.Outlined.MenuBook,
     ),
+    "location" to ToolUiInfo(
+        R.string.tool_location_title,
+        R.string.tool_location_desc,
+        R.string.tool_location_example,
+        Icons.Outlined.LocationOn,
+    ),
 )
 
 @Composable
@@ -162,6 +183,53 @@ fun ToolsScreen(
  * The tool rows. When [htmlPreviewInternet] is given, the "Internet access in
  * previews" row follows them, styled like another tool.
  */
+private const val LOCATION_TOOL = "location"
+
+/**
+ * Whether the app holds the location permission, re-checked whenever the
+ * screen resumes (e.g. back from Android's settings), and a request for it;
+ * [onResult] gets the answer. Once Android no longer shows its dialog (denied
+ * twice, or "Don't ask again") the request opens the app's settings page
+ * instead. The request is null where there is nothing to ask with
+ * (previews, the store-screenshot tests).
+ */
+@Composable
+internal fun rememberLocationPermission(onResult: (Boolean) -> Unit): Pair<Boolean, (() -> Unit)?> {
+    val context = LocalContext.current
+    var checks by remember { mutableIntStateOf(0) }
+    LifecycleResumeEffect(Unit) {
+        checks++
+        onPauseOrDispose {}
+    }
+    val granted = remember(checks) {
+        runCatching {
+            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED
+        }.getOrDefault(false)
+    }
+    val result by rememberUpdatedState(onResult)
+    var askedAt by remember { mutableLongStateOf(0L) }
+    val launcher = if (LocalActivityResultRegistryOwner.current != null) {
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
+            checks++
+            // An answer within a moment means Android refused without asking.
+            if (!ok && System.currentTimeMillis() - askedAt < 500) {
+                context.startActivity(
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null))
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+            }
+            result(ok)
+        }
+    } else null
+    return granted to launcher?.let { l ->
+        {
+            askedAt = System.currentTimeMillis()
+            l.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
+    }
+}
+
 @Composable
 fun ToolsContent(
     tools: List<Tool>,
@@ -171,12 +239,27 @@ fun ToolsContent(
     htmlPreviewInternet: Boolean? = null,
     onHtmlPreviewInternetChanged: (Boolean) -> Unit = {},
 ) {
+    // Location needs a runtime permission: turning it on asks for
+    // ACCESS_COARSE_LOCATION, and it only switches on if the user grants it.
+    val context = LocalContext.current
+    val (locationGranted, askLocation) = rememberLocationPermission { granted ->
+        if (granted) onToolEnabledChanged(LOCATION_TOOL, true)
+    }
+    val onToggle: (String, Boolean) -> Unit = { name, enable ->
+        if (name == LOCATION_TOOL && enable && !locationGranted) {
+            askLocation?.invoke()
+        } else {
+            onToolEnabledChanged(name, enable)
+        }
+    }
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         tools.forEach { tool ->
             ToolRow(
                 tool = tool,
-                enabled = enabledStates[tool.name] ?: false,
-                onToggle = { onToolEnabledChanged(tool.name, it) },
+                // Location reads as on only while Android still grants it (an
+                // "Only this time" grant lapses), so a tap can ask again.
+                enabled = (enabledStates[tool.name] ?: false) && (tool.name != LOCATION_TOOL || locationGranted),
+                onToggle = { onToggle(tool.name, it) },
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         }
