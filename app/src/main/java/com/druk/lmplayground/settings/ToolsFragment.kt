@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -17,6 +20,7 @@ import com.druk.lmplayground.theme.PlaygroundTheme
 class ToolsFragment : Fragment() {
 
     private val toolsViewModel: ToolsViewModel by viewModels()
+    private val toolTestViewModel: ToolTestViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +32,7 @@ class ToolsFragment : Fragment() {
             PlaygroundTheme {
                 val enabled by toolsViewModel.enabled.collectAsStateWithLifecycle()
                 val htmlPreviewInternet by toolsViewModel.htmlPreviewInternet.collectAsStateWithLifecycle()
+                var showToolTest by rememberSaveable { mutableStateOf(false) }
                 ToolsScreen(
                     tools = toolsViewModel.tools,
                     enabledStates = enabled,
@@ -35,7 +40,11 @@ class ToolsFragment : Fragment() {
                     htmlPreviewInternet = htmlPreviewInternet,
                     onHtmlPreviewInternetChanged = { toolsViewModel.setHtmlPreviewInternet(it) },
                     onBackClick = { findNavController().popBackStack() },
+                    onRunToolTest = { showToolTest = true },
                 )
+                if (showToolTest) {
+                    ToolTestDialog(toolTestViewModel, onDismiss = { showToolTest = false })
+                }
             }
         }
     }
