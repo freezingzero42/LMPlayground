@@ -22,4 +22,5 @@ fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
         register(JavaScriptTool(context))
         register(SetAlarmTool(context))
         register(AddCalendarEventTool(context))
+        register(CalculatorTool())
     }
