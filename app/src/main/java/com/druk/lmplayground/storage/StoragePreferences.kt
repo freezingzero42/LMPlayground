@@ -32,6 +32,15 @@ class StoragePreferences(context: Context) {
         get() = prefs.getBoolean("include_date_in_prompt", true)
         set(value) = prefs.edit { putBoolean("include_date_in_prompt", value) }
 
+    /**
+     * Add the saved memories to every chat's system prompt. Off by default:
+     * when off nothing is added, though the model can still read and write
+     * notes with the memory tool if that tool is on.
+     */
+    var memoryEnabled: Boolean
+        get() = prefs.getBoolean("memory_enabled", false)
+        set(value) = prefs.edit { putBoolean("memory_enabled", value) }
+
     /** Ask the loaded model for a short chat title after a new chat's first reply. */
     var autoNameChats: Boolean
         get() = prefs.getBoolean("auto_name_chats", true)

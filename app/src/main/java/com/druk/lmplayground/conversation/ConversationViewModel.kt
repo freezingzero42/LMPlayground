@@ -216,7 +216,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private val systemPromptExtras = SystemPromptExtras(app, storagePreferences)
+    private val systemPromptExtras = SystemPromptExtras(app, storagePreferences).apply { start() }
 
     private val runtime = ModelRuntime(
         app,
@@ -622,6 +622,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     override fun onCleared() {
+        systemPromptExtras.stop()
         stopObservingEmbeddingDownload()
         runtime.shutdown()
         super.onCleared()

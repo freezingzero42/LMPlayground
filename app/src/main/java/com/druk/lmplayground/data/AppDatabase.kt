@@ -15,9 +15,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         PromptUsage::class,
         RagDocumentEntity::class,
         RagChunkEntity::class,
-        ChatFolderEntity::class
+        ChatFolderEntity::class,
+        MemoryNoteEntity::class
     ],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -27,6 +28,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun systemPromptDao(): SystemPromptDao
 
     abstract fun ragDao(): RagDao
+
+    abstract fun memoryDao(): MemoryDao
 
     companion object {
         @Volatile
@@ -181,6 +184,20 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        /** Memory tool: notes the model can save and recall across chats. */
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `memory_notes` (" +
+                        "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "`content` TEXT NOT NULL, " +
+                        "`createdAt` INTEGER NOT NULL, " +
+                        "`updatedAt` INTEGER NOT NULL, " +
+                        "`category` TEXT)"
+                )
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
@@ -196,7 +213,8 @@ abstract class AppDatabase : RoomDatabase() {
                         MIGRATION_5_6,
                         MIGRATION_6_7,
                         MIGRATION_7_8,
-                        MIGRATION_8_9
+                        MIGRATION_8_9,
+                        MIGRATION_9_10
                     )
                     .build().also { INSTANCE = it }
             }

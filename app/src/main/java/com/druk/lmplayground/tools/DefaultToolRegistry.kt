@@ -27,4 +27,5 @@ fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
         register(HardwareInfoTool(context))
         register(WikipediaTool())
         register(LocationTool(context))
+        register(MemoryTool(context))
     }

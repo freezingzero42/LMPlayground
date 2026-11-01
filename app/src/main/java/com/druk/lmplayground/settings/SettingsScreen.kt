@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Policy
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.VolumeUp
@@ -77,6 +78,8 @@ fun SettingsScreen(
     onAdvancedClick: () -> Unit,
     onSendFeedbackClick: () -> Unit,
     appVersion: String,
+    /** Memory has no detail pane; it opens full screen on phone and tablet. */
+    onMemoryClick: () -> Unit = {},
     /**
      * Tablet-only: when non-null, tapping Models in the master pane opens
      * this composable inline in the detail pane instead of navigating to
@@ -232,6 +235,7 @@ fun SettingsScreen(
                                 onAdvancedClick()
                             }
                         },
+                        onMemoryClick = onMemoryClick,
                         onPrivacyPolicyClick = { detail = SettingsDetail.PrivacyPolicy },
                         onFaqClick = { detail = SettingsDetail.Faq },
                         onCrashEngineClick = onCrashEngineClick
@@ -309,6 +313,7 @@ fun SettingsScreen(
                 onToolsClick = onToolsClick,
                 onSoundHapticClick = onSoundHapticClick,
                 onAdvancedClick = onAdvancedClick,
+                onMemoryClick = onMemoryClick,
                 onPrivacyPolicyClick = onPrivacyPolicyClick,
                 onFaqClick = onFaqClick,
                 onCrashEngineClick = onCrashEngineClick,
@@ -336,6 +341,7 @@ private fun SettingsList(
     onToolsClick: () -> Unit,
     onSoundHapticClick: () -> Unit,
     onAdvancedClick: () -> Unit,
+    onMemoryClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onFaqClick: () -> Unit,
     onCrashEngineClick: (() -> Unit)?,
@@ -361,6 +367,14 @@ private fun SettingsList(
             subtitle = stringResource(R.string.system_prompts_subtitle),
             selected = selectedDetail == SettingsDetail.Prompts,
             onClick = onSystemPromptsClick
+        )
+
+        // Memory row (opens full screen; no detail pane)
+        SettingsRow(
+            icon = Icons.Outlined.Psychology,
+            title = stringResource(R.string.memory),
+            subtitle = stringResource(R.string.memory_subtitle),
+            onClick = onMemoryClick
         )
 
         // Tools row

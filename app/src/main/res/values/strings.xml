@@ -491,9 +491,22 @@
     <string name="tool_location_title" tools:ignore="MissingTranslation">Location</string>
     <string name="tool_location_desc" tools:ignore="MissingTranslation">Shares your device\'s approximate location (city level) with the model when it asks. Requires the location permission, which is requested when you turn this on.</string>
     <string name="tool_location_example" tools:ignore="MissingTranslation">\"What city am I in right now?\"</string>
+    <string name="tool_memory_title" tools:ignore="MissingTranslation">Memory</string>
+    <string name="tool_memory_desc" tools:ignore="MissingTranslation">Lets the model save short notes and recall them in later chats. Notes are stored only on this device.</string>
+    <string name="tool_memory_example" tools:ignore="MissingTranslation">\"Remember that my favorite language is Italian.\"</string>
     <string name="date_in_prompt_title" tools:ignore="MissingTranslation">Today\'s date</string>
     <string name="date_in_prompt_desc" tools:ignore="MissingTranslation">Add today\'s date to the system prompt so the model knows what day it is.</string>
     <string name="system_prompt_date" tools:ignore="MissingTranslation">Today\'s date: %1$s</string>
+    <string name="memory" tools:ignore="MissingTranslation">Memory</string>
+    <string name="memory_subtitle" tools:ignore="MissingTranslation">Notes the model remembers across chats</string>
+    <string name="memory_empty" tools:ignore="MissingTranslation">No memories yet. Add one, or let the model save notes as you chat.</string>
+    <string name="memory_new" tools:ignore="MissingTranslation">New memory</string>
+    <string name="memory_edit" tools:ignore="MissingTranslation">Edit memory</string>
+    <string name="memory_hint" tools:ignore="MissingTranslation">Something to remember</string>
+    <string name="memory_enabled_title" tools:ignore="MissingTranslation">Use memory in chats</string>
+    <string name="memory_enabled_subtitle" tools:ignore="MissingTranslation">When on, saved memories are added to the model\'s context. The model can always read and write them with the memory tool.</string>
+    <string name="memory_clear_all" tools:ignore="MissingTranslation">Clear all</string>
+    <string name="memory_clear_all_confirm" tools:ignore="MissingTranslation">Delete all saved memories? This cannot be undone.</string>
     <string name="auto_name_chats_title" tools:ignore="MissingTranslation">Auto-name chats</string>
     <string name="auto_name_chats_desc" tools:ignore="MissingTranslation">Let the loaded model give each new chat a short title after the first reply.</string>
 </resources>
