@@ -252,7 +252,33 @@ fun ToolsContent(
             onToolEnabledChanged(name, enable)
         }
     }
+    // "Enable all" leaves Location alone until its permission is granted,
+    // so it never pops a permission dialog; switching off touches every tool.
+    val bulkTools = tools.filter { it.name != LOCATION_TOOL || locationGranted }
+    val setAll: (Boolean) -> Unit = { on ->
+        (if (on) bulkTools else tools).forEach { onToolEnabledChanged(it.name, on) }
+    }
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+        // "Enable all": on when every tool it can switch on is on.
+        val allOn = bulkTools.isNotEmpty() && bulkTools.all { enabledStates[it.name] == true }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { setAll(!allOn) }
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.tools_enable_all),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
+            )
+            Switch(
+                checked = allOn,
+                onCheckedChange = setAll,
+            )
+        }
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         tools.forEach { tool ->
             ToolRow(
                 tool = tool,
