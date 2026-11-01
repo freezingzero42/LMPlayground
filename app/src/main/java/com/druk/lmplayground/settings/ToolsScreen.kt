@@ -28,6 +28,7 @@ import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOn
@@ -46,9 +47,13 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -60,6 +65,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.druk.lmplayground.R
 import com.druk.llamacpp.tools.Tool
+import com.druk.lmplayground.storage.StoragePreferences
 
 /**
  * User-facing copy for a tool, keyed by [Tool.name]. The runtime
@@ -242,6 +248,7 @@ fun ToolsContent(
     // Location needs a runtime permission: turning it on asks for
     // ACCESS_COARSE_LOCATION, and it only switches on if the user grants it.
     val context = LocalContext.current
+    val prefs = remember { StoragePreferences(context) }
     val (locationGranted, askLocation) = rememberLocationPermission { granted ->
         if (granted) onToolEnabledChanged(LOCATION_TOOL, true)
     }
@@ -296,6 +303,15 @@ fun ToolsContent(
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         }
+        // Not a tool, but app-wide like the preview setting above.
+        var autoName by remember { mutableStateOf(prefs.autoNameChats) }
+        SwitchRow(
+            icon = Icons.Outlined.Edit,
+            title = stringResource(R.string.auto_name_chats_title),
+            description = stringResource(R.string.auto_name_chats_desc),
+            checked = autoName,
+            onCheckedChange = { autoName = it; prefs.autoNameChats = it },
+        )
     }
 }
 
