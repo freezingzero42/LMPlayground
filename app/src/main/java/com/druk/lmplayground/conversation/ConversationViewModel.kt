@@ -216,6 +216,8 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         }
     }
 
+    private val systemPromptExtras = SystemPromptExtras(app, storagePreferences)
+
     private val runtime = ModelRuntime(
         app,
         llamaCpp,
@@ -224,6 +226,7 @@ class ConversationViewModel(val app: Application) : AndroidViewModel(app) {
         storagePreferences,
         notifications,
         runtimeListener,
+        systemPromptExtras::compose,
     )
 
     /**

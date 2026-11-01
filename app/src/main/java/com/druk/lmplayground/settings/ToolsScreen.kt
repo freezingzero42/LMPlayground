@@ -303,7 +303,16 @@ fun ToolsContent(
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         }
-        // Not a tool, but app-wide like the preview setting above.
+        // Not tools, but app-wide like the preview setting above.
+        var includeDate by remember { mutableStateOf(prefs.includeDateInPrompt) }
+        SwitchRow(
+            icon = Icons.Outlined.Schedule,
+            title = stringResource(R.string.date_in_prompt_title),
+            description = stringResource(R.string.date_in_prompt_desc),
+            checked = includeDate,
+            onCheckedChange = { includeDate = it; prefs.includeDateInPrompt = it },
+        )
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         var autoName by remember { mutableStateOf(prefs.autoNameChats) }
         SwitchRow(
             icon = Icons.Outlined.Edit,

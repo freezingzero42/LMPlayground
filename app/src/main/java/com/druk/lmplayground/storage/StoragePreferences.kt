@@ -27,6 +27,11 @@ class StoragePreferences(context: Context) {
         get() = prefs.getBoolean("haptic_on_generation", true)
         set(value) = prefs.edit { putBoolean("haptic_on_generation", value) }
 
+    /** Add today's date to the system prompt, so the model knows what day it is. */
+    var includeDateInPrompt: Boolean
+        get() = prefs.getBoolean("include_date_in_prompt", true)
+        set(value) = prefs.edit { putBoolean("include_date_in_prompt", value) }
+
     /** Ask the loaded model for a short chat title after a new chat's first reply. */
     var autoNameChats: Boolean
         get() = prefs.getBoolean("auto_name_chats", true)
