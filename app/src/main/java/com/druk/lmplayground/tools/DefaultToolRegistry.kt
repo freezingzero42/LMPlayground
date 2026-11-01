@@ -25,4 +25,5 @@ fun ToolRegistry.Companion.createDefault(context: Context): ToolRegistry =
         register(CalculatorTool())
         register(UnitConverterTool())
         register(HardwareInfoTool(context))
+        register(WikipediaTool())
     }
